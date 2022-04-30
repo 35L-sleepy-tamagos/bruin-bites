@@ -1,7 +1,15 @@
 .App {
   text-align: center;
 }
-
+h1 {
+  text-align: center;
+}
+img {
+  width: 15%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
