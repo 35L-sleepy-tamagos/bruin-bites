@@ -1,4 +1,21 @@
-li {
-  display: inline;
-  margin: 10px 20px;
+li 
+{
+    display: inline-block;
+    padding: 15px 25px;
+    font-family: Century Gothic;
+    font-size: 18px;
+    margin: 10px;
+    text-decoration: none;
+}
+
+li:hover 
+{
+        background-color: #E6E6FA;
+        text-decoration: none;
+}
+
+li:active 
+{
+        background-color: white;
+        text-decoration: none;
 }
