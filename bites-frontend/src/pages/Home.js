@@ -12,9 +12,9 @@ export default function Home() {
   return (
     <div>
       <h1>Welcome to Bruin Bites!</h1>
-      {logo.map((logo, index) => {
-        return <img src={logo} key={index} />;
-      })}
+      {logo.map((logo, index) => (
+        <img src={logo} key={index} />
+      ))}
     </div>
   );
 }

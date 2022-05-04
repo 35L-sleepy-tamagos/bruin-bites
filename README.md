@@ -1,2 +1,3 @@
 # bruin-bites
-UCLA food ordering app for 35L Spring 2022
+
+UCLA food review and data visualization app for CS35L Spring 2022
