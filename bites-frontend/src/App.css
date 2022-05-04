@@ -1,6 +1,10 @@
+@import "~normalize.css/normalize.css";
 .App {
   text-align: center;
   background-color: #d8bfd8;
+}
+body {
+  background-color: rgb(255, 255, 255); /* jordan change */
 }
 
 h1 {
