@@ -43,6 +43,7 @@ img {
 img:hover {
   background-color: #e6e6fa;
   text-decoration: none;
+  cursor: pointer;
 }
 
 img:active {
