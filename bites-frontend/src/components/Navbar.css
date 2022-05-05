@@ -1,21 +1,26 @@
 li 
 {
     display: inline-block;
-    padding: 15px 25px;
+    padding: 10px 20px;
     font-family: Century Gothic;
-    font-size: 18px;
+    font-size: 25px;
+    font-weight: bold;
     margin: 10px;
-    text-decoration: none;
+    align-content: center;
+    border-radius: 20px;
+    padding: 15px; 
+    width: auto;
+    height: auto;  
 }
 
 li:hover 
 {
-        background-color: #E6E6FA;
+        background-color: rgb(226, 217, 237);
         text-decoration: none;
 }
 
 li:active 
 {
-        background-color: white;
+        background-color: rgb(195, 171, 225);
         text-decoration: none;
 }
