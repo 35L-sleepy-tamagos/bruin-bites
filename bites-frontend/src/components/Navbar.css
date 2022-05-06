@@ -1,4 +1,26 @@
-li {
-  display: inline;
-  margin: 10px 20px;
+li 
+{
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: Century Gothic;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px;
+    align-content: center;
+    border-radius: 20px;
+    padding: 15px; 
+    width: auto;
+    height: auto;  
+}
+
+li:hover 
+{
+        background-color: rgb(226, 217, 237);
+        text-decoration: none;
+}
+
+li:active 
+{
+        background-color: rgb(195, 171, 225);
+        text-decoration: none;
 }
