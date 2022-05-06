@@ -7,12 +7,13 @@ body {
   background-color: #c8e7f7; /* jordan change */
 }
 
-h1 {
+/* h1 {
   text-align: center;
   font-family: Century Gothic;
   font-size: 50px;
-  color: white;
-}
+  color: white; 
+} */
+
 
 #imageContainer {
   display: grid;
@@ -69,7 +70,7 @@ img:active {
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  /* color: white; */
 }
 
 .App-link {
