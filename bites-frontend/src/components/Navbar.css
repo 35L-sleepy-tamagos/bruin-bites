@@ -11,6 +11,7 @@ li
     padding: 15px; 
     width: auto;
     height: auto;  
+	background-color: rgb(226, 217, 237);
 }
 
 li:hover 
