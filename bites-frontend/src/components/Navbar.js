@@ -6,16 +6,16 @@ const Navbar = () => {
   return (
     <div>
       <li>
-        <Link to="/">Home</Link>
+        <Link to="/" style={{ textDecoration: 'none', color: 'white'}}>Home</Link>
       </li>
       <li>
-        <Link to="/reviews">Reviews</Link>
+        <Link to="/reviews" style={{ textDecoration: 'none', color: 'white' }}>Reviews</Link>
       </li>
       <li>
-        <Link to="/map">Map</Link>
+        <Link to="/map" style={{ textDecoration: 'none', color: 'white' }}>Map</Link>
       </li>
       <li>
-        <Link to="/profile">Profile</Link>
+        <Link to="/profile" style={{ textDecoration: 'none', color: 'white' }}>Profile</Link>
       </li>
     </div>
   );

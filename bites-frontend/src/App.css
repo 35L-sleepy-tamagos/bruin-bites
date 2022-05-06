@@ -4,7 +4,7 @@
   background-color: #d8bfd8;
 }
 body {
-  background-color: rgb(255, 255, 255); /* jordan change */
+  background-color: #c8e7f7; /* jordan change */
 }
 
 h1 {
@@ -12,7 +12,6 @@ h1 {
   font-family: Century Gothic;
   font-size: 50px;
   color: white;
-  background-color: #d8bfd8;
 }
 
 #imageContainer {
@@ -63,7 +62,7 @@ img:active {
 }
 
 .App-header {
-  background-color: #ffb6c1;
+  background-color: #e3d3e3;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
