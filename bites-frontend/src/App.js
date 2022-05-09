@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Review from "./pages/Review";
 import Profile from "./pages/Profile";
 import Map from "./pages/Map";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
