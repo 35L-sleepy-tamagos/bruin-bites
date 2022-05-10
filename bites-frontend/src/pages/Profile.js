@@ -2,8 +2,8 @@ import { Container, Image, Stack } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
 
 import ProfileImage from '../assets/placeholder.jpg'
-import {} from "../components/ProfileComponents"
-import ReviewCard from '../components/ReviewCard'
+import {} from "../components/ProfileComponents.js"
+import ReviewCard from '../components/ReviewCard.js'
 
 // TODO: backend integration
 // polish CSS if time
