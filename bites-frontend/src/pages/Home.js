@@ -9,6 +9,12 @@ export default function Home() {
     "https://menu.dining.ucla.edu/Content/Images/Menus/BruinBowl/bruinbowl-logo.png",
     "https://menu.dining.ucla.edu/Content/Images/Menus/Drey/drey-logo.png",
   ];
+  const openUrl = (url) => {
+    const win = window.open(url, "_blank");
+    if (win != null) {
+      win.focus();
+    }
+  }
   return (
     <div>
       <h1>Welcome to Bruin Bites!</h1>
@@ -16,7 +22,7 @@ export default function Home() {
         {logo.map((logo, index) => {
           return (
             <div className="imgWrapper">
-              <img src={logo} key={index} />
+              <img src={logo} key={index} alt="pausechamp" onClick={() => openUrl("https://www.google.com/")}/>
             </div>
           );
         })}
