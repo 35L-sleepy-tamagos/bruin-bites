@@ -1,3 +1,9 @@
+.nav-bg
+{
+	background-color: rgb(55, 50, 55);
+	margin-bottom: 2rem;
+}
+
 li 
 {
     display: inline-block;
@@ -11,7 +17,6 @@ li
     padding: 15px; 
     width: auto;
     height: auto;  
-	background-color: rgb(226, 217, 237);
 }
 
 li:hover 
