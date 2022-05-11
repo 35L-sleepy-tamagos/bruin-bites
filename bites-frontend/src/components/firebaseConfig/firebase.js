@@ -1,9 +1,16 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp, getApps } from "firebase/app";
 
-function StartFirebase() {
+export default class Review {
+  constructor(title, body, rating, user, createdAt) {
+    this.title = title;
+    this.body = body;
+    this.rating = rating;
+    this.user = user;
+    this.createdAt = createdAt;
+  }
+}
+export function InitFirebase() {
   const firebaseConfig = {
     apiKey: "AIzaSyB0RVYajis4riUkkHIQGKpZKIQD-TE9EBA",
     authDomain: "bruin-bites.firebaseapp.com",
@@ -14,10 +21,8 @@ function StartFirebase() {
     appId: "1:199820296065:web:74cf1ee866a69c5dcdb280",
     measurementId: "G-C8PPNWJJDT",
   };
-
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  return getDatabase(app);
+  if (getApps().length === 0) {
+    initializeApp(firebaseConfig);
+  }
 }
-export default StartFirebase;
