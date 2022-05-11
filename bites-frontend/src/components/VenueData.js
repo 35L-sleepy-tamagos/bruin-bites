@@ -32,7 +32,7 @@ let venues =
 		},
 		{
 			name: "Epicuria",
-			image: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20143/534d978abd26f552ab000554_BruinPlate_Logo_FullColor/BruinPlate_Logo_FullColor_41db8eb4-2f25-41fa-9d71-ff19f2170580-prv.jpg",
+			image: "https://i.ibb.co/KDDbh68/download.jpg",
 			link: "http://menu.dining.ucla.edu/Menus/Epicuria/",
 		},
 		{

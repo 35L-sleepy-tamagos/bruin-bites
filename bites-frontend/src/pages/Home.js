@@ -7,12 +7,12 @@ export default function Home() {
 	return (
 		<Container>
 			<Row align="center">
-				<h1 className="text-dark">Welcome to Bruin Bites!</h1>
+				<h1 className="fs-1 text-dark">Welcome to Bruin Bites!</h1>
 			</Row>
 			<Row align="center">
 				{venues.map((venues) => {
 					return (
-						<Col className="col-4 my-3">
+						<Col className="col-12 col-sm-6 col-lg-4 my-3">
 							<VenueCard className="p-0"
 								{...venues}
 								alt="todo"
