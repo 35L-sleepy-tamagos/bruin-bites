@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 export default function Review() {
   const [reviews, setReviews] = React.useState([]);
   useEffect(() => {
+    console.log("getting reviews");
     getReviews().then((reviews) => {
       setReviews(reviews);
     });
