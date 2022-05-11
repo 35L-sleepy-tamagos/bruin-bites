@@ -8,7 +8,7 @@ import ReviewCard from '../components/ReviewCard.js'
 // TODO: backend integration
 // polish CSS if time
 
-export default function Home() {
+export default function Profile() {
 	return (
 		<div className="Profile">
 			<Container className="bg-light p-5 fluid">
