@@ -13,7 +13,7 @@ h1 {
   font-family: Century Gothic;
   font-weight: bold !important;
   font-size: 100px !important;
-  color: white;
+  color: white !important;
 }
 
 #imageContainer {
@@ -41,11 +41,11 @@ img {
   height: 200px;
 }
 
-img:hover {
+/*img:hover {
   background-color: #e6e6fa; 
   text-decoration: none;
   cursor: pointer;
-}
+}*/
 
 img:active {
   background-color: white;
