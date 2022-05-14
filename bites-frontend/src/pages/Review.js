@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { getReviews, createReview } from "../components/firebaseConfig/utils";
 import { useFormik } from "formik";
+import "./Review.css"
 
 export default function Review() {
   const [reviews, setReviews] = React.useState([]);
@@ -29,37 +30,42 @@ export default function Review() {
   });
   return (
     <div>
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="title">Title</label>
-        <input
+      <h1>Review Page for Bruin Bites</h1>
+      <form onSubmit={formik.handleSubmit} class="input-container">
+        <label htmlFor="title" className="title">Title</label>
+        <textarea
+          placeholder="Enter a title..."
           id="title"
           name="title"
           type="text"
           onChange={formik.handleChange}
           value={formik.values.title}
+          className="title-field"
         />
 
-        <label htmlFor="body">Body</label>
-        <input
+        <label htmlFor="body" className="title">Body</label>
+        <textarea
+          placeholder="Enter your review..."
           id="body"
           name="body"
           type="text"
           onChange={formik.handleChange}
           value={formik.values.body}
+          className="body-field"
         />
 
-        <label htmlFor="rating">Rating</label>
-        <input
+        <label htmlFor="rating" className="title">Rating</label>
+        <textarea
           id="rating"
           name="rating"
           type="text"
           onChange={formik.handleChange}
           value={formik.values.rating}
+          className="rating-field"
         />
 
-        <button type="submit">Submit</button>
+        <button type="submit" className="review-button">Submit</button>
       </form>
-      <h1>Review Page for Bruin Bites</h1>
       {reviews.map((review, i) => {
         return (
           <div key={i}>
