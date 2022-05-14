@@ -1,5 +1,6 @@
 import { Modal, Card, Container } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { Navigate, useNavigate } from "react-router-dom";
 
 // TODO: add review form pop-up?
 // import { useState } from 'react';
@@ -20,6 +21,12 @@ export default function VenueCard(props) {
 		}
 	}
 
+	const navigate = useNavigate();
+
+	function handleClick(path) {
+		navigate(path);
+	}
+
 	return (
 		<Card style={{height: '30rem'}}>
 			<Card.Img 
@@ -32,6 +39,7 @@ export default function VenueCard(props) {
 				<div className="d-grid gap-2 ">
 					<Button 
 						size="lg"
+						onClick={() => handleClick("/reviews")}
 						> 
 						Leave a Review 
 					</Button>
