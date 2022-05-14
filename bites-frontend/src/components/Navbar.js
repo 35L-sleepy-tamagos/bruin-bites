@@ -10,19 +10,19 @@ const Navbar = () => {
   let mins = d.getMinutes();
 
   if (hours >= 7 && hours < 10) {
-    mealPeriod = "Breakfast";
+    mealPeriod = "Currently Breakfast";
   }
 
   if (hours >= 11 && hours < 15) {
-    mealPeriod = "Lunch/Brunch";
+    mealPeriod = "Currently Lunch/Brunch";
   }
 
   if (hours >= 17 && hours < 21) {
-    mealPeriod = "Dinner";
+    mealPeriod = "Currently Dinner";
   }
 
   if (hours >= 21) {
-    mealPeriod = "Extended Dinner";
+    mealPeriod = "Currently Extended Dinner";
   }
 
   if (hours >= 10 && hours < 11) {
