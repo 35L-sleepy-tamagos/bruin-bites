@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { CgSun } from "react-icons/cg";
 import { HiMoon } from "react-icons/hi";
 
+//margin: shifts it, why did this one line of code take me 40 minutes to find out
 const Toggle = styled.button`
     cursor: pointer;
     height: 50px;
     width: 50px;   
     border-radius: 50%;
     border: none;
+    margin: -1em 1em;
     background-color: ${props => props.theme.titleColor};
     color: ${props => props.theme.pageBackground};
     &:focus {
@@ -44,7 +46,7 @@ function Splash(props)
 
     const icon = props.theme === "dark" ? <HiMoon size={40} /> : <CgSun size={40} />;
     return (
-    <Toggle onClick={changeTheme}>
+    <Toggle onClick={changeTheme} >
         {icon}
     </Toggle>
     );

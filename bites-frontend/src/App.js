@@ -13,12 +13,14 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const LightTheme = {
+  padding: "0.25em 1em",
   pageBackground: "white",
   titleColor: "#dc658b",
-  tagLineColor: "black"
+  tagLineColor: "black",
 };
 
 const DarkTheme = {
+  padding: "0.25em 1em",
   pageBackground: "#282c36",
   titleColor: "lightpink",
   tagLineColor: "lavender"
