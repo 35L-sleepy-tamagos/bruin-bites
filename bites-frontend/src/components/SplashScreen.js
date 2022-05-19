@@ -15,7 +15,7 @@ const Toggle = styled.button`
     &:focus {
         outline: none;
     }
-    transition: all .5s ease;
+    transition: all 1s ease;
 `;
 
 
