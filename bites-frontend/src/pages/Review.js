@@ -30,7 +30,7 @@ export default function Review() {
   });
   return (
     <div>
-      <h1>Review Page for Bruin Bites</h1>
+      <h1>Review Page for Bruin Bites!</h1>
       <form onSubmit={formik.handleSubmit} class="input-container">
         <label htmlFor="title" className="title">Subject</label>
         <textarea
