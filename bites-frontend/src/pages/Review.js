@@ -17,9 +17,9 @@ export default function Review() {
   // at us.
   const formik = useFormik({
     initialValues: {
-      title: "",
-      body: "",
-      rating: 0,
+      Subject: "",
+      Review: "",
+      Rating: 0,
     },
     onSubmit: (values) => {
       values.user = "testuser";
@@ -32,7 +32,7 @@ export default function Review() {
     <div>
       <h1>Review Page for Bruin Bites</h1>
       <form onSubmit={formik.handleSubmit} class="input-container">
-        <label htmlFor="title" className="title">Title</label>
+        <label htmlFor="title" className="title">Subject</label>
         <textarea
           placeholder="Enter a title..."
           id="title"
@@ -43,7 +43,7 @@ export default function Review() {
           className="title-field"
         />
 
-        <label htmlFor="body" className="title">Body</label>
+        <label htmlFor="body" className="title">Review</label>
         <textarea
           placeholder="Enter your review..."
           id="body"
@@ -54,8 +54,9 @@ export default function Review() {
           className="body-field"
         />
 
-        <label htmlFor="rating" className="title">Rating</label>
+        <label htmlFor="rating" className="title">Overall Rating (0-5)</label>
         <textarea
+          placeholder="Enter your rating..."
           id="rating"
           name="rating"
           type="text"
