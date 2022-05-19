@@ -1,0 +1,43 @@
+.input-container
+{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+}
+
+.title {
+    text-align: center;
+    font-family: Century Gothic;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.title-field {
+    inline-size: 150px;
+    overflow-wrap: break-word;
+    height: auto;
+    width: 50rem;
+    margin: auto;
+}
+
+.body-field {
+    inline-size: 150px;
+    overflow-wrap: break-word;
+    height: 10rem;
+    width: 50rem;
+    margin: auto;
+}
+
+.rating-field {
+    inline-size: 150px;
+    overflow-wrap: break-word;
+    height: auto;
+    width: 25rem;
+    margin: auto auto 20px auto;
+}
+
+.review-button {
+    width: 10rem;
+    margin: auto;
+    border-radius: 10px;
+}
