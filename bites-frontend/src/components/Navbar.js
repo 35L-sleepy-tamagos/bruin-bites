@@ -87,8 +87,8 @@ const Navbar = () => {
         remainingMinutes += 1;
       }
       mealPeriod = remainingHours + ":" + remainingMinutes + ":" + remainingSeconds + " until Breakfast";
-      setPeriod(mealPeriod);
     }
+    setPeriod(mealPeriod);
   }
   
   useEffect(() => {
