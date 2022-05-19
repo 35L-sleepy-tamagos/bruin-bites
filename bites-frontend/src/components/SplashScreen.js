@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { CgSun } from "react-icons/cg";
 import { HiMoon } from "react-icons/hi";
 
-
 const Toggle = styled.button`
     cursor: pointer;
     height: 50px;
@@ -20,17 +19,30 @@ const Toggle = styled.button`
 
 function Splash(props) 
 {
+    /* setDark and setLight inspired by https://codesandbox.io/s/dry-meadow-64786?from-embed=&file=/src/DarkMode.tsx */
+    const setDark = () => {
+        localStorage.setItem("theme", "dark");
+        document.documentElement.setAttribute("data-theme", "dark");
+    };
+    
+    const setLight = () => {
+        localStorage.setItem("theme", "light");
+        document.documentElement.setAttribute("data-theme", "light");
+    };
+
     function changeTheme() 
     {
         if (props.theme === "light") 
         {
             props.setTheme("dark");
+            setDark();
         } else {
             props.setTheme("light");
-        }
+            setLight();
+        }        
     };
 
-    const icon = props.theme === "light" ? <HiMoon size={40} /> : <CgSun size={40} />;
+    const icon = props.theme === "dark" ? <HiMoon size={40} /> : <CgSun size={40} />;
     return (
     <Toggle onClick={changeTheme}>
         {icon}

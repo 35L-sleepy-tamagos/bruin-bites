@@ -8,7 +8,7 @@ import Map from "./pages/Map";
 
 import { useState } from "react";
 import Splash from "./components/SplashScreen";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 
 const LightTheme = {
   pageBackground: "white",
@@ -27,16 +27,14 @@ const themes = {
   dark: DarkTheme,
 }
 
-
 function App() {
   const [theme, setTheme] = useState("light")
   return (
-
     <Router>
       <Navbar />
       <ThemeProvider theme={themes[theme]}>
-      <Splash theme={theme} setTheme={setTheme} />
-    </ThemeProvider>
+        <Splash theme={theme} setTheme={setTheme} />
+      </ThemeProvider>
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/reviews" element={<Review />}></Route>
