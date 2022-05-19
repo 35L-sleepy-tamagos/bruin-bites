@@ -11,7 +11,7 @@ import ReviewCard from '../components/ReviewCard.js'
 export default function Profile() {
 	return (
 		<div className="Profile">
-			<Container className="bg-light p-5 fluid">
+			<Container className="bg-light p-5 fluid text-dark">
 				<Row>
 					<Col className="px-3 mx-5" style={{background: '#d0e5ff'}} align="center">
 							<Image className="w-75" src={ProfileImage} />

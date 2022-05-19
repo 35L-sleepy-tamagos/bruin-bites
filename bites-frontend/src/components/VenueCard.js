@@ -34,7 +34,7 @@ export default function VenueCard(props) {
 				variant="top" 
 				src={props.image}
 			/>
-			<Card.Header className="fs-2 border-0">{props.name}</Card.Header>
+			<Card.Header className="fs-2 border-0" style={{color: "black"}}>{props.name}</Card.Header>
 			<Card.Body>
 				<div className="d-grid gap-2 ">
 					<Button 

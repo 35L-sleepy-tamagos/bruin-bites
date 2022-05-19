@@ -13,13 +13,13 @@
 
 [data-theme="dark"] {
   --font-color: #eee;
-  --background-color: #333;
+  --background-color: rgb(81, 81, 81);
   --link-color: lightblue;
 }
 
 body {
   background-color: var(--background-color) !important;
-  color: var(--font-color);
+  color: var(--font-color) !important;
 }
 
 h1 {
@@ -27,7 +27,7 @@ h1 {
   font-family: Century Gothic;
   font-weight: bold !important;
   font-size: 40px !important;
-  color: black;
+  color: var(--font-color) !important;
 }
 
 #imageContainer {
