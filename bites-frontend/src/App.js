@@ -10,6 +10,8 @@ import { useState } from "react";
 import Splash from "./components/SplashScreen";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+
 const LightTheme = {
   pageBackground: "white",
   titleColor: "#dc658b",
