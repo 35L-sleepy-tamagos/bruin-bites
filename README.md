@@ -3,8 +3,7 @@
 Contributors:
 Edward Hwang | Henry Wang | Derek Jiang | Jordan Lin | Jonah Kim
 
-```
 **Usage**
-git clone SSH
+```git clone SSH
 npm install
 npm start```
