@@ -7,7 +7,10 @@ function ReviewCard(props) {
 		<Card>
 			<Card.Header className="fs-2">{props.review_header}</Card.Header>
 			<div className="m-3">
-				<Card.Title>{props.review_rating} | {props.review_time}</Card.Title>
+				<Card.Title className="d-flex justify-content-between">
+					<div>{props.review_rating}</div>
+					<div>Timestamp(todo){props.review_time}</div>
+				</Card.Title>
 				<Card.Text>{props.review_text}</Card.Text>
 			</div>
 		</Card>
