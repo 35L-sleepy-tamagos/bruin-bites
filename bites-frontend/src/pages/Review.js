@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { getReviews, createReview } from "../components/firebaseConfig/utils";
 import { useFormik } from "formik";
-import "./Review.css"
+import "../css/Review.css"
 
 export default function Review() {
   const [reviews, setReviews] = React.useState([]);

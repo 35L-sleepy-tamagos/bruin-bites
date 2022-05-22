@@ -1,5 +1,5 @@
 import React from "react";
-import "../App.css"
+import "../css/App.css"
 import { Container, Row, Col } from "react-bootstrap";
 import VenueCard from "../components/VenueCard";
 import venues from "../components/VenueData";
