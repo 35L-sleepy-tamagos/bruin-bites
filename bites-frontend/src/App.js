@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import Map from "./pages/Map";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
+import Venue from "./pages/Venue";
 import { auth } from "./components/firebaseConfig/firebase.js";
 
 import { useState } from "react";
@@ -27,7 +28,7 @@ const DarkTheme = {
   padding: "0.25em 1em",
   pageBackground: "#282c36",
   titleColor: "lightpink",
-  tagLineColor: "lavender"
+  tagLineColor: "lavender",
 }
 
 const themes = {
@@ -59,6 +60,7 @@ function App() {
         <Route path="/map" element={<Map />}></Route>
         <Route path="/signin" element={<SignIn />}></Route> 
         <Route path="/register" element={<Register />}></Route> 
+        <Route path="/venue" element={<Venue />}></Route> 
       </Routes>
     </Router>
   );

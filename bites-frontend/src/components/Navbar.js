@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../css//Navbar.css";
+import "../css/Navbar.css";
 import { logout } from "../components/firebaseConfig/utils.js"
 
 const Navbar = () => {
@@ -109,6 +109,9 @@ const Navbar = () => {
       </li>
       <li>
         <Link to="/profile" style={{ textDecoration: 'none', color: 'white' }}>Profile</Link>
+      </li>
+      <li>
+        <Link to="/venue" style={{ textDecoration: 'none', color: 'white' }}>TODO</Link>
       </li>
       <div className="Meal-Period" style={{ textDecoration: 'none', color: 'white' }}>
         { mealPeriod }

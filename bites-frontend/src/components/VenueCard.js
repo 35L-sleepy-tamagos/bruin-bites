@@ -41,7 +41,7 @@ export default function VenueCard(props) {
 						size="lg"
 						onClick={() => handleClick("/reviews")}
 						> 
-						Leave a Review 
+						Details
 					</Button>
 					<Button 
 						variant="secondary" 
@@ -54,5 +54,5 @@ export default function VenueCard(props) {
 				</div>
 			</Card.Body>
 		</Card>
-	);
+		);
 }

@@ -1,5 +1,5 @@
-import { Container, Image, Stack } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
+import { Container, Image, Stack, Button } from 'react-bootstrap';
 
 import ProfileImage from '../assets/placeholder.jpg'
 import {} from "../components/ProfileComponents.js"
@@ -12,7 +12,9 @@ import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 
 // TODO: backend integration
+// TODO: Frontend -> Bootstrap
 // polish CSS if time
+// rework padding?
 
 export default function Profile() {
 
@@ -46,9 +48,9 @@ export default function Profile() {
 		return (
 			<div className="Profile">
 				<h1>Welcome, {userDetails[0]}</h1>
-				<Container className="bg-light p-5 fluid text-dark">
-					<Row>
-						<Col className="px-3 mx-5" style={{background: '#d0e5ff'}} align="center">
+				<Container className="py-3 fluid text-dark">
+					<Row className="mx-0 bg-light">
+						<Col className="px-3" align="center">
 								<Image className="w-75" src={ProfileImage} />
 								<h3>Joe Bruin</h3>
 								<p>A very mysterious person</p>
@@ -72,8 +74,8 @@ export default function Profile() {
 							<p>16 Meals in the past week</p>
 						</Col>
 					</Row>
-					<Row className="mt-5 px-0">
-						<Col className="px-0">
+					<Row className="mt-5">
+						<Col className="">
 							<Stack gap={3}>
 								<ReviewCard 
 									review_header="B-Plate"
@@ -84,13 +86,17 @@ export default function Profile() {
 							</Stack>
 						</Col>
 					</Row>
+					<Row>
+						<Col className="mx-0 my-5 d-grid gap-2">
+							<Button variant="danger" 
+								class="btn" 
+								size="lg"
+								onClick={ () => signout() }>
+									Sign Out
+							</Button>
+						</Col>
+					</Row>
 				</Container>
-				<div class="col-md-12 text-center m-5">
-					<button class="btn btn-danger btn-lg" 
-					onClick={ () => signout() }>
-						Sign Out
-					</button>
-				</div>
 			</div>
 		)
 	}
