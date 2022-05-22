@@ -102,7 +102,7 @@ export default function Review() {
 			<Row className="py-2">
 				{reviews.map((review, i) => {
 					return (
-						<Col className="px-0 col-12 gy-2">
+						<Col className="px-0 col-12 gy-3">
 							<ReviewCard
 								key={i}
 								review_header={review.title}

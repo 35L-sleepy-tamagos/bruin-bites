@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 
 function ReviewCard(props) {
 	return (
-		<Card>
+		<Card className="border-0">
 			<Card.Header className="fs-2 border-0">{props.review_header}</Card.Header>
 			<div className="m-3">
 				<Card.Title className="d-flex justify-content-between">

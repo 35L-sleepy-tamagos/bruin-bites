@@ -111,7 +111,7 @@ const Navbar = () => {
         <Link to="/profile" style={{ textDecoration: 'none', color: 'white' }}>Profile</Link>
       </li>
       <li>
-        <Link to="/profile" style={{ textDecoration: 'none', color: 'white' }}>TODO</Link>
+        <Link to="/venue" style={{ textDecoration: 'none', color: 'white' }}>TODO</Link>
       </li>
       <div className="Meal-Period" style={{ textDecoration: 'none', color: 'white' }}>
         { mealPeriod }
