@@ -1,4 +1,4 @@
-import "./App.css";
+import "./css/App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -27,7 +27,7 @@ const DarkTheme = {
   padding: "0.25em 1em",
   pageBackground: "#282c36",
   titleColor: "lightpink",
-  tagLineColor: "lavender"
+  tagLineColor: "lavender",
 }
 
 const themes = {
