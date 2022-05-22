@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { logout } from "../components/firebaseConfig/utils.js"
 
 const Navbar = () => {
   let [mealPeriod, setPeriod] = useState("None Currently")
@@ -38,31 +39,27 @@ const Navbar = () => {
     if (hours >= 10 && hours < 11) {
       remainingHours = 11 - (hours + 1);
       remainingHours = "0" + remainingHours;
-      remainingMinutes = 60 - mins;
+      remainingMinutes = 59 - mins;
+      remainingSeconds = 59- seconds;
       if (remainingMinutes < 10) {
         remainingMinutes = "0" + remainingMinutes;
       }
-      mealPeriod = remainingHours + ":" + remainingMinutes + " until Lunch";
+      if (remainingSeconds < 10) {
+        remainingSeconds = "0" + remainingSeconds;
+      }
+      mealPeriod = remainingHours + ":" + remainingMinutes + ":" + remainingSeconds + " until Lunch";
     }
   
     if (hours >= 15 && hours < 17) {
       remainingHours = 17 - (hours + 1);
       remainingHours = "0" + remainingHours;
-      remainingMinutes = 60 - mins;
-      remainingSeconds = 60 - seconds;
+      remainingMinutes = 59 - mins;
+      remainingSeconds = 59 - seconds;
       if (remainingMinutes < 10) {
         remainingMinutes = "0" + remainingMinutes;
       }
-      if (remainingMinutes === 60) {
-        remainingMinutes = "00";
-        remainingHours += 1;
-      }
       if (remainingSeconds < 10) {
         remainingSeconds = "0" + remainingSeconds;
-      }
-      if (remainingSeconds === 60) {
-        remainingSeconds = "00";
-        remainingMinutes += 1;
       }
       mealPeriod = remainingHours + ":" + remainingMinutes + ":" + remainingSeconds + " until Dinner";
     }

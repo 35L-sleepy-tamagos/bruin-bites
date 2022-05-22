@@ -5,12 +5,16 @@ import Home from "./pages/Home";
 import Review from "./pages/Review";
 import Profile from "./pages/Profile";
 import Map from "./pages/Map";
+import SignIn from "./pages/SignIn";
+import Register from "./pages/Register";
+import { auth } from "./components/firebaseConfig/firebase.js";
 
 import { useState } from "react";
 import Splash from "./components/SplashScreen";
-import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { ThemeProvider } from "styled-components";
 
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { onAuthStateChanged } from "firebase/auth";
 
 const LightTheme = {
   padding: "0.25em 1em",
@@ -31,8 +35,17 @@ const themes = {
   dark: DarkTheme,
 }
 
+function getUser() {
+  if(auth.currentUser) {
+    console.log(auth.currentUser.email);
+  }
+  else {
+    console.log("none");
+  }
+}
+
 function App() {
-  const [theme, setTheme] = useState("light")
+  const [theme, setTheme] = useState("light");
   return (
     <Router>
       <Navbar />
@@ -44,6 +57,8 @@ function App() {
         <Route path="/reviews" element={<Review />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/map" element={<Map />}></Route>
+        <Route path="/signin" element={<SignIn />}></Route> 
+        <Route path="/register" element={<Register />}></Route> 
       </Routes>
     </Router>
   );
