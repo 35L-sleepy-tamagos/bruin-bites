@@ -10,6 +10,7 @@ import SignIn from './SignIn';
 import { useNavigate } from 'react-router-dom';
 import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 import { useEffect, useState } from 'react';
+import { getStorage, getStream, listAll, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // TODO: backend integration
 // TODO: Frontend -> Bootstrap
@@ -23,6 +24,10 @@ export default function Profile() {
 	function signout() {
 		navigate("/");
 		logout();
+	}
+
+	function editProfile() {
+		navigate("/edit-profile")
 	}
 
 	if (auth.currentUser) {
@@ -43,35 +48,61 @@ export default function Profile() {
 		});
 	}, []);
 
+	const storage = getStorage();
+	const imgRef = ref(storage, userDetails.uid + "/");
+
+	const [userImage, setUserImage] = useState();
+
+	useEffect(() => {
+		listAll(imgRef).then((response) => {
+			response.items.forEach((item) => {
+				if (item.name == userDetails.img) {
+					getDownloadURL(item).then((url) => {
+						setUserImage(url);
+					})
+				}
+			})
+		})
+	})
+
 	if (auth.currentUser) {
 		console.log(userDetails);
+
+		const image = userImage ? userImage : ProfileImage;
+		const name = userDetails.name;
+		const bio = userDetails.bio ? userDetails.bio : "A Very Mysterious Person...";
+		const place1 = userDetails.favDining1 ? userDetails.favDining1 : "None Yet...";
+		const place2 = userDetails.favDining2 ? userDetails.favDining2 : "None Yet...";
+		const numReviews = 0 //userDetails.reviews.length();
+		const numDining = 0 //userDetails.dining.length();
+
 		return (
 			<div className="Profile">
-				<h1>Welcome, {userDetails[0]}</h1>
+				<h1>Welcome, { name }</h1>
 				<Container className="py-3 fluid text-dark">
 					<Row className="mx-0 bg-light">
 						<Col className="px-3" align="center">
-								<Image className="w-75" src={ProfileImage} />
-								<h3>Joe Bruin</h3>
-								<p>A very mysterious person</p>
+								<Image className="w-75" src={ image } />
+								<h3> { name } </h3>
+								<p> { bio } </p>
 						</Col>
 						<Col className="mt-3">
 							<h3>Favorite Places</h3>
 							<Stack gap={1} className="m-3">
 								<div> 
-									<h4>Place 1 </h4>
+									<h4> {place1} </h4>
 									<p> 4 visits</p>
 								</div>
 								<div> 
-									<h4>Place 2 </h4>
+									<h4> {place2} </h4>
 									<p> 2 visits</p>
 								</div>
 							</Stack>
 						</Col>
 						<Col className="mt-3">
 							<h3>Activity</h3>
-							<p>10 Reviews posted</p>
-							<p>16 Meals in the past week</p>
+							<p> { numReviews } Reviews posted</p>
+							<p> { numDining } Meals recorded</p>
 						</Col>
 					</Row>
 					<Row className="mt-5">
@@ -88,6 +119,11 @@ export default function Profile() {
 					</Row>
 					<Row>
 						<Col className="mx-0 my-5 d-grid gap-2">
+							<Button variant="primary"
+								class="btn"
+								onClick={ () => editProfile() }>
+								Edit your Profile!
+							</Button>
 							<Button variant="danger" 
 								class="btn" 
 								size="lg"

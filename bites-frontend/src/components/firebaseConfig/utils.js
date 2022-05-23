@@ -20,6 +20,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { getStorage, getStream, ref, uploadBytes } from "firebase/storage";
 import Review, { app, auth } from "./firebase.js";
 import React, { useState, useEffect, useNavigate } from "react";
 import { Navigate, useResolvedPath } from "react-router-dom";
@@ -74,11 +75,17 @@ export async function googleSignIn() {
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
-      await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name: user.displayName,
         authProvider: "google",
         email: user.email,
+        bio: "",
+        dining: [],
+        reviews: [],
+        image: "",
+        favDining1: "",
+        favDining2: "",
       });
     }
   } catch (err) {
@@ -102,11 +109,17 @@ export async function emailRegister(name, email, password) {
   try {
     const account = await createUserWithEmailAndPassword(auth, email, password);
     const user = account.user;
-    await addDoc(collection(db, "users"), {
+    await setDoc(doc(db, "users", user.uid), {
       uid: user.uid,
       name,
       authProvider: "local",
       email,
+      bio: "",
+      dining: [],
+      reviews: [],
+      image: "",
+      favDining1: "",
+      favDining2: "",
     });
   }
   catch (err) {
@@ -123,14 +136,48 @@ export function logout() {
 export async function getUsers(uid) {
   const db = getFirestore();
   const userRef = collection(db, "users");
-  const userDetails = [];
+  var userDetails = {};
   const q = query(userRef, where("uid", "==", uid));
   const qSnapshot = await getDocs(q);
   qSnapshot.forEach((doc) => {
-    userDetails.push(
-      doc.data().name, 
-      doc.data().email,
-      doc.data().uid,);
+    userDetails = {...doc.data()};
   })
   return userDetails;
+}
+
+export async function editBio(uid, newBio) {
+  if (!newBio) {
+    return;
+  }
+  const db = getFirestore();
+  const userRef = doc(db, "users", uid);
+  await updateDoc(userRef, {
+    bio: newBio,
+  });
+}
+
+export async function editUserImage(uid, newImg) {
+  const db = getFirestore();
+  const userRef = doc(db, "users", uid);
+  await updateDoc(userRef, {
+      img: newImg,
+  })
+}
+
+export async function editFavDining(uid, newDiningHall, id) {
+  if (!newDiningHall) {
+    return;
+  }
+  const db = getFirestore();
+  const userRef = doc(db, "users", uid);
+  if (id == 1) {
+    await updateDoc(userRef, {
+      favDining1: newDiningHall,
+    })
+  }
+  else if (id == 2) {
+    await updateDoc(userRef, {
+      favDining2: newDiningHall,
+    })
+  }
 }

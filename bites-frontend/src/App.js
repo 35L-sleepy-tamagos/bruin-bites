@@ -8,6 +8,7 @@ import Map from "./pages/Map";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 import Venue from "./pages/Venue";
+import EditProfile from "./pages/editProfile"
 import { auth } from "./components/firebaseConfig/firebase.js";
 
 import { useState } from "react";
@@ -61,6 +62,7 @@ function App() {
         <Route path="/signin" element={<SignIn />}></Route> 
         <Route path="/register" element={<Register />}></Route> 
         <Route path="/venue" element={<Venue />}></Route> 
+        <Route path="/edit-profile" element={<EditProfile/>}></Route>
       </Routes>
     </Router>
   );
