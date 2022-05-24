@@ -17,20 +17,20 @@ export default function Review() {
 	}, []);
 
 	return(
-		<Container className="py-3 fluid text-dark">
+		<Container className="">
 			<Row>
 				<Col className="col-12 mb-3">
-					<h1>TODO: get name</h1>
+					<h1 className="fs-1">TODO: get name</h1>
 				</Col>
 			</Row>
-			<Row className="bg-light mx-0 py-3">
-				<Col className="col-12 py-3">
+			<Row className="bg-light py-3">
+				<Col className="col-12 p-5">
 					<Container>
 						<Row>
 							<Col className="col-4">
 								<Stack gap={1} className="">
 									<Button variant="secondary">I ate here</Button>
-									<Button variant="secondary">Leave a Review</Button>
+									<Button variant="secondary">Leave Review</Button>
 									<Button variant="secondary">Share this!</Button>
 								</Stack>
 							</Col>
@@ -45,15 +45,16 @@ export default function Review() {
 					</Container>
 				</Col>
 			</Row>
+
 			<Row>
 				<Col className="col-12 mt-3">
-					<h1>TODO: filter reviews</h1>
+					<h1 className="fs-1">TODO: filter reviews</h1>
 				</Col>
 			</Row>
-			<Row className="">
+			<Row className="py-2">
 				{reviews.map((review, i) => {
 					return (
-						<Col className="col-12 gy-3">
+						<Col className="px-0 col-12 gy-3">
 							<ReviewCard
 								key={i}
 								review_header={review.title}
