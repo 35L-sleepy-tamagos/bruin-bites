@@ -177,7 +177,7 @@ export default function Review() {
 				</Col>
 			</Row>
 			<Row className="py-2">
-				{reviews.map((review, i) => {
+				{[...reviews].reverse().map((review, i) => {
 					return (
 						<Col className="px-0 col-12 gy-3">
 							<ReviewCard
