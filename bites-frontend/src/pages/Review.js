@@ -173,7 +173,7 @@ export default function Review() {
 			</Row>
 			<Row className="py-2">
 				{reviews.map((review, i) => {
-					console.log(review.user);
+					console.log(reviews);
 					return (
 						<Col className="px-0 col-12 gy-3">
 							<ReviewCard

@@ -28,6 +28,7 @@ import { querystring } from "@firebase/util";
 import { getFID } from "web-vitals";
 
 export async function createReview(review) {
+  console.log("in create review");
   console.log(review);
   review.id = "id" + new Date().getTime();
   const db = getFirestore();
@@ -52,16 +53,20 @@ export async function getReviews() {
   const reviews = [];
   const querySnapshot = await getDocs(collection(db, "reviews"));
   querySnapshot.forEach((doc) => {
+    console.log("Dining" + doc.data().diningHall);
     reviews.push(
       new Review(
         doc.data().title,
         doc.data().body,
         doc.data().rating,
         doc.data().user,
-        doc.data().createdAt
+        doc.data().createdAt,
+        doc.data().diningHall,
       )
     );
   });
+  console.log("showing reviews");
+  console.log(reviews);
   return reviews;
 }
 

@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 // add css later
 
 function ReviewCard(props) {
+	console.log(props);
 	return (
 		<Card className="border-0">
 			<Card.Header className="fs-2 border-0">{props.review_header}</Card.Header>
