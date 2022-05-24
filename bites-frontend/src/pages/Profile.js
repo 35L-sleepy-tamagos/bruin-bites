@@ -44,7 +44,6 @@ export default function Profile() {
     }
 
     const [reviews, setReviews] = React.useState([]);
-    // const [imgRef, setimgRef] = React.useState("");
     const [userDetails, setUserDetails] = useState([]);
     const [userImage, setUserImage] = useState();
     useEffect(() => {
@@ -57,7 +56,7 @@ export default function Profile() {
             getUsers(user.uid).then((userDetails) => {
                 setUserDetails(userDetails);
                 console.log(userDetails);
-                if (userDetails?.image.startsWith("https://")) {
+                if (userDetails.image.startsWith("https://")) {
                     setUserImage(userDetails.image);
                 } else {
                     const storage = getStorage();
