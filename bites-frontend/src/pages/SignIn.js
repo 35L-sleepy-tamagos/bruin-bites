@@ -50,7 +50,7 @@ export default function SignIn() {
 			</Row>
 
 			<Row className="justify-content-md-center">
-				<Col className="col-6">
+				<Col className="col-12 col-md-6">
 					<Card className="p-3">
 					<Card.Body className="text-center">
 					<Form className="mb-3">
