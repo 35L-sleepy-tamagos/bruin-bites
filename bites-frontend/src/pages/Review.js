@@ -44,13 +44,13 @@ export default function Review() {
 	return (
 		<Container>
 			<Row>
-				<Col>
+				<Col className="mb-3">
 					<h1 className="fs-1">Review Page for Bruin Bites!</h1>
 				</Col>
 			</Row>
-			<Row>
-				<Col className="bg-light col-12">
-				<Form onSubmit={formik.handleSubmit} className="py-3">
+			<Row className="bg-light">
+				<Col className="col-12 p-5 fs-4">
+				<Form onSubmit={formik.handleSubmit} className="px-3">
 					<Form.Group>
 						<Form.Label htmlFor="title">Subject</Form.Label>
 						<Form.Control

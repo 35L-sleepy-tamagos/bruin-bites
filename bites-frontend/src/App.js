@@ -8,7 +8,7 @@ import Map from "./pages/Map";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 import Venue from "./pages/Venue";
-import EditProfile from "./pages/editProfile"
+import EditProfile from "./pages/EditProfile"
 import { auth } from "./components/firebaseConfig/firebase.js";
 
 import { useState } from "react";

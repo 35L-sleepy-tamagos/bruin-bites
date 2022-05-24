@@ -46,7 +46,7 @@ export default function Profile() {
 		getUsers(auth.currentUser.uid).then((userDetails) => {
 			setUserDetails(userDetails);
 		});
-	}, []);
+		}, []);
 
 	const storage = getStorage();
 	const imgRef = ref(storage, userDetails.uid + "/");
@@ -77,63 +77,66 @@ export default function Profile() {
 		const numDining = 0 //userDetails.dining.length();
 
 		return (
-			<div className="Profile">
-				<h1>Welcome, { name }</h1>
-				<Container className="py-3 fluid text-dark">
-					<Row className="mx-0 bg-light">
-						<Col className="px-3" align="center">
-								<Image className="w-75" src={ image } />
-								<h3> { name } </h3>
-								<p> { bio } </p>
-						</Col>
-						<Col className="mt-3">
-							<h3>Favorite Places</h3>
-							<Stack gap={1} className="m-3">
-								<div> 
-									<h4> {place1} </h4>
-									<p> 4 visits</p>
-								</div>
-								<div> 
-									<h4> {place2} </h4>
-									<p> 2 visits</p>
-								</div>
-							</Stack>
-						</Col>
-						<Col className="mt-3">
-							<h3>Activity</h3>
-							<p> { numReviews } Reviews posted</p>
-							<p> { numDining } Meals recorded</p>
-						</Col>
-					</Row>
-					<Row className="mt-5">
-						<Col className="">
-							<Stack gap={3}>
-								<ReviewCard 
-									review_header="B-Plate"
-									review_rating="4/5"
-									review_time="14:15, Thursday"
-									review_text="this place is cool and good."
-								></ReviewCard>
-							</Stack>
-						</Col>
-					</Row>
-					<Row>
-						<Col className="mx-0 my-5 d-grid gap-2">
-							<Button variant="primary"
-								class="btn"
-								onClick={ () => editProfile() }>
-								Edit your Profile!
-							</Button>
-							<Button variant="danger" 
-								class="btn" 
-								size="lg"
-								onClick={ () => signout() }>
-									Sign Out
-							</Button>
-						</Col>
-					</Row>
-				</Container>
-			</div>
+			<Container className="px-0 text-dark">
+				<Row className="mb-3">
+					<Col>
+						<h1 className="fs-1">Welcome, { name }</h1>
+					</Col>
+				</Row>
+				<Row className="py-5 mx-0 bg-light">
+					<Col className="px-3" align="center">
+						<Image className="w-75" src={ image } />
+						<h3> { name } </h3>
+						<p> { bio } </p>
+					</Col>
+					<Col className="mt-3">
+						<h3>Favorite Places</h3>
+						<Stack gap={1} className="m-3">
+							<div> 
+								<h4> {place1} </h4>
+								<p> 4 visits</p>
+							</div>
+							<div> 
+								<h4> {place2} </h4>
+								<p> 2 visits</p>
+							</div>
+						</Stack>
+					</Col>
+					<Col className="mt-3">
+						<h3>Activity</h3>
+						<p> { numReviews } Reviews posted</p>
+						<p> { numDining } Meals recorded</p>
+					</Col>
+				</Row>
+				<Row className="mt-5">
+					<Col className="">
+						<Stack gap={3}>
+							<ReviewCard 
+								review_header="B-Plate"
+								review_rating="4/5"
+								review_time="14:15, Thursday"
+								review_text="this place is cool and good."
+							></ReviewCard>
+						</Stack>
+					</Col>
+				</Row>
+				<Row>
+					<Col className="mx-0 my-5 d-grid gap-2">
+						<Button variant="primary"
+							class="btn"
+							size="lg"
+							onClick={ () => editProfile() }>
+							Edit your Profile!
+						</Button>
+						<Button variant="danger" 
+							class="btn" 
+							size="lg"
+							onClick={ () => signout() }>
+							Sign Out
+						</Button>
+					</Col>
+				</Row>
+			</Container>
 		)
 	}
 	else {
