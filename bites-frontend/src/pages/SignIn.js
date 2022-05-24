@@ -8,9 +8,16 @@ import { auth } from "../components/firebaseConfig/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 export default function SignIn() {
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	let navigate = useNavigate();
+
+	const user = auth.currentUser;
+	console.log(user);
+	if (user) {
+		navigate('/profile');
+	}
 
 	// useEffect(() => {
 	//     auth.currentUser ? console.log(auth.currentUser.email) : console.log("no user");

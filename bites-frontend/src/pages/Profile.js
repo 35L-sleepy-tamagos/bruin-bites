@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import { getStorage, getStream, listAll, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { browserLocalPersistence, setPersistence } from 'firebase/auth';
 
 // TODO: backend integration
 // TODO: Frontend -> Bootstrap
@@ -30,23 +31,21 @@ export default function Profile() {
 		navigate("/edit-profile")
 	}
 
-	if (auth.currentUser) {
-		console.log(auth.currentUser);
-	}
-	else {
-		console.log("no user: profile");
-	}
-
 	const [userDetails, setUserDetails] = useState([]);
 	useEffect(() => {
-		if (!auth.currentUser) {
-			return;
-		}
-		console.log("getting userdata");
-		getUsers(auth.currentUser.uid).then((userDetails) => {
-			setUserDetails(userDetails);
-		});
+		auth.onAuthStateChanged((user) => {
+			if (!user) {
+				console.log("no user");
+				return;
+			}
+			console.log("getting userdata");
+			getUsers(user.uid).then((userDetails) => {
+				setUserDetails(userDetails);
+			});		
+		})
 	}, []);
+
+	
 
 	const storage = getStorage();
 	const imgRef = ref(storage, userDetails.uid + "/");
@@ -56,7 +55,7 @@ export default function Profile() {
 	useEffect(() => {
 		listAll(imgRef).then((response) => {
 			response.items.forEach((item) => {
-				if (item.name == userDetails.img) {
+				if (item.name === userDetails.img) {
 					getDownloadURL(item).then((url) => {
 						setUserImage(url);
 					})
@@ -120,12 +119,12 @@ export default function Profile() {
 					<Row>
 						<Col className="mx-0 my-5 d-grid gap-2">
 							<Button variant="primary"
-								class="btn"
+								className="btn"
 								onClick={ () => editProfile() }>
 								Edit your Profile!
 							</Button>
 							<Button variant="danger" 
-								class="btn" 
+								className="btn" 
 								size="lg"
 								onClick={ () => signout() }>
 									Sign Out

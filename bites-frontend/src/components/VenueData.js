@@ -66,4 +66,15 @@ let venues =
 			link: "http://menu.dining.ucla.edu/Menus/Drey",
 		},
 ];
+
+export const diningOptions = [
+    {value:"deNeve", label:"De Neve"},
+    {value:"epi", label:"Epicuria"},
+    {value:"bplate", label:"Bruin Plate"},
+    {value:"feast", label:"Feast at Rieber"},
+    {value:"rende", label:"Rendevous"},
+    {value:"study", label:"The Study at Hedrick"},
+    {value:"bcafe", label:"Bruin Cafe"},
+    {value:"drey", label:"The Drey"},
+]
 export default venues;

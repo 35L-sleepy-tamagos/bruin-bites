@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import Select from "react-select"
+import Select, { components } from "react-select"
 import { useFormik } from "formik";
 import { app, auth } from '../components/firebaseConfig/firebase';
 import { getUsers, editBio, editUserImage, editFavDining } from "../components/firebaseConfig/utils.js"
@@ -8,17 +8,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap"
 import { getStorage, getStream, ref, uploadBytes } from "firebase/storage";
 import Dropdown from "../components/Dropdown";
 import { getFirestore, updateDoc } from "firebase/firestore";
-
-const options = [
-    {value:"deNeve", label:"De Neve"},
-    {value:"epi", label:"Epicuria"},
-    {value:"bplate", label:"Bruin Plate"},
-    {value:"feast", label:"Feast at Rieber"},
-    {value:"rende", label:"Rendevous"},
-    {value:"study", label:"The Study at Hedrick"},
-    {value:"bcafe", label:"Bruin Cafe"},
-    {value:"drey", label:"The Drey"},
-]
+import { diningOptions } from "../components/VenueData"
 
 export default function EditProfile() {
     /* get the user */
@@ -108,7 +98,7 @@ export default function EditProfile() {
                     <Form.Group>
                         <Form.Label htmlFor="favDining1">Favorite Dining Hall 1</Form.Label>
                         <Dropdown
-                            options={ options }
+                            options={ diningOptions }
                             value={ formik.values.dining1 }
                             onChange={ value => formik.setFieldValue("dining1", value.label)}
                         />
@@ -116,7 +106,7 @@ export default function EditProfile() {
                     <Form.Group className="mb-3">
                         <Form.Label htmlFor="favDining2">Favorite Dining Hall 2</Form.Label>
                         <Dropdown
-                            options={ options }
+                            options={ diningOptions }
                             value={ formik.values.dining2 }
                             onChange={ value => formik.setFieldValue("dining2", value.label)}
                         />
