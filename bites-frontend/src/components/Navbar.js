@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
 import { logout } from "../components/firebaseConfig/utils.js"
+import Mascot from "../assets/mascot.png"
 
 const Navbar = () => {
   let [mealPeriod, setPeriod] = useState("None Currently")
@@ -96,8 +97,17 @@ const Navbar = () => {
     return () => clearInterval(interval);
   });
 
+  const navigate = useNavigate();
+
+  function returnHome() {
+    navigate("/");
+  }
+
   return (
     <div className="nav-bg">
+      <li>
+        <img src={ Mascot } className="logo" onClick={ returnHome }></img>
+      </li>
       <li>
         <Link to="/" style={{ textDecoration: 'none', color: 'white'}}>Home</Link>
       </li>
