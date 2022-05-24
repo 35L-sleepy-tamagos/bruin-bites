@@ -54,14 +54,14 @@ export default function SignIn() {
 					<Card className="p-3">
 					<Card.Body className="text-center">
 					<Form className="mb-3">
-					<Form.Group>
+					<Form.Group className="mb-3">
 						<Form.Control 
 							type="text" className="signin-input" 
 							value={ email } onChange={ (e) => setEmail(e.target.value) } 
 							placeholder="Input your Email" 
 						/>
 					</Form.Group>
-					<Form.Group>
+					<Form.Group className="mb-3">
 						<Form.Control 
 							type="password" className="signin-input"
 							value={ password } onChange={ (e) => setPassword(e.target.value) }
