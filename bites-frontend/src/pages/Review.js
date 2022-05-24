@@ -180,21 +180,16 @@ export default function Review() {
                                 }
                             />
                         </Form.Group>
-
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
                     </Form>
                 </Col>
             </Row>
-
             <Row>
                 <Col className="mt-5">
                     <h1 className="fs-1">Recent Reviews!</h1>
                 </Col>
             </Row>
             <Row className="py-2">
-                {reviews.map((review, i) => {
+                {[...reviews].reverse().map((review, i) => {
                     return (
                         <Col key={i} className="px-0 col-12 gy-3">
                             <ReviewCard

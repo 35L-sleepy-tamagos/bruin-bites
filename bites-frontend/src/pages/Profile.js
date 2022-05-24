@@ -126,9 +126,8 @@ export default function Profile() {
                         <Stack gap={3}>
                             {reviews.map((review, i) => {
                                 return (
-                                    <Col className="px-0 col-12 gy-3">
+                                    <Col key={i} className="px-0 col-12 gy-3">
                                         <ReviewCard
-                                            key={i}
                                             review_header={review.title}
                                             review_text={review.body}
                                             review_rating={review.rating}
