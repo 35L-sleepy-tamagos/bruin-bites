@@ -1,11 +1,14 @@
 @import "~normalize.css/normalize.css";
-.App {
+
+.App 
+{
   text-align: center;
   background-color: #d8bfd8;
 }
 
 /* :root, dark, and body styling inspired from https://codesandbox.io/s/dry-meadow-64786?from-embed=&file=/src/DarkMode.tsx */
-:root {
+:root 
+{
   --font-color: #333;
   --background-color: #c8e7f7;
   --link-color: cornflowerblue;
@@ -24,7 +27,6 @@ body {
 
 h1 {
   text-align: center;
-  font-family: Century Gothic;
   font-weight: bold !important;
   font-size: 40px !important;
   color: var(--font-color) !important;
