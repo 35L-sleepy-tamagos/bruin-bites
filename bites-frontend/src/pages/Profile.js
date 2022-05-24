@@ -110,7 +110,7 @@ export default function Profile() {
 				<Row className="mt-5">
 					<Col className="">
 						<Stack gap={3}>
-							{reviews.map((review, i) => {
+							{[...reviews].reverse().map((review, i) => {
 								return (
 									<Col className="px-0 col-12 gy-3">
 										<ReviewCard
