@@ -36,7 +36,7 @@ export default function EditProfile() {
 
 	const [image, setImage] = useState();
 
-	const editImage = () => {
+	const editImage = async () => {
 		if (!image) {
 			return;
 		}
@@ -68,10 +68,9 @@ export default function EditProfile() {
 		},
 		onSubmit: (values) => {
 			editBio(uid, values.bio);
-			editImage();
 			editFavDining(uid, values.dining1, 1);
 			editFavDining(uid, values.dining2, 2);
-			navigate("/profile");
+			editImage().then(navigate("/profile"));
 		},
 	});
 

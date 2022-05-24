@@ -8,6 +8,7 @@ import Dropdown from "../components/Dropdown";
 import { app, auth } from '../components/firebaseConfig/firebase';
 import { useNavigate } from 'react-router-dom';
 import { diningOptions } from "../components/VenueData"
+import { addReviews } from "../components/firebaseConfig/utils.js"
 // import "./Review.css"
 
 // FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
@@ -35,6 +36,8 @@ export default function Review() {
 		console.log("getting reviews");
 		getReviews().then((reviews) => {
 			setReviews(reviews);
+			console.log("reviews")
+			console.log(reviews);
 		});
 	}, []);
 	
@@ -42,7 +45,6 @@ export default function Review() {
 	// could come from props, but since we don’t want to prefill this form,
 	// we just use an empty string. If we don’t do this, React will yell
 	// at us.
-
 	const [userDetails, setUserDetails] = useState([]);
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
@@ -64,6 +66,7 @@ export default function Review() {
 			body: "",
 			rating: "",
 			diningHall: "",
+			time: "",
 		},
 		onSubmit: (values) => {
 			// values.user = userName;
@@ -86,11 +89,13 @@ export default function Review() {
 				alert("Must enter a Dining Hall!")
 				return;
 			}
-			console.log(values);
+			values.uid = userDetails.uid ? userDetails.uid : "";
 			createReview(values);
 			// setReviews([...reviews, values]);
-			console.log(reviews);
 			//   alert(JSON.stringify(values, null, 2));
+			getReviews().then((reviews) => {
+				setReviews(reviews);
+			});
 		},
 	});
 
@@ -173,7 +178,6 @@ export default function Review() {
 			</Row>
 			<Row className="py-2">
 				{reviews.map((review, i) => {
-					console.log(reviews);
 					return (
 						<Col className="px-0 col-12 gy-3">
 							<ReviewCard
@@ -183,6 +187,7 @@ export default function Review() {
 								review_rating={review.rating}
 								review_sender={review.user}
 								review_dining={review.diningHall}
+								review_time={review.createdAt}
 								// <p>{review.user}</p>
 							/>
 						</Col>

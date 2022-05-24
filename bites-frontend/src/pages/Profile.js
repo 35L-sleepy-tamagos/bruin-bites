@@ -1,15 +1,15 @@
+import React, { useState, useEffect } from "react";
 import { Row, Col } from 'react-bootstrap';
 import { Container, Image, Stack, Button } from 'react-bootstrap';
 
 import ProfileImage from '../assets/placeholder.jpg'
 import {} from "../components/ProfileComponents.js"
 import ReviewCard from '../components/ReviewCard.js'
-import { logout, getUsers } from "../components/firebaseConfig/utils.js"
+import { logout, getUsers, getReviews, createReview, getUserReviews } from "../components/firebaseConfig/utils.js"
 import { auth } from '../components/firebaseConfig/firebase';
 import SignIn from './SignIn';
 import { useNavigate } from 'react-router-dom';
 import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
-import { useEffect, useState } from 'react';
 import { getStorage, getStream, listAll, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { browserLocalPersistence, setPersistence } from 'firebase/auth';
 
@@ -31,6 +31,8 @@ export default function Profile() {
 		navigate("/edit-profile")
 	}
 
+	const [reviews, setReviews] = React.useState([]);
+
 	const [userDetails, setUserDetails] = useState([]);
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
@@ -41,31 +43,29 @@ export default function Profile() {
 			console.log("getting userdata");
 			getUsers(user.uid).then((userDetails) => {
 				setUserDetails(userDetails);
-			});		
+			});	
+			getUserReviews(user.uid).then((reviews) => {
+				setReviews(reviews);
+			});	
 		})
 	}, []);
 
 	
 
 	const storage = getStorage();
-	const imgRef = ref(storage, userDetails.uid + "/");
+	const imgRef = ref(storage, userDetails.uid + "/" + userDetails.img);
 
 	const [userImage, setUserImage] = useState();
 
 	useEffect(() => {
-		listAll(imgRef).then((response) => {
-			response.items.forEach((item) => {
-				if (item.name === userDetails.img) {
-					getDownloadURL(item).then((url) => {
-						setUserImage(url);
-					})
-				}
-			})
+		getDownloadURL(imgRef).then((url) => {
+			setUserImage(url);
 		})
-	})
+	});
+
+	console.log(reviews);
 
 	if (auth.currentUser) {
-		console.log(userDetails);
 
 		const image = userImage ? userImage : ProfileImage;
 		const name = userDetails.name;
@@ -110,12 +110,22 @@ export default function Profile() {
 				<Row className="mt-5">
 					<Col className="">
 						<Stack gap={3}>
-							<ReviewCard 
-								review_header="B-Plate"
-								review_rating="4/5"
-								review_time="14:15, Thursday"
-								review_text="this place is cool and good."
-							></ReviewCard>
+							{reviews.map((review, i) => {
+								return (
+									<Col className="px-0 col-12 gy-3">
+										<ReviewCard
+											key={i}
+											review_header={review.title}
+											review_text={review.body}
+											review_rating={review.rating}
+											review_sender={review.user}
+											review_dining={review.diningHall}
+											review_time={review.createdAt}
+											// <p>{review.user}</p>
+										/>
+									</Col>
+								);
+							})}
 						</Stack>
 					</Col>
 				</Row>

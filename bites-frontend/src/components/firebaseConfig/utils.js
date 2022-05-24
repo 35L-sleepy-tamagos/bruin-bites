@@ -20,16 +20,22 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { getStorage, getStream, ref, uploadBytes } from "firebase/storage";
-import Review, { app, auth } from "./firebase.js";
-import React, { useState, useEffect, useNavigate } from "react";
-import { Navigate, useResolvedPath } from "react-router-dom";
-import { querystring } from "@firebase/util";
-import { getFID } from "web-vitals";
+import Review, { auth } from "./firebase.js";
+
+const readableDate = (date) => {
+
+  var dateString = date.toString();
+  var dateArr = dateString.split(" ");
+  console.log(dateArr);
+  var date = `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]}`;
+  var timeArr = dateArr[4].substring(0, 5).split(":");
+  var subscript = (timeArr[0] < 12) ? "AM" : "PM";
+  var hourNum = ((timeArr[0] % 12) < 10 ? "0" : "") + (timeArr[0] % 12)
+  var time = `${hourNum}:${timeArr[1]}`
+  return `${time} ${subscript} -- ${date}`;
+}
 
 export async function createReview(review) {
-  console.log("in create review");
-  console.log(review);
   review.id = "id" + new Date().getTime();
   const db = getFirestore();
   try {
@@ -40,7 +46,8 @@ export async function createReview(review) {
       rating: review.rating,
       diningHall: review.diningHall,
       user: review.name,
-      createdAt: Timestamp.now(),
+      uid: review.uid,
+      createdAt: readableDate(Timestamp.now().toDate()),
     });
     return true;
   } catch (error) {
@@ -53,7 +60,6 @@ export async function getReviews() {
   const reviews = [];
   const querySnapshot = await getDocs(collection(db, "reviews"));
   querySnapshot.forEach((doc) => {
-    console.log("Dining" + doc.data().diningHall);
     reviews.push(
       new Review(
         doc.data().title,
@@ -65,8 +71,27 @@ export async function getReviews() {
       )
     );
   });
-  console.log("showing reviews");
-  console.log(reviews);
+  return reviews;
+}
+
+export async function getUserReviews(uid) {
+  const db = getFirestore();
+  const reviews = [];
+  const querySnapshot = await getDocs(collection(db, "reviews"));
+  querySnapshot.forEach((doc) => {
+    if (doc.data().uid === uid) {
+      reviews.push(
+        new Review(
+          doc.data().title,
+          doc.data().body,
+          doc.data().rating,
+          doc.data().user,
+          doc.data().createdAt,
+          doc.data().diningHall,
+        )
+      );
+    }
+  });
   return reviews;
 }
 
@@ -176,14 +201,25 @@ export async function editFavDining(uid, newDiningHall, id) {
   }
   const db = getFirestore();
   const userRef = doc(db, "users", uid);
-  if (id == 1) {
+  if (id === 1) {
     await updateDoc(userRef, {
       favDining1: newDiningHall,
     })
   }
-  else if (id == 2) {
+  else if (id === 2) {
     await updateDoc(userRef, {
       favDining2: newDiningHall,
     })
   }
+}
+
+export async function addReviews(uid, reviewID) {
+  const db = getFirestore();
+  const userRef = doc(db, "users", uid);
+  const userDetails = getUsers(uid);
+  var reviewArr = userDetails.reviews;
+  reviewArr.push(reviewID);
+  await updateDoc(userRef, {
+    reviews: reviewArr,
+  })
 }

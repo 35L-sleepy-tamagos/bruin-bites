@@ -3,13 +3,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 export default class Review {
-  constructor(title, body, rating, user, createdAt, diningHall) {
+  constructor(title, body, rating, user, createdAt, diningHall, uid) {
     this.title = title;
     this.body = body;
     this.rating = rating;
     this.user = user;
     this.createdAt = createdAt;
     this.diningHall = diningHall;
+    this.uid = uid;
   }
 }
 
