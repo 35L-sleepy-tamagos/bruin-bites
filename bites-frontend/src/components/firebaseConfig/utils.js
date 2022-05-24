@@ -37,7 +37,8 @@ export async function createReview(review) {
       title: review.title,
       body: review.body,
       rating: review.rating,
-      user: review.user,
+      diningHall: review.diningHall,
+      user: review.name,
       createdAt: Timestamp.now(),
     });
     return true;

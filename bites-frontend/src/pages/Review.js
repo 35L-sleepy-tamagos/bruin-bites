@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
-import { getReviews, createReview } from "../components/firebaseConfig/utils";
+import React, { useEffect, useState } from "react";
+import { getReviews, createReview, getUsers } from "../components/firebaseConfig/utils";
 import { useFormik } from "formik";
 import "../css/Review.css"
 import { Container, Row, Col, Form, Button } from "react-bootstrap"
 import ReviewCard from "../components/ReviewCard";
+import Dropdown from "../components/Dropdown";
+import { app, auth } from '../components/firebaseConfig/firebase';
+import { useNavigate } from 'react-router-dom';
+import { diningOptions } from "../components/VenueData"
 // import "./Review.css"
 
 // FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
@@ -16,7 +20,16 @@ import ReviewCard from "../components/ReviewCard";
 // TODO: get colors to play nice with dark mode (try overriding bootstrap
 // defaults in a base css file instead of going file by file?)
 
+const ratingOptions = [
+	{value:"1", label:"1"},
+	{value:"2", label:"2"},
+	{value:"3", label:"3"},
+	{value:"4", label:"4"},
+	{value:"5", label:"5"},
+]
+
 export default function Review() {
+	const navigate = useNavigate();
 	const [reviews, setReviews] = React.useState([]);
 	useEffect(() => {
 		console.log("getting reviews");
@@ -24,23 +37,63 @@ export default function Review() {
 			setReviews(reviews);
 		});
 	}, []);
+	
 	// Note that we have to initialize ALL of fields with values. These
 	// could come from props, but since we don’t want to prefill this form,
 	// we just use an empty string. If we don’t do this, React will yell
 	// at us.
+
+	const [userDetails, setUserDetails] = useState([]);
+	useEffect(() => {
+		auth.onAuthStateChanged((user) => {
+			if (!user) {
+				console.log("no user");
+				return;
+			}
+			console.log("getting userdata");
+			getUsers(user.uid).then((userDetails) => {
+				setUserDetails(userDetails);
+			});		
+		})
+	}, []);
+
 	const formik = useFormik({
 		initialValues: {
-			Subject: "",
-			Review: "",
-			Rating: 0,
+			name: "",
+			title: "",
+			body: "",
+			rating: "",
+			diningHall: "",
 		},
 		onSubmit: (values) => {
-			values.user = "testuser";
+			// values.user = userName;
+			if (!values.name) {
+				values.name = userDetails.name ? userDetails.name : "Anonymous";
+			}
+			if (!values.title) {
+				alert("Must enter a title!")
+				return;
+			}
+			if (!values.body) {
+				alert("Must enter a review!")
+				return;
+			}
+			if (!values.rating) {
+				alert("Must enter a rating!")
+				return;
+			}
+			if (!values.diningHall) {
+				alert("Must enter a Dining Hall!")
+				return;
+			}
+			console.log(values);
 			createReview(values);
-			setReviews([...reviews, values]);
+			// setReviews([...reviews, values]);
+			console.log(reviews);
 			//   alert(JSON.stringify(values, null, 2));
 		},
 	});
+
 	return (
 		<Container>
 			<Row>
@@ -51,6 +104,28 @@ export default function Review() {
 			<Row>
 				<Col className="bg-light col-12">
 				<Form onSubmit={formik.handleSubmit} className="py-3">
+					<Form.Group>
+						<Form.Label htmlFor="name">Name</Form.Label>
+						<Form.Control
+							placeholder={ userDetails.name }
+							name="name"
+							id="name"
+							type="text"
+							onChange={formik.handleChange}
+							className="input"
+							value={formik.values.name}
+						/>
+					</Form.Group>
+
+					<Form.Group className="mb-3">
+						<Form.Label htmlFor="diningHall">Dining Hall</Form.Label>
+						<Dropdown
+							options={ diningOptions }
+							value={formik.values.diningHall}
+							onChange={ value => formik.setFieldValue("diningHall", value.label)}
+						/>
+					</Form.Group>
+
 					<Form.Group>
 						<Form.Label htmlFor="title">Subject</Form.Label>
 						<Form.Control
@@ -78,15 +153,11 @@ export default function Review() {
 					</Form.Group>
 
 					<Form.Group className="mb-3">
-						<Form.Label htmlFor="rating">Overall Rating (0-5)</Form.Label>
-						<Form.Control
-							placeholder="Enter your rating..."
-							id="rating"
-							name="rating"
-							type="text"
-							onChange={formik.handleChange}
+						<Form.Label htmlFor="rating">Overall Rating (1-5)</Form.Label>
+						<Dropdown
+							options={ ratingOptions }
 							value={formik.values.rating}
-							className="rating-field"
+							onChange={ value => formik.setFieldValue("rating", value.label)}
 						/>
 					</Form.Group>
 
@@ -102,6 +173,7 @@ export default function Review() {
 			</Row>
 			<Row className="py-2">
 				{reviews.map((review, i) => {
+					console.log(review.user);
 					return (
 						<Col className="px-0 col-12 gy-3">
 							<ReviewCard
@@ -109,6 +181,8 @@ export default function Review() {
 								review_header={review.title}
 								review_text={review.body}
 								review_rating={review.rating}
+								review_sender={review.user}
+								review_dining={review.diningHall}
 								// <p>{review.user}</p>
 							/>
 						</Col>
