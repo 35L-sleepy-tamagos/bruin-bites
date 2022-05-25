@@ -12,7 +12,7 @@ function ReviewCard(props) {
 					<div>{props.review_time}</div>
 				</Card.Title>
 				<Card.Text>{props.review_text}</Card.Text>
-				<footer className="d-flex justify-content-between">--{props.review_sender} at {props.review_dining}
+				<footer className="d-flex justify-content-between">--{props.review_sender} at {props.review_dining.label}
 				</footer>
 			</div>
 		</Card>

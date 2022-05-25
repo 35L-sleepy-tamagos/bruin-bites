@@ -55,13 +55,15 @@ export default function Review() {
 				{reviews.map((review, i) => {
 					return (
 						<Col className="px-0 col-12 gy-3">
-							<ReviewCard
-								key={i}
-								review_header={review.title}
-								review_text={review.body}
-								review_rating={review.rating}
-								// <p>{review.user}</p>
-							/>
+						<ReviewCard
+							review_header={review.title}
+							review_text={review.body}
+							review_rating={review.rating}
+							review_sender={review.user}
+							review_dining={review.diningHall}
+							review_time={review.createdAt}
+							// <p>{review.user}</p>
+						/>
 						</Col>
 					);
 				})}
