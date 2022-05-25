@@ -95,6 +95,48 @@ export async function getUserReviews(uid) {
   return reviews;
 }
 
+export async function getHallReviews(hall) {
+  const db = getFirestore();
+  const reviews = [];
+  const querySnapshot = await getDocs(collection(db, "reviews"));
+  querySnapshot.forEach((doc) => {
+    if (doc.data().diningHall === hall) {
+      reviews.push(
+        new Review(
+          doc.data().title,
+          doc.data().body,
+          doc.data().rating,
+          doc.data().user,
+          doc.data().createdAt,
+          doc.data().diningHall,
+        )
+      );
+    }
+  });
+  return reviews;
+}
+
+export async function getRatingReviews(rating) {
+  const db = getFirestore();
+  const reviews = [];
+  const querySnapshot = await getDocs(collection(db, "reviews"));
+  querySnapshot.forEach((doc) => {
+    if (doc.data().rating === rating) {
+      reviews.push(
+        new Review(
+          doc.data().title,
+          doc.data().body,
+          doc.data().rating,
+          doc.data().user,
+          doc.data().createdAt,
+          doc.data().diningHall,
+        )
+      );
+    }
+  });
+  return reviews;
+}
+
 /* login/out functions inspired by https://blog.logrocket.com/user-authentication-firebase-react-apps/ */
 
 export async function googleSignIn() {

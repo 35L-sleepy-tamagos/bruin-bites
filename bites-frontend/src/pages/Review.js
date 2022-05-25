@@ -8,7 +8,7 @@ import Dropdown from "../components/Dropdown";
 import { app, auth } from '../components/firebaseConfig/firebase';
 import { useNavigate } from 'react-router-dom';
 import { diningOptions } from "../components/VenueData"
-import { addReviews } from "../components/firebaseConfig/utils.js"
+import { getHallReviews, getRatingReviews } from "../components/firebaseConfig/utils.js"
 // import "./Review.css"
 
 // FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
@@ -29,23 +29,49 @@ const ratingOptions = [
 	{value:"5", label:"5"},
 ]
 
+const filterOptions = [
+	{value:"recency", label:"Recency"},
+	{value:"dining", label:"Dining Halls"},
+	{value:"rating", label:"Rating"}
+]
+
 export default function Review() {
 	const navigate = useNavigate();
+
+	const [filter, setFilter] = useState("");
+	const [diningFilter, setDiningFilter] = useState("");
+	const [ratingFilter, setRatingFilter] = useState("");
+
+	useEffect(() => {
+		console.log(filter);
+	}, [filter])
+
 	const [reviews, setReviews] = React.useState([]);
 	useEffect(() => {
 		console.log("getting reviews");
-		getReviews().then((reviews) => {
-			setReviews(reviews);
-			console.log("reviews")
-			console.log(reviews);
-		});
-	}, []);
+		if (filter === "recency" || !filter) {
+			getReviews().then((reviews) => {
+				setReviews(reviews);
+			});
+		}
+		if (filter === "dining") {
+			getHallReviews(diningFilter).then((reviews) => {
+				setReviews(reviews);
+			});
+		}
+		if (filter === "rating") {
+			getRatingReviews(ratingFilter).then((reviews) => {
+				setReviews(reviews);
+			});
+		}
+	}, [filter, diningFilter, ratingFilter]);
 	
 	// Note that we have to initialize ALL of fields with values. These
 	// could come from props, but since we don’t want to prefill this form,
 	// we just use an empty string. If we don’t do this, React will yell
 	// at us.
 	const [userDetails, setUserDetails] = useState([]);
+
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
 			if (!user) {
@@ -59,6 +85,11 @@ export default function Review() {
 		})
 	}, []);
 
+	const resetDropdown = () => {
+		formik.setFieldValue("diningHall", "");
+		formik.setFieldValue("rating", "")
+	}
+
 	const formik = useFormik({
 		initialValues: {
 			name: "",
@@ -68,7 +99,7 @@ export default function Review() {
 			diningHall: "",
 			time: "",
 		},
-		onSubmit: (values) => {
+		onSubmit: (values, actions) => {
 			// values.user = userName;
 			if (!values.name) {
 				values.name = userDetails.name ? userDetails.name : "Anonymous";
@@ -96,11 +127,40 @@ export default function Review() {
 			getReviews().then((reviews) => {
 				setReviews(reviews);
 			});
+			actions.resetForm();
+			resetDropdown();
 		},
 	});
 
+	const placeholderName = userDetails.name ? userDetails.name : "Anonymous";
+
+	const showAdditionalOptions = (filtertype) => {
+		if (!filtertype || filtertype === "recency") {
+			return;
+		}
+		if (filtertype === "dining") {
+			return (
+				<Dropdown 
+					options = { diningOptions }
+					value = { diningFilter }
+					onChange = { value => setDiningFilter(value.label)}
+				/>
+			)
+		}
+		if (filtertype === "rating") {
+			return (
+				<Dropdown
+					options = { ratingOptions }
+					value = { ratingFilter}
+					onChange = { value => setRatingFilter(value.label) } 
+				/>
+			)
+		}
+	}
+
 	return (
 		<Container>
+			<Button onClick={ () => console.log(formik.values.diningHall)}>Click</Button>
 			<Row>
 				<Col className="mb-3">
 					<h1 className="fs-1">Review Page for Bruin Bites!</h1>
@@ -112,7 +172,7 @@ export default function Review() {
 					<Form.Group>
 						<Form.Label htmlFor="name">Name</Form.Label>
 						<Form.Control
-							placeholder={ userDetails.name }
+							placeholder={ placeholderName }
 							name="name"
 							id="name"
 							type="text"
@@ -176,6 +236,19 @@ export default function Review() {
 					<h1 className="fs-1">Recent Reviews!</h1>
 				</Col>
 			</Row>
+			<Form.Group className="mb-3">
+				<Form.Label htmlFor="filter">Filter</Form.Label>
+				<Dropdown
+					options={ filterOptions }
+					value={ filter }
+					onChange={ value => setFilter(value.value)}
+				/>
+			</Form.Group>
+			<Form.Group className="mb-3" warn={filter === "dining" || filter === "rating"}>
+				<div>
+					{ showAdditionalOptions(filter) }
+				</div>
+			</Form.Group>
 			<Row className="py-2">
 				{[...reviews].reverse().map((review, i) => {
 					return (
