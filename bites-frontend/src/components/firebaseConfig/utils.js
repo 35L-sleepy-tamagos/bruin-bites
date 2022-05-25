@@ -74,6 +74,7 @@ export async function createDining(location, uid) {
     await updateDoc(doc(db, "users", uid), {
       dining: [...docSnap.data().dining, id],
     });
+    alert(`You ate at ${location}!`);
     return true;
   } catch (error) {
     console.log(error);
