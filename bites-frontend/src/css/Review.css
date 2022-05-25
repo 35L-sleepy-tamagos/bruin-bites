@@ -7,7 +7,7 @@
 
 .title {
     text-align: center;
-    font-family: Century Gothic;
+    font-family: Century Gothic !important;
 	font-size: 25px;
 	font-weight: bold;
 }
