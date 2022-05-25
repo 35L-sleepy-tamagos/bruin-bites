@@ -54,6 +54,7 @@ export async function createReview(review) {
     await updateDoc(doc(db, "users", review.uid), {
       reviews: [...docSnap.data().reviews, review.id],
     });
+    createDining(review.diningHall, review.uid);
     return true;
   } catch (error) {
     console.log(error);
@@ -118,7 +119,20 @@ export async function getUserReviews(uid) {
   });
   return reviews;
 }
-
+export async function getUserMeals(uid) {
+  const db = getFirestore();
+  const meals = [];
+  const querySnapshot = await getDocs(collection(db, "dining"));
+  querySnapshot.forEach((doc) => {
+    if (doc.data().uid === uid) {
+      meals.push({
+        location: doc.data().diningHall,
+        createdAt: doc.data().createdAt,
+      });
+    }
+  });
+  return meals;
+}
 export async function getHallReviews(hall) {
   const db = getFirestore();
   const reviews = [];

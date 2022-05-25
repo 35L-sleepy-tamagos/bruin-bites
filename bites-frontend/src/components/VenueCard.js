@@ -14,7 +14,6 @@ export default function VenueCard(props) {
   // const [show, setShow] = useState(false);
   // const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
-  console.log(props.user);
   const openUrl = (url) => {
     const win = window.open(url, "_blank");
     if (win != null) {

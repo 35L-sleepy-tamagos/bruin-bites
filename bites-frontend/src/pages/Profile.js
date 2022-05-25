@@ -11,6 +11,7 @@ import {
   getReviews,
   createReview,
   getUserReviews,
+  getUserMeals,
 } from "../components/firebaseConfig/utils.js";
 import { auth } from "../components/firebaseConfig/firebase";
 import SignIn from "./SignIn";
@@ -44,6 +45,7 @@ export default function Profile() {
   }
 
   const [reviews, setReviews] = React.useState([]);
+  const [meals, setMeals] = React.useState([]);
   const [userDetails, setUserDetails] = useState([]);
   const [userImage, setUserImage] = useState();
   useEffect(() => {
@@ -55,7 +57,6 @@ export default function Profile() {
       console.log("getting userdata");
       getUsers(user.uid).then((userDetails) => {
         setUserDetails(userDetails);
-        console.log(userDetails);
         if (userDetails.image.startsWith("https://")) {
           setUserImage(userDetails.image);
         } else {
@@ -69,6 +70,9 @@ export default function Profile() {
       });
       getUserReviews(user.uid).then((reviews) => {
         setReviews(reviews);
+      });
+      getUserMeals(user.uid).then((meals) => {
+        setMeals(meals);
       });
     });
   }, []);
@@ -118,6 +122,14 @@ export default function Profile() {
             <h3>Activity</h3>
             <p> {numReviews} Reviews posted</p>
             <p> {numDining} Meals recorded</p>
+            {/* EDIT THIS AREA TO MAKE IT LOOK BETTER */}
+            {meals.map((meal, i) => {
+              return (
+                <Col key={i} className="px-0 col-12 gy-3">
+                  {`${meal.location} ${meal.createdAt}`}
+                </Col>
+              );
+            })}
           </Col>
         </Row>
         <Row className="mt-5">
