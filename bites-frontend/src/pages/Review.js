@@ -9,10 +9,10 @@ import "../css/Review.css";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import ReviewCard from "../components/ReviewCard";
 import Dropdown from "../components/Dropdown";
-import { app, auth } from "../components/firebaseConfig/firebase";
-import { useNavigate } from "react-router-dom";
-import { diningOptions } from "../components/VenueData";
-import { addReviews } from "../components/firebaseConfig/utils.js";
+import { app, auth } from '../components/firebaseConfig/firebase';
+import { useNavigate } from 'react-router-dom';
+import { diningOptions } from "../components/VenueData"
+import { getHallReviews, getRatingReviews } from "../components/firebaseConfig/utils.js"
 // import "./Review.css"
 
 // FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
@@ -33,75 +33,134 @@ const ratingOptions = [
     { value: "5", label: "5" },
 ];
 
+const filterOptions = [
+	{value:"recency", label:"Recency"},
+	{value:"dining", label:"Dining Halls"},
+	{value:"rating", label:"Rating"}
+]
+
 export default function Review() {
-    const navigate = useNavigate();
-    const [reviews, setReviews] = React.useState([]);
-    useEffect(() => {
-        console.log("getting reviews");
-        getReviews().then((reviews) => {
-            setReviews(reviews);
-            console.log("reviews");
-            console.log(reviews);
-        });
-    }, []);
+	const navigate = useNavigate();
 
-    // Note that we have to initialize ALL of fields with values. These
-    // could come from props, but since we don’t want to prefill this form,
-    // we just use an empty string. If we don’t do this, React will yell
-    // at us.
-    const [userDetails, setUserDetails] = useState([]);
-    useEffect(() => {
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                console.log("no user");
-                return;
-            }
-            console.log("getting userdata");
-            getUsers(user.uid).then((userDetails) => {
-                setUserDetails(userDetails);
-            });
-        });
-    }, []);
+	const [filter, setFilter] = useState("");
+	const [diningFilter, setDiningFilter] = useState("");
+	const [ratingFilter, setRatingFilter] = useState("");
 
-    const formik = useFormik({
-        initialValues: {
-            name: "",
-            title: "",
-            body: "",
-            rating: "",
-            diningHall: "",
-            time: "",
-        },
-        onSubmit: (values) => {
-            // values.user = userName;
-            if (!values.name) {
-                values.name = userDetails.name ? userDetails.name : "Anonymous";
-            }
-            if (!values.title) {
-                alert("Must enter a title!");
-                return;
-            }
-            if (!values.body) {
-                alert("Must enter a review!");
-                return;
-            }
-            if (!values.rating) {
-                alert("Must enter a rating!");
-                return;
-            }
-            if (!values.diningHall) {
-                alert("Must enter a Dining Hall!");
-                return;
-            }
-            values.uid = userDetails.uid ? userDetails.uid : "";
-            createReview(values);
-            // setReviews([...reviews, values]);
-            //   alert(JSON.stringify(values, null, 2));
-            getReviews().then((reviews) => {
-                setReviews(reviews);
-            });
-        },
-    });
+	useEffect(() => {
+		console.log(filter);
+	}, [filter])
+
+	const [reviews, setReviews] = React.useState([]);
+	useEffect(() => {
+		console.log("getting reviews");
+		if (filter === "recency" || !filter) {
+			getReviews().then((reviews) => {
+				setReviews(reviews);
+			});
+		}
+		if (filter === "dining") {
+			getHallReviews(diningFilter).then((reviews) => {
+				setReviews(reviews);
+			});
+		}
+		if (filter === "rating") {
+			getRatingReviews(ratingFilter).then((reviews) => {
+				setReviews(reviews);
+			});
+		}
+	}, [filter, diningFilter, ratingFilter]);
+	
+	// Note that we have to initialize ALL of fields with values. These
+	// could come from props, but since we don’t want to prefill this form,
+	// we just use an empty string. If we don’t do this, React will yell
+	// at us.
+	const [userDetails, setUserDetails] = useState([]);
+
+	useEffect(() => {
+		auth.onAuthStateChanged((user) => {
+			if (!user) {
+				console.log("no user");
+				return;
+			}
+			console.log("getting userdata");
+			getUsers(user.uid).then((userDetails) => {
+				setUserDetails(userDetails);
+			});		
+		})
+	}, []);
+
+	const resetDropdown = () => {
+		formik.setFieldValue("diningHall", "");
+		formik.setFieldValue("rating", "")
+	}
+
+	const formik = useFormik({
+		initialValues: {
+			name: "",
+			title: "",
+			body: "",
+			rating: "",
+			diningHall: "",
+			time: "",
+		},
+		onSubmit: (values, actions) => {
+			// values.user = userName;
+			if (!values.name) {
+				values.name = userDetails.name ? userDetails.name : "Anonymous";
+			}
+			if (!values.title) {
+				alert("Must enter a title!")
+				return;
+			}
+			if (!values.body) {
+				alert("Must enter a review!")
+				return;
+			}
+			if (!values.rating) {
+				alert("Must enter a rating!")
+				return;
+			}
+			if (!values.diningHall) {
+				alert("Must enter a Dining Hall!")
+				return;
+			}
+			values.uid = userDetails.uid ? userDetails.uid : "";
+			createReview(values);
+			// setReviews([...reviews, values]);
+			//   alert(JSON.stringify(values, null, 2));
+			getReviews().then((reviews) => {
+				setReviews(reviews);
+			});
+			actions.resetForm();
+			resetDropdown();
+		},
+	});
+
+	const placeholderName = userDetails.name ? userDetails.name : "Anonymous";
+
+	const showAdditionalOptions = (filtertype) => {
+		if (!filtertype || filtertype === "recency") {
+			return;
+		}
+		if (filtertype === "dining") {
+			return (
+				<Dropdown 
+					options = { diningOptions }
+					value = { diningFilter }
+					onChange = { value => setDiningFilter(value.label)}
+				/>
+			)
+		}
+		if (filtertype === "rating") {
+			return (
+				<Dropdown
+					options = { ratingOptions }
+					value = { ratingFilter}
+					onChange = { value => setRatingFilter(value.label) } 
+				/>
+			)
+		}
+	}
 
     return (
         <Container>
@@ -168,43 +227,63 @@ export default function Review() {
                             />
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
+						<Form.Group className="mb-3">
                             <Form.Label htmlFor="rating">
-                                Overall Rating (1-5)
+                                Rating
                             </Form.Label>
                             <Dropdown
-                                options={ratingOptions}
+                                options={ ratingOptions }
                                 value={formik.values.rating}
                                 onChange={(value) =>
-                                    formik.setFieldValue("rating", value.label)
+                                    formik.setFieldValue(
+                                        "rating",
+                                        value.label
+                                    )
                                 }
                             />
                         </Form.Group>
-                    </Form>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="mt-5">
-                    <h1 className="fs-1">Recent Reviews!</h1>
-                </Col>
-            </Row>
-            <Row className="py-2">
-                {[...reviews].reverse().map((review, i) => {
-                    return (
-                        <Col key={i} className="px-0 col-12 gy-3">
-                            <ReviewCard
-                                review_header={review.title}
-                                review_text={review.body}
-                                review_rating={review.rating}
-                                review_sender={review.user}
-                                review_dining={review.diningHall}
-                                review_time={review.createdAt}
-                                // <p>{review.user}</p>
-                            />
-                        </Col>
-                    );
-                })}
-            </Row>
-        </Container>
-    );
+
+					<Button variant="primary" type="submit">Submit</Button>
+				</Form>
+				</Col>
+			</Row>
+
+			<Row>
+				<Col className="mt-5">
+					<h1 className="fs-1">Recent Reviews!</h1>
+				</Col>
+			</Row>
+			<Form.Group className="mb-3">
+				<Form.Label htmlFor="filter">Filter</Form.Label>
+				<Dropdown
+					options={ filterOptions }
+					value={ filter }
+					onChange={ value => setFilter(value.value)}
+				/>
+			</Form.Group>
+			<Form.Group className="mb-3" warn={filter === "dining" || filter === "rating"}>
+				<div>
+					{ showAdditionalOptions(filter) }
+				</div>
+			</Form.Group>
+			<Row className="py-2">
+				{[...reviews].reverse().map((review, i) => {
+					return (
+						<Col className="px-0 col-12 gy-3">
+							<ReviewCard
+								key={i}
+								review_header={review.title}
+								review_text={review.body}
+								review_rating={review.rating}
+								review_sender={review.user}
+								review_dining={review.diningHall}
+								review_time={review.createdAt}
+								// <p>{review.user}</p>
+							/>
+						</Col>
+					);
+				})}
+			</Row>
+		</Container>
+	);
 }
