@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from "react-select"
 import {
   getReviews,
   createReview,
@@ -49,28 +50,49 @@ export default function Review({ user }) {
   const [diningFilter, setDiningFilter] = useState("");
   const [ratingFilter, setRatingFilter] = useState("");
 
+  const [diningOption, setDiningOption] = useState("");
+  const [ratingOption, setRatingOption] = useState("");
+
   useEffect(() => {
     console.log(filter);
   }, [filter]);
 
   const [reviews, setReviews] = React.useState([]);
+
+  /* initial getting of reviews */
+  useEffect(() => {
+	  getReviews().then((reviews) => {
+		  setReviews(reviews)
+	  })
+  }, []);
+
   useEffect(() => {
     console.log("getting reviews");
-    if (filter === "recency" || !filter) {
-      getReviews().then((reviews) => {
-        setReviews(reviews);
-      });
-    }
     if (filter === "dining") {
-      getHallReviews(diningFilter).then((reviews) => {
+		setRatingFilter("");
+		if (!diningFilter) {
+			return;
+		}
+		getHallReviews(diningFilter.label).then((reviews) => {
+			setReviews(reviews);
+		});
+    }
+    else if (filter === "rating") {
+		setDiningFilter("");
+		if (!ratingFilter) {
+			return;
+		}
+      getRatingReviews(ratingFilter.label).then((reviews) => {
         setReviews(reviews);
       });
     }
-    if (filter === "rating") {
-      getRatingReviews(ratingFilter).then((reviews) => {
-        setReviews(reviews);
-      });
-    }
+	else {
+		setRatingFilter("");
+		setDiningFilter("");
+		getReviews().then((reviews) => {
+			setReviews(reviews)
+		})
+	}
   }, [filter, diningFilter, ratingFilter]);
 
   // Note that we have to initialize ALL of fields with values. These
@@ -79,8 +101,8 @@ export default function Review({ user }) {
   // at us.
 
   const resetDropdown = () => {
-    formik.setFieldValue("diningHall", "");
-    formik.setFieldValue("rating", "");
+    setDiningOption("");
+	setRatingOption("");
   };
 
   const formik = useFormik({
@@ -93,6 +115,12 @@ export default function Review({ user }) {
       time: "",
     },
     onSubmit: (values, actions) => {
+		if (!diningOption || !ratingOption) {
+			alert("Must enter a Dining Hall and Review!")
+			return;
+		}
+		values.diningHall = diningOption.label;
+		values.rating = ratingOption.label;
       // values.user = userName;
       if (!values.name) {
         values.name = user.displayName;
@@ -131,19 +159,19 @@ export default function Review({ user }) {
     }
     if (filtertype === "dining") {
       return (
-        <Dropdown
+        <Select
           options={diningOptions}
           value={diningFilter}
-          onChange={(value) => setDiningFilter(value.label)}
+          onChange={(value) => setDiningFilter(value)}
         />
       );
     }
     if (filtertype === "rating") {
       return (
-        <Dropdown
+        <Select
           options={ratingOptions}
           value={ratingFilter}
-          onChange={(value) => setRatingFilter(value.label)}
+          onChange={(value) => setRatingFilter(value)}
         />
       );
     }
@@ -157,6 +185,7 @@ export default function Review({ user }) {
             <h1 className="fs-1">Review Page for Bruin Bites!</h1>
           </Col>
         </Row>
+		<Button onClick={() => resetDropdown()}>click me</Button>
         <Row className="bg-light">
           <Col className="col-12 p-5 fs-4">
             <Form onSubmit={formik.handleSubmit} className="px-3">
@@ -175,11 +204,11 @@ export default function Review({ user }) {
 
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="diningHall">Dining Hall</Form.Label>
-                <Dropdown
+                <Select
                   options={diningOptions}
-                  value={formik.values.diningHall}
+                  value={diningOption}
                   onChange={(value) =>
-                    formik.setFieldValue("diningHall", value.label)
+					setDiningOption(value)
                   }
                 />
               </Form.Group>
@@ -212,11 +241,11 @@ export default function Review({ user }) {
 
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="rating">Rating</Form.Label>
-                <Dropdown
+                <Select
                   options={ratingOptions}
-                  value={formik.values.rating}
+                  value={ratingOption}
                   onChange={(value) =>
-                    formik.setFieldValue("rating", value.label)
+                    setRatingOption(value)
                   }
                 />
               </Form.Group>
