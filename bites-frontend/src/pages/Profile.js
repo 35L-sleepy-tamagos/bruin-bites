@@ -123,29 +123,22 @@ export default function Profile() {
             <h3>Profile Activity</h3>
             <p> {numReviews} Reviews posted</p>
             <p> {numDining} Meals recorded</p>
-            <h4> Dining History</h4>
-            {/*add formatting here plz*/}
-            {meals.map((meal, i) => {
-              return (
-                <Col key={i} className="px-0 col-12 gy-3">
-                  {`${meal.location}: ${meal.createdAt}`}
-                </Col>
-              );
-            })}
           </Col>
         </Row>
 
         <Col>
             <h1 className="fs-1">Dining History</h1>
-          </Col>
-        
+        </Col>
+
           <Row className="py-5 mx-0 bg-light">
           <Col className="mt-3">
             {/*add formatting here plz*/}
-            {meals.map((meal, i) => {
+            {meals.map((meal, i) => 
+            {
               return (
                 <Col key={i} className="px-0 col-12 gy-3">
-                  {`${meal.location}: ${meal.createdAt}`}
+                  <h4>{`${meal.location}`}</h4>
+                  <p>{`${meal.createdAt}`}</p>
                 </Col>
               );
             })}
