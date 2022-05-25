@@ -1,3 +1,12 @@
+
+[data-theme="dark"] {
+    --font-color: #000;
+    /* --font-color: #eee;
+    --background-color: rgb(53, 53, 77);
+    --link-color: lightblue; */
+  }
+  
+
 .input-container
 {
     display: flex;
