@@ -1,11 +1,8 @@
-
-[data-theme="dark"] {
-    --font-color: #000;
-    /* --font-color: #eee;
+[data-theme="dark"].title {
+    --font-color: black;
     --background-color: rgb(53, 53, 77);
-    --link-color: lightblue; */
+    --link-color: lightblue;
   }
-  
 
 .input-container
 {
@@ -16,7 +13,7 @@
 
 .title {
     text-align: center;
-    font-family: Century Gothic !important;
+    font-family: Century Gothic;
 	font-size: 25px;
 	font-weight: bold;
 }
