@@ -51,9 +51,27 @@ export async function createReview(review) {
     });
     const docRef = doc(db, "users", review.uid);
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data());
     await updateDoc(doc(db, "users", review.uid), {
       reviews: [...docSnap.data().reviews, review.id],
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function createDining(location, uid) {
+  let id = "id" + new Date().getTime();
+  const db = getFirestore();
+  try {
+    await setDoc(doc(db, "dining", id), {
+      uid: uid,
+      diningHall: location,
+      createdAt: readableDate(Timestamp.now().toDate()),
+    });
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    await updateDoc(doc(db, "users", uid), {
+      dining: [...docSnap.data().dining, id],
     });
     return true;
   } catch (error) {

@@ -42,7 +42,7 @@ const filterOptions = [
   { value: "rating", label: "Rating" },
 ];
 
-export default function Review() {
+export default function Review({ user }) {
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState("");
@@ -77,20 +77,6 @@ export default function Review() {
   // could come from props, but since we don’t want to prefill this form,
   // we just use an empty string. If we don’t do this, React will yell
   // at us.
-  const [userDetails, setUserDetails] = useState([]);
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        console.log("no user");
-        return;
-      }
-      console.log("getting userdata");
-      getUsers(user.uid).then((userDetails) => {
-        setUserDetails(userDetails);
-      });
-    });
-  }, []);
 
   const resetDropdown = () => {
     formik.setFieldValue("diningHall", "");
@@ -109,7 +95,7 @@ export default function Review() {
     onSubmit: (values, actions) => {
       // values.user = userName;
       if (!values.name) {
-        values.name = userDetails.name ? userDetails.name : "Anonymous";
+        values.name = user.displayName;
       }
       if (!values.title) {
         alert("Must enter a title!");
@@ -127,7 +113,7 @@ export default function Review() {
         alert("Must enter a Dining Hall!");
         return;
       }
-      values.uid = userDetails.uid ? userDetails.uid : "";
+      values.uid = user.uid;
       createReview(values);
       // setReviews([...reviews, values]);
       //   alert(JSON.stringify(values, null, 2));
@@ -138,8 +124,6 @@ export default function Review() {
       resetDropdown();
     },
   });
-
-  const placeholderName = userDetails.name ? userDetails.name : "Anonymous";
 
   const showAdditionalOptions = (filtertype) => {
     if (!filtertype || filtertype === "recency") {
@@ -166,119 +150,121 @@ export default function Review() {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col className="mb-3">
-          <h1 className="fs-1">Review Page for Bruin Bites!</h1>
-        </Col>
-      </Row>
-      <Row className="bg-light">
-        <Col className="col-12 p-5 fs-4">
-          <Form onSubmit={formik.handleSubmit} className="px-3">
-            <Form.Group>
-              <Form.Label htmlFor="name">Name</Form.Label>
-              <Form.Control
-                placeholder={userDetails.name}
-                name="name"
-                id="name"
-                type="text"
-                onChange={formik.handleChange}
-                className="input"
-                value={formik.values.name}
-              />
-            </Form.Group>
+    user && (
+      <Container>
+        <Row>
+          <Col className="mb-3">
+            <h1 className="fs-1">Review Page for Bruin Bites!</h1>
+          </Col>
+        </Row>
+        <Row className="bg-light">
+          <Col className="col-12 p-5 fs-4">
+            <Form onSubmit={formik.handleSubmit} className="px-3">
+              <Form.Group>
+                <Form.Label htmlFor="name">Name</Form.Label>
+                <Form.Control
+                  placeholder={user.displayName}
+                  name="name"
+                  id="name"
+                  type="text"
+                  onChange={formik.handleChange}
+                  className="input"
+                  value={formik.values.name}
+                />
+              </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="diningHall">Dining Hall</Form.Label>
-              <Dropdown
-                options={diningOptions}
-                value={formik.values.diningHall}
-                onChange={(value) =>
-                  formik.setFieldValue("diningHall", value.label)
-                }
-              />
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="diningHall">Dining Hall</Form.Label>
+                <Dropdown
+                  options={diningOptions}
+                  value={formik.values.diningHall}
+                  onChange={(value) =>
+                    formik.setFieldValue("diningHall", value.label)
+                  }
+                />
+              </Form.Group>
 
-            <Form.Group>
-              <Form.Label htmlFor="title">Subject</Form.Label>
-              <Form.Control
-                placeholder="Enter a title..."
-                id="title"
-                name="title"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.title}
-                className="title-field"
-              />
-            </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="title">Subject</Form.Label>
+                <Form.Control
+                  placeholder="Enter a title..."
+                  id="title"
+                  name="title"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.title}
+                  className="title-field"
+                />
+              </Form.Group>
 
-            <Form.Group>
-              <Form.Label htmlFor="body">Review</Form.Label>
-              <Form.Control
-                placeholder="Enter your review..."
-                id="body"
-                name="body"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.body}
-                className="body-field"
-              />
-            </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="body">Review</Form.Label>
+                <Form.Control
+                  placeholder="Enter your review..."
+                  id="body"
+                  name="body"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.body}
+                  className="body-field"
+                />
+              </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="rating">Rating</Form.Label>
-              <Dropdown
-                options={ratingOptions}
-                value={formik.values.rating}
-                onChange={(value) =>
-                  formik.setFieldValue("rating", value.label)
-                }
-              />
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="rating">Rating</Form.Label>
+                <Dropdown
+                  options={ratingOptions}
+                  value={formik.values.rating}
+                  onChange={(value) =>
+                    formik.setFieldValue("rating", value.label)
+                  }
+                />
+              </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </Col>
+        </Row>
 
-      <Row>
-        <Col className="mt-5">
-          <h1 className="fs-1">Recent Reviews!</h1>
-        </Col>
-      </Row>
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="filter">Filter</Form.Label>
-        <Dropdown
-          options={filterOptions}
-          value={filter}
-          onChange={(value) => setFilter(value.value)}
-        />
-      </Form.Group>
-      <Form.Group
-        className="mb-3"
-        warn={filter === "dining" || filter === "rating"}
-      >
-        <div>{showAdditionalOptions(filter)}</div>
-      </Form.Group>
-      <Row className="py-2">
-        {[...reviews].reverse().map((review, i) => {
-          return (
-            <Col key={i} className="px-0 col-12 gy-3">
-              <ReviewCard
-                review_header={review.title}
-                review_text={review.body}
-                review_rating={review.rating}
-                review_sender={review.user}
-                review_dining={review.diningHall}
-                review_time={review.createdAt}
-                // <p>{review.user}</p>
-              />
-            </Col>
-          );
-        })}
-      </Row>
-    </Container>
+        <Row>
+          <Col className="mt-5">
+            <h1 className="fs-1">Recent Reviews!</h1>
+          </Col>
+        </Row>
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor="filter">Filter</Form.Label>
+          <Dropdown
+            options={filterOptions}
+            value={filter}
+            onChange={(value) => setFilter(value.value)}
+          />
+        </Form.Group>
+        <Form.Group
+          className="mb-3"
+          warn={filter === "dining" || filter === "rating"}
+        >
+          <div>{showAdditionalOptions(filter)}</div>
+        </Form.Group>
+        <Row className="py-2">
+          {[...reviews].reverse().map((review, i) => {
+            return (
+              <Col key={i} className="px-0 col-12 gy-3">
+                <ReviewCard
+                  review_header={review.title}
+                  review_text={review.body}
+                  review_rating={review.rating}
+                  review_sender={review.user}
+                  review_dining={review.diningHall}
+                  review_time={review.createdAt}
+                  // <p>{review.user}</p>
+                />
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+    )
   );
 }

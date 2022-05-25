@@ -8,14 +8,14 @@ import Map from "./pages/Map";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 import Venue from "./pages/Venue";
-import EditProfile from "./pages/EditProfile"
+import EditProfile from "./pages/EditProfile";
 import { auth } from "./components/firebaseConfig/firebase.js";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Splash from "./components/SplashScreen";
 import { ThemeProvider } from "styled-components";
 
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import "bootstrap/dist/css/bootstrap.min.css";
 import { onAuthStateChanged } from "firebase/auth";
 
 const LightTheme = {
@@ -30,24 +30,34 @@ const DarkTheme = {
   pageBackground: "#282c36",
   titleColor: "lightpink",
   tagLineColor: "lavender",
-}
+};
 
 const themes = {
   light: LightTheme,
   dark: DarkTheme,
-}
+};
 
 function getUser() {
-  if(auth.currentUser) {
+  if (auth.currentUser) {
     console.log(auth.currentUser.email);
-  }
-  else {
+  } else {
     console.log("none");
   }
 }
 
 function App() {
   const [theme, setTheme] = useState("light");
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        console.log("no user");
+        return;
+      }
+      setUser(user);
+      console.log(user);
+    });
+  }, []);
   return (
     <Router>
       <Navbar />
@@ -55,14 +65,17 @@ function App() {
         <Splash theme={theme} setTheme={setTheme} />
       </ThemeProvider>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/reviews" element={<Review />}></Route>
+        <Route path="/" element={<Home user={user} />}></Route>
+        <Route
+          path="/reviews"
+          element={user ? <Review user={user} /> : <SignIn />}
+        ></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/map" element={<Map />}></Route>
-        <Route path="/signin" element={<SignIn />}></Route> 
-        <Route path="/register" element={<Register />}></Route> 
-        <Route path="/venue" element={<Venue />}></Route> 
-        <Route path="/edit-profile" element={<EditProfile/>}></Route>
+        <Route path="/signin" element={<SignIn />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/venue" element={<Venue />}></Route>
+        <Route path="/edit-profile" element={<EditProfile />}></Route>
       </Routes>
     </Router>
   );

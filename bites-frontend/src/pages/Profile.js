@@ -85,8 +85,8 @@ export default function Profile() {
     const place2 = userDetails.favDining2
       ? userDetails.favDining2
       : "None Yet...";
-    const numReviews = userDetails.reviews.length;
-    const numDining = 0; //userDetails.dining.length();
+    const numReviews = userDetails?.reviews?.length;
+    const numDining = userDetails?.dining?.length;
 
     return (
       <Container className="px-0 text-dark">
