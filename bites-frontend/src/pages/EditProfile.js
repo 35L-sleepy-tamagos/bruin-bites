@@ -112,7 +112,7 @@ export default function EditProfile() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="favDining1">
-                Favorite Dining Hall 1
+                Favorite Dining Hall 
               </Form.Label>
               <Dropdown
                 options={options}
@@ -124,7 +124,7 @@ export default function EditProfile() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="favDining2">
-                Favorite Dining Hall 2
+                2nd Most Favorite Dining Hall 
               </Form.Label>
               <Dropdown
                 options={options}

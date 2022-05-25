@@ -35,6 +35,7 @@ import { browserLocalPersistence, setPersistence } from "firebase/auth";
 export default function Profile() {
   const navigate = useNavigate();
 
+
   function signout() {
     navigate("/");
     logout();
@@ -96,7 +97,7 @@ export default function Profile() {
       <Container className="px-0 text-dark">
         <Row className="mb-3">
           <Col>
-            <h1 className="fs-1">Welcome, {name}</h1>
+            <h1 className="fs-1">Welcome, {name}!</h1>
           </Col>
         </Row>
         <Row className="py-5 mx-0 bg-light">
@@ -119,19 +120,42 @@ export default function Profile() {
             </Stack>
           </Col>
           <Col className="mt-3">
-            <h3>Activity</h3>
+            <h3>Profile Activity</h3>
             <p> {numReviews} Reviews posted</p>
             <p> {numDining} Meals recorded</p>
-            {/* EDIT THIS AREA TO MAKE IT LOOK BETTER */}
+            <h4> Dining History</h4>
+            {/*add formatting here plz*/}
             {meals.map((meal, i) => {
               return (
                 <Col key={i} className="px-0 col-12 gy-3">
-                  {`${meal.location} ${meal.createdAt}`}
+                  {`${meal.location}: ${meal.createdAt}`}
                 </Col>
               );
             })}
           </Col>
         </Row>
+
+        <Col>
+            <h1 className="fs-1">Dining History</h1>
+          </Col>
+        
+          <Row className="py-5 mx-0 bg-light">
+          <Col className="mt-3">
+            {/*add formatting here plz*/}
+            {meals.map((meal, i) => {
+              return (
+                <Col key={i} className="px-0 col-12 gy-3">
+                  {`${meal.location}: ${meal.createdAt}`}
+                </Col>
+              );
+            })}
+          </Col>
+        </Row>
+
+        <Col>
+            <h1 className="fs-1">Posted Reviews</h1>
+          </Col>
+
         <Row className="mt-5">
           <Col className="">
             <Stack gap={3}>
