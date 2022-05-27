@@ -38,7 +38,7 @@ const ratingOptions = [
 ];
 
 const filterOptions = [
-  { value: "recency", label: "Recency" },
+  { value: "recency", label: "Date" },
   { value: "dining", label: "Dining Halls" },
   { value: "rating", label: "Rating" },
 ];
