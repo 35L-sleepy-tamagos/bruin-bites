@@ -22,19 +22,19 @@ const Navbar = () => {
     seconds = d.getSeconds();
 
     if (hours >= 7 && hours < 10) {
-      mealPeriod = "Currently Breakfast";
+      mealPeriod = "Breakfast";
     }
 
     if (hours >= 11 && hours < 15) {
-      mealPeriod = "Currently Lunch/Brunch";
+      mealPeriod = "Lunch/Brunch";
     }
 
     if (hours >= 17 && hours < 21) {
-      mealPeriod = "Currently Dinner";
+      mealPeriod = "Dinner";
     }
 
     if (hours >= 21) {
-      mealPeriod = "Currently Extended Dinner";
+      mealPeriod = "Extended Dinner";
     }
 
     if (hours >= 10 && hours < 11) {
@@ -123,30 +123,30 @@ const Navbar = () => {
 
   return (
     <div className="nav-bg">
-      <li>
+      <li className="expand">
         <img src={Mascot} className="logo" onClick={returnHome}></img>
       </li>
-      <li>
+      <li className="expand">
         <Link to="/" style={{ textDecoration: "none", color: "white" }}>
           Home
         </Link>
       </li>
-      <li>
+      <li className="expand">
         <Link to="/reviews" style={{ textDecoration: "none", color: "white" }}>
           Reviews
         </Link>
       </li>
-      <li>
+      <li className="expand">
         <Link to="/map" style={{ textDecoration: "none", color: "white" }}>
           Map
         </Link>
       </li>
-      <li>
+      <li className="expand">
         <Link to="/profile" style={{ textDecoration: "none", color: "white" }}>
           Profile
         </Link>
       </li>
-      <li>
+      <li className="expand">
         <Link to="/venue" style={{ textDecoration: "none", color: "white" }}>
           TODO
         </Link>
