@@ -45,6 +45,10 @@ export default function Profile() {
     navigate("/edit-profile");
   }
 
+  function seeHistory() {
+    navigate("/dining-history");
+  }
+
   const [reviews, setReviews] = React.useState([]);
   const [meals, setMeals] = React.useState([]);
   const [userDetails, setUserDetails] = useState([]);
@@ -144,26 +148,7 @@ export default function Profile() {
         </Row>
 
         <Col>
-            <h1 className="fs-1">Dining History</h1>
-        </Col>
-
-          <Row className="py-5 mx-0 bg-light">
-          <Col className="mt-3">
-            {/*add formatting here plz*/}
-            {meals.map((meal, i) => 
-            {
-              return (
-                <Col key={i} className="px-0 col-12 gy-3">
-                  <h4>{`${meal.location}`}</h4>
-                  <p>{`${meal.createdAt}`}</p>
-                </Col>
-              );
-            })}
-          </Col>
-        </Row>
-
-        <Col>
-            <h1 className="fs-1">Posted Reviews</h1>
+            <h1 className="mt-5 fs-1">Posted Reviews</h1>
           </Col>
 
         <Row className="mt-5">
@@ -197,6 +182,14 @@ export default function Profile() {
             >
               Edit your Profile!
             </Button>
+            <Button
+              variant="secondary"
+              className="btn"
+              size="lg"
+              onClick={() => seeHistory()}
+            >
+              See your Dining History!
+          </Button>
             <Button
               variant="danger"
               className="btn"
