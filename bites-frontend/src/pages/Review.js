@@ -14,7 +14,7 @@ import { app, auth } from "../components/firebaseConfig/firebase";
 import { useNavigate } from "react-router-dom";
 import { diningOptions } from "../components/VenueData";
 import {
-  getHallReviews,
+  getHallReviews, 
   getRatingReviews,
 } from "../components/firebaseConfig/utils.js";
 // import "./Review.css"
