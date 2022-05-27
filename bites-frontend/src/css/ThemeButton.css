@@ -1,0 +1,4 @@
+.themeButton:hover {
+    transform: scale(1.25);
+    transition-duration: 1s;
+}

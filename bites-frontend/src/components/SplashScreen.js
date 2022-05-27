@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { CgSun } from "react-icons/cg";
 import { HiMoon } from "react-icons/hi";
+import '../css/ThemeButton.css';
 
 //margin: shifts it, why did this one line of code take me 40 minutes to find out
 const Toggle = styled.button`
@@ -44,7 +45,7 @@ function Splash(props)
 
 	const icon = props.theme === "dark" ? <HiMoon size={40} /> : <CgSun size={40} />;
 	return (
-		<Toggle onClick={changeTheme} >
+		<Toggle onClick={changeTheme} className="themeButton">
 			{icon}
 		</Toggle>
 	);

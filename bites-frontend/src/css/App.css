@@ -102,3 +102,8 @@ img {
     transform: rotate(360deg);
   }
 }
+
+.expand:hover {
+  transform: scale(1.05);
+  transition-duration: 1s;
+}

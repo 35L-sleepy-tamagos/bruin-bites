@@ -13,7 +13,7 @@ export default function Home({ user }) {
       <Row align="center">
         {venues.map((venues, i) => {
           return (
-            <Col key={i} className="col-12 col-sm-6 col-lg-4 my-3">
+            <Col key={i} className="expand col-12 col-sm-6 col-lg-4 my-3">
               <VenueCard
                 user={user?.uid}
                 className="p-0"
