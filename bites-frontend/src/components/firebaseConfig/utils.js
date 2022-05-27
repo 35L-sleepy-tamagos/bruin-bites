@@ -26,7 +26,6 @@ import Review, { auth } from "./firebase.js";
 const readableDate = (date) => {
   var dateString = date.toString();
   var dateArr = dateString.split(" ");
-  console.log(dateArr);
   var date = `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]}`;
   var timeArr = dateArr[4].substring(0, 5).split(":");
   var subscript = timeArr[0] < 12 ? "AM" : "PM";

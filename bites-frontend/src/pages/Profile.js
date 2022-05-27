@@ -50,33 +50,50 @@ export default function Profile() {
   const [userDetails, setUserDetails] = useState([]);
   const [userImage, setUserImage] = useState();
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        console.log("no user");
-        return;
-      }
-      console.log("getting userdata");
-      getUsers(user.uid).then((userDetails) => {
-        setUserDetails(userDetails);
-        if (userDetails.image.startsWith("https://")) {
-          setUserImage(userDetails.image);
-        } else {
-          const storage = getStorage();
-          getDownloadURL(
-            ref(storage, userDetails.uid + "/" + userDetails.image)
-          ).then((url) => {
-            setUserImage(url);
-          });
-        }
-      });
-      getUserReviews(user.uid).then((reviews) => {
-        setReviews(reviews);
-      });
-      getUserMeals(user.uid).then((meals) => {
-        setMeals(meals);
-      });
+    // auth.onAuthStateChanged((user) => {
+    //   if (!user) {
+    //     console.log("no user");
+    //     return;
+    //   }
+    //   console.log("getting userdata");
+    //   getUsers(user.uid).then((userDetails) => {
+    //     setUserDetails(userDetails);
+    //     console.log(userDetails.image);
+    //   });
+    // });
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("no user");
+      return;
+    }
+    console.log("getting userdata");
+    getUsers(user.uid).then((userDetails) => {
+      setUserDetails(userDetails);
     });
   }, []);
+
+  useEffect(() => {
+    if (userDetails.length == 0) {
+      return;
+    }
+    if (userDetails.image && userDetails.image.startsWith("https://")) {
+          setUserImage(userDetails.image);
+      } 
+    else {
+      const storage = getStorage();
+      getDownloadURL(
+        ref(storage, userDetails.uid + "/" + userDetails.image)
+      ).then((url) => {
+        setUserImage(url);
+      });
+    }
+    getUserReviews(userDetails.uid).then((reviews) => {
+      setReviews(reviews);
+    });
+    getUserMeals(userDetails.uid).then((meals) => {
+      setMeals(meals);
+    });
+  }, [userDetails])
 
   if (auth.currentUser) {
     const image = userImage ? userImage : ProfileImage;

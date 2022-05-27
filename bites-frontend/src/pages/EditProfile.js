@@ -41,17 +41,19 @@ export default function EditProfile() {
 
   const [image, setImage] = useState();
 
-  const editImage = () => {
+  const editImage = async (image) => {
     if (!image) {
-      return;
+      return false;
     }
-    console.log(image.name);
 
     const storage = getStorage();
     const imageRef = ref(storage, uid + "/" + image.name);
-    uploadBytes(imageRef, image).then(() => {
-      editUserImage(uid, image.name);
-    });
+    // uploadBytes(imageRef, image).then(() => {
+    //   editUserImage(uid, image.name)
+    // });
+    await uploadBytes(imageRef, image);
+    await editUserImage(uid, image.name);
+    return true;
   };
 
   const uid = userDetails.uid;
@@ -70,12 +72,14 @@ export default function EditProfile() {
       dining1: currFavDin1,
       dining2: currFavDin2,
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       editBio(uid, values.bio);
-      editImage();
       editFavDining(uid, values.dining1, 1);
       editFavDining(uid, values.dining2, 2);
-      navigate("/profile");
+      const done = await editImage(image);
+      if (done) {
+        navigate("/profile");
+      }
     },
   });
 

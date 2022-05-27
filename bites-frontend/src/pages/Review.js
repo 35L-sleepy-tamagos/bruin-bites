@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useAlert } from "react-alert"
 import Select from "react-select"
 import {
   getReviews,
@@ -14,7 +15,7 @@ import { app, auth } from "../components/firebaseConfig/firebase";
 import { useNavigate } from "react-router-dom";
 import { diningOptions } from "../components/VenueData";
 import {
-  getHallReviews,
+  getHallReviews, 
   getRatingReviews,
 } from "../components/firebaseConfig/utils.js";
 // import "./Review.css"
@@ -102,7 +103,7 @@ export default function Review({ user }) {
 
   const resetDropdown = () => {
     setDiningOption("");
-	setRatingOption("");
+	  setRatingOption("");
   };
 
   const formik = useFormik({
@@ -185,7 +186,6 @@ export default function Review({ user }) {
             <h1 className="fs-1">Review Page for Bruin Bites!</h1>
           </Col>
         </Row>
-		<Button onClick={() => resetDropdown()}>click me</Button>
         <Row className="bg-light">
           <Col className="col-12 p-5 fs-4">
             <Form onSubmit={formik.handleSubmit} className="px-3">
@@ -208,7 +208,7 @@ export default function Review({ user }) {
                   options={diningOptions}
                   value={diningOption}
                   onChange={(value) =>
-					setDiningOption(value)
+					          setDiningOption(value)
                   }
                 />
               </Form.Group>
