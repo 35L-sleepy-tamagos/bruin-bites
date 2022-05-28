@@ -8,6 +8,8 @@ import {
   ref,
   getDownloadURL,
 } from "firebase/storage";
+import ProfileImage from "../assets/placeholder.jpg";
+import { auth } from "../components/firebaseConfig/firebase";
 
 const Navbar = ({userDetails}) => {
 
@@ -20,16 +22,23 @@ const Navbar = ({userDetails}) => {
     if (!refresh) {
       return;
     }
-    getUsers(userDetails.uid).then((userDetails) => {
-      setLocUserDetails(userDetails);
-    });
-    setRefresh(false);
-    console.log("refreshing");
-  }, [refresh, userDetails.uid])
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        setLocUserDetails([]);
+      }
+      getUsers(userDetails.uid).then((userDetails) => {
+        setLocUserDetails(userDetails);
+      });
+      setRefresh(false);
+      console.log("refreshing");
+    })
+  }, [refresh, userDetails.uid, locUserDetails])
 
   useEffect(() => {
     console.log("getting image");
     if (locUserDetails.length === 0) {
+      console.log("setting to defailt");
+      setUserImage(ProfileImage);
       return;
     }
     if (locUserDetails.image && locUserDetails.image.startsWith("https://")) {
@@ -43,7 +52,7 @@ const Navbar = ({userDetails}) => {
         setUserImage(url);
       });
     }
-  }, [locUserDetails]);
+  }, [refresh]);
 
   let [mealPeriod, setPeriod] = useState("None Currently");
   let d;
