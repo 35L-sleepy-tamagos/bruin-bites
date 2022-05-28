@@ -1,10 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
-import { logout } from "../components/firebaseConfig/utils.js";
+import { getUsers } from "../components/firebaseConfig/utils.js";
 import Mascot from "../assets/mascot.png";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+} from "firebase/storage";
+import ProfileImage from "../assets/placeholder.jpg";
+import { auth } from "../components/firebaseConfig/firebase";
 
-const Navbar = () => {
+const Navbar = ({userDetails}) => {
+
+  const [userImage, setUserImage] = useState();
+  const [locUserDetails, setLocUserDetails] = useState(userDetails);
+
+  var [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    if (!refresh) {
+      return;
+    }
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        setLocUserDetails([]);
+      }
+      getUsers(userDetails.uid).then((userDetails) => {
+        setLocUserDetails(userDetails);
+      });
+      setRefresh(false);
+      console.log("refreshing");
+    })
+  }, [refresh, userDetails.uid, locUserDetails])
+
+  useEffect(() => {
+    console.log("getting image");
+    if (locUserDetails.length === 0) {
+      console.log("setting to defailt");
+      setUserImage(ProfileImage);
+      return;
+    }
+    if (locUserDetails.image && locUserDetails.image.startsWith("https://")) {
+          setUserImage(locUserDetails.image);
+      } 
+    else {
+      const storage = getStorage();
+      getDownloadURL(
+        ref(storage, locUserDetails.uid + "/" + locUserDetails.image)
+      ).then((url) => {
+        setUserImage(url);
+      });
+    }
+  }, [refresh]);
+
   let [mealPeriod, setPeriod] = useState("None Currently");
   let d;
   let hours;
@@ -117,14 +166,20 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  function returnHome() {
+  async function returnHome() {
+    setRefresh(true);
     navigate("/");
+  }
+
+  async function seeProfile() {
+    setRefresh(true);
+    navigate("/profile");
   }
 
   return (
     <div className="nav-bg">
       <li className="expand">
-        <img src={Mascot} className="logo" onClick={returnHome}></img>
+        <img src={Mascot} className="logo" alt="Logo" onClick={returnHome}></img>
       </li>
       <li className="expand">
         <Link to="/" style={{ textDecoration: "none", color: "white" }}>
@@ -156,6 +211,9 @@ const Navbar = () => {
         style={{ textDecoration: "none", color: "white" }}
       >
         {mealPeriod}
+      </div>
+      <div>
+        <img src={userImage} className="profile-image expand" alt="Profile" onClick={ seeProfile }></img>
       </div>
     </div>
   );

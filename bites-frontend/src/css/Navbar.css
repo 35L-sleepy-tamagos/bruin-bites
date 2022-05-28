@@ -3,6 +3,7 @@
 	display: flex;
 	background-color: rgb(55, 50, 55);
 	margin-bottom: 2rem;
+	align-items: center;
 }
 
 li 
@@ -51,4 +52,27 @@ li:active
 	height: 40px;
 	padding: 0;
 	margin: 0;
+}
+
+.profile-image {
+	display: inline-block;
+	width: 60px;
+	height: 60px;
+	padding: 10px;
+	margin: 0;
+	margin-left: 10px;
+	margin-right: 30px;
+	border-radius: 20px;
+}
+
+.profile-image:hover 
+{
+	background-color: rgb(226, 217, 237);
+	text-decoration: none;
+}
+
+.profile-image:active 
+{
+	background-color: rgb(195, 171, 225);
+	text-decoration: none;
 }

@@ -132,11 +132,9 @@ export default function Profile() {
             <Stack gap={1} className="m-3">
               <div>
                 <h4> {place1} </h4>
-                <p> 4 visits</p>
               </div>
               <div>
                 <h4> {place2} </h4>
-                <p> 2 visits</p>
               </div>
             </Stack>
           </Col>
