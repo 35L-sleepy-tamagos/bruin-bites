@@ -11,6 +11,14 @@ import Venue from "./pages/Venue";
 import EditProfile from "./pages/EditProfile";
 import DiningHistory from "./pages/DiningHistory";
 import { auth } from "./components/firebaseConfig/firebase.js";
+import {
+  logout,
+  getUsers,
+  getReviews,
+  createReview,
+  getUserReviews,
+  getUserMeals,
+} from "./components/firebaseConfig/utils.js";
 
 import { useState, useEffect } from "react";
 import Splash from "./components/SplashScreen";
@@ -49,6 +57,7 @@ function getUser() {
 function App() {
   const [theme, setTheme] = useState("light");
   const [user, setUser] = useState(null);
+  const [userDetails, setUserDetails] = useState([]);
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
@@ -56,11 +65,14 @@ function App() {
         return;
       }
       setUser(user);
+      getUsers(user.uid).then((userDetails) => {
+        setUserDetails(userDetails);
+      });
     });
-  }, []);
+  }, []); 
   return (
     <Router>
-      <Navbar />
+      <Navbar userDetails={ userDetails }/>
       <ThemeProvider theme={themes[theme]}>
         <Splash theme={theme} setTheme={setTheme} />
       </ThemeProvider>
