@@ -13,5 +13,7 @@ $ npm start
 Bruin-Bites allows users to check UCLA's dining options at any time of day, displaying all menu items that are able to be upvoted/downvoted.
 
 **Features:**
-<img width="1792" alt="Screen Shot 2022-05-21 at 5 58 55 AM" src="https://user-images.githubusercontent.com/99503259/169652612-970d8ea5-6030-496f-a12f-46c1e62336fd.png">
+![Screenshot (200)](https://user-images.githubusercontent.com/68207907/170816010-065f1c64-f3bb-43f5-9d0b-9712e7fcdad9.png)
+
 Reviews | User Authentication | Night Mode | Comprehensive Menu | User Profile | Map
+
