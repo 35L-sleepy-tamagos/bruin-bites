@@ -11,21 +11,13 @@ import Venue from "./pages/Venue";
 import EditProfile from "./pages/EditProfile";
 import DiningHistory from "./pages/DiningHistory";
 import { auth } from "./components/firebaseConfig/firebase.js";
-import {
-  logout,
-  getUsers,
-  getReviews,
-  createReview,
-  getUserReviews,
-  getUserMeals,
-} from "./components/firebaseConfig/utils.js";
+import { getUsers, } from "./components/firebaseConfig/utils.js";
 
 import { useState, useEffect } from "react";
 import Splash from "./components/SplashScreen";
 import { ThemeProvider } from "styled-components";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { onAuthStateChanged } from "firebase/auth";
 
 const LightTheme = {
   padding: "0.25em 1em",
@@ -45,14 +37,6 @@ const themes = {
   light: LightTheme,
   dark: DarkTheme,
 };
-
-function getUser() {
-  if (auth.currentUser) {
-    console.log(auth.currentUser.email);
-  } else {
-    console.log("none");
-  }
-}
 
 function App() {
   const [theme, setTheme] = useState("light");

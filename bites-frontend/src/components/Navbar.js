@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
-import { getUsers, logout } from "../components/firebaseConfig/utils.js";
+import { getUsers } from "../components/firebaseConfig/utils.js";
 import Mascot from "../assets/mascot.png";
 import {
   getStorage,
-  getStream,
-  listAll,
   ref,
-  uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
 
@@ -28,11 +25,11 @@ const Navbar = ({userDetails}) => {
     });
     setRefresh(false);
     console.log("refreshing");
-  }, [refresh])
+  }, [refresh, userDetails.uid])
 
   useEffect(() => {
     console.log("getting image");
-    if (locUserDetails.length == 0) {
+    if (locUserDetails.length === 0) {
       return;
     }
     if (locUserDetails.image && locUserDetails.image.startsWith("https://")) {
@@ -173,7 +170,7 @@ const Navbar = ({userDetails}) => {
   return (
     <div className="nav-bg">
       <li className="expand">
-        <img src={Mascot} className="logo" onClick={returnHome}></img>
+        <img src={Mascot} className="logo" alt="Logo" onClick={returnHome}></img>
       </li>
       <li className="expand">
         <Link to="/" style={{ textDecoration: "none", color: "white" }}>
@@ -207,7 +204,7 @@ const Navbar = ({userDetails}) => {
         {mealPeriod}
       </div>
       <div>
-        <img src={userImage} className="profile-image expand" onClick={ seeProfile }></img>
+        <img src={userImage} className="profile-image expand" alt="Profile" onClick={ seeProfile }></img>
       </div>
     </div>
   );
