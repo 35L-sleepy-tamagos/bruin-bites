@@ -5,6 +5,8 @@ import { getHallReviews, createDining } from "../components/firebaseConfig/utils
 
 import ReviewCard from "../components/ReviewCard";
 
+import "../css/VenuePage.css";
+
 function VenuePage({ diningData, user }) {
 
     /* reviews */
@@ -33,22 +35,29 @@ function VenuePage({ diningData, user }) {
                 <h1>
                     { name } Menu
                 </h1>
+                <div class="embedded_menu">
                 <iframe 
                     title="menu" 
                     src={menuLink}
-                    width="950"
+                    width="960"
                     /*changed height of embedded menu*/
-                    height="450"
-                    className="mt-5"
+                    height="500"
+                    /*changed class names for margin spacing*/
+                    className="py-2"
                 />
+                </div>
+                <Row className="py-2">
                 <Button variant="secondary" size="lg" className="col-md-8 offset-md-2 mt-3"
                     onClick={() => recordDining()}
                 >
                     I ate here!
                 </Button>
-                <h1 className="mt-3">
+                </Row>
+                <Row className="mt-5">
+                <h1>
                     Reviews for { name }
                 </h1>
+                </Row>
                 <Row className="py-2">
                     {[...reviews].reverse().map((review, i) => {
                         return (
