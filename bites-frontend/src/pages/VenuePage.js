@@ -31,25 +31,23 @@ function VenuePage({ diningData, user }) {
         <Container className="col-md-8 offset-md-2 mt-3">
             <Col>
                 <h1>
-                    { name }
+                    { name } Menu
                 </h1>
-                <Image src={ img } alt={ name }
-                    className="col-md-4 offset-md-4 mt-3"
+                <iframe 
+                    title="menu" 
+                    src={menuLink}
+                    width="950"
+                    /*changed height of embedded menu*/
+                    height="450"
+                    className="mt-5"
                 />
                 <Button variant="secondary" size="lg" className="col-md-8 offset-md-2 mt-3"
                     onClick={() => recordDining()}
                 >
                     I ate here!
                 </Button>
-                <iframe 
-                    title="menu" 
-                    src={menuLink}
-                    width="100%"
-                    height="750"
-                    className="mt-5"
-                />
                 <h1 className="mt-3">
-                    Reviews!
+                    Reviews for { name }
                 </h1>
                 <Row className="py-2">
                     {[...reviews].reverse().map((review, i) => {
