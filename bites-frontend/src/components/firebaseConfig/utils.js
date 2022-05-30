@@ -1,30 +1,30 @@
 import {
   getDocs,
   query,
-  onSnapshot,
   doc,
   setDoc,
   getDoc,
-  addDoc,
   getFirestore,
   Timestamp,
   updateDoc,
   collection,
   where,
 } from "firebase/firestore";
+
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+
 import Review, { auth } from "./firebase.js";
 
-export const readableDate = (date) => {
-  var dateString = date.toString();
+/* ========== HELPER FUNCTIONS =========== */
+
+export const readableDate = (dateParam) => {
+  var dateString = dateParam.toString();
   var dateArr = dateString.split(" ");
   var date = `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]}`;
   var timeArr = dateArr[4].substring(0, 5).split(":");
@@ -33,6 +33,29 @@ export const readableDate = (date) => {
   var time = `${hourNum}:${timeArr[1]}`;
   return `${time} ${subscript} -- ${date}`;
 };
+
+export function diningPeriod(diningTime) {
+  const hour = diningTime.substring(0, 2);
+  const period = diningTime.substring(6, 8);
+  var mealPeriod;
+  /* covering even non-period times to account for late reviews */
+  if (hour >= 7 && hour < 11 && period === "AM") {
+    mealPeriod = "B";
+  }
+  else if ((hour >= 11 && period === "AM") || (hour < 5 && period === "PM")) {
+    mealPeriod = "L";
+  }
+  else if (hour >= 5 && hour < 9 && period === "PM") {
+    mealPeriod = "D";
+  }
+  else {
+    mealPeriod = "ED";
+  }
+  const date = diningTime.substring(12)
+  return mealPeriod + date;
+}
+
+/* ========== GETTING REVIEW FUNCTIONS =========== */
 
 export async function createReview(review) {
   review.id = "id" + new Date().getTime();
@@ -60,26 +83,7 @@ export async function createReview(review) {
     console.log(error);
   }
 }
-export async function createDining(location, uid) {
-  let id = "id" + new Date().getTime();
-  const db = getFirestore();
-  try {
-    await setDoc(doc(db, "dining", id), {
-      uid: uid,
-      diningHall: location,
-      createdAt: readableDate(Timestamp.now().toDate()),
-    });
-    const docRef = doc(db, "users", uid);
-    const docSnap = await getDoc(docRef);
-    await updateDoc(doc(db, "users", uid), {
-      dining: [...docSnap.data().dining, id],
-    });
-    // alert(`You ate at ${location}!`);
-    return true;
-  } catch (error) {
-    console.log(error);
-  }
-}
+
 
 export async function getReviews() {
   const db = getFirestore();
@@ -120,20 +124,7 @@ export async function getUserReviews(uid) {
   });
   return reviews;
 }
-export async function getUserMeals(uid) {
-  const db = getFirestore();
-  const meals = [];
-  const querySnapshot = await getDocs(collection(db, "dining"));
-  querySnapshot.forEach((doc) => {
-    if (doc.data().uid === uid) {
-      meals.push({
-        location: doc.data().diningHall,
-        createdAt: doc.data().createdAt,
-      });
-    }
-  });
-  return meals;
-}
+
 export async function getHallReviews(hall) {
   const db = getFirestore();
   const reviews = [];
@@ -176,7 +167,45 @@ export async function getRatingReviews(rating) {
   return reviews;
 }
 
-/* login/out functions inspired by https://blog.logrocket.com/user-authentication-firebase-react-apps/ */
+/* ========== MEAL TRACKING FUNCTIONS =========== */
+
+export async function createDining(location, uid) {
+  let id = "id" + new Date().getTime();
+  const db = getFirestore();
+  try {
+    await setDoc(doc(db, "dining", id), {
+      uid: uid,
+      diningHall: location,
+      createdAt: readableDate(Timestamp.now().toDate()),
+    });
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    await updateDoc(doc(db, "users", uid), {
+      dining: [...docSnap.data().dining, id],
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getUserMeals(uid) {
+  const db = getFirestore();
+  const meals = [];
+  const querySnapshot = await getDocs(collection(db, "dining"));
+  querySnapshot.forEach((doc) => {
+    if (doc.data().uid === uid) {
+      meals.push({
+        location: doc.data().diningHall,
+        createdAt: doc.data().createdAt,
+      });
+    }
+  });
+  return meals;
+}
+
+/* ========== USER SIGN-IN FUNCTIONS =========== */
+/* inspired by https://blog.logrocket.com/user-authentication-firebase-react-apps/ */
 
 export async function googleSignIn() {
   const googleProvider = new GoogleAuthProvider();
@@ -245,6 +274,8 @@ export function logout() {
   signOut(auth);
 }
 
+/* ========== ACCESSING USER DETAILS FUNCTIONS =========== */
+
 export async function getUsers(uid) {
   const db = getFirestore();
   const userRef = collection(db, "users");
@@ -302,27 +333,6 @@ export async function addReviews(uid, reviewID) {
   await updateDoc(userRef, {
     reviews: reviewArr,
   });
-}
-
-export function diningPeriod(diningTime) {
-  const hour = diningTime.substring(0, 2);
-  const period = diningTime.substring(6, 8);
-  var mealPeriod;
-  /* covering even non-period times to account for late reviews */
-  if (hour >= 7 && hour < 11 && period === "AM") {
-    mealPeriod = "B";
-  }
-  else if ((hour >= 11 && period === "AM") || (hour < 5 && period === "PM")) {
-    mealPeriod = "L";
-  }
-  else if (hour >= 5 && hour < 9 && period === "PM") {
-    mealPeriod = "D";
-  }
-  else {
-    mealPeriod = "ED";
-  }
-  const date = diningTime.substring(12)
-  return mealPeriod + date;
 }
 
 export async function addLastDining(uid, diningTime) {
