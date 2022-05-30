@@ -10,10 +10,13 @@ $ cd bites-frontend
 $ npm install
 $ npm start
 ```
-Bruin-Bites allows users to check UCLA's dining options at any time of day, displaying all menu items that are able to be upvoted/downvoted.
+Bruin Bites is a website that allows UCLA students to more easily connect with their friends through food! Right off the bat, a new user can use the website to view what each restaurant/take-out option is serving, view their respective ratings, and even make them themselves. However, if a user wants to become more involved, they can make their own user profile that will give the user their own distinct flair and track their activity/contributions to the website. This includes displaying a quick description of themselves, their favorite places to eat, and the ratings they have written.
 
-**Features:**
-Reviews | User Authentication | Night Mode | Comprehensive Menu | User Profile | Map
+Another important thing about the website: it has night mode!
+
+
+**Recap of Features:**
+Menu Viewing | User Heat Map | Viewing/Posting Reviews with Filters | Creating User Profile | Viewing Other User Profiles 
 ![Screenshot (202)](https://user-images.githubusercontent.com/68207907/170816359-5729207c-d30c-4fb8-a799-bb7febf198f5.png)
 
 ![Screenshot (201)](https://user-images.githubusercontent.com/68207907/170816420-45ef6d72-cc1a-49ae-8298-462cb42b4233.png)

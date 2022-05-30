@@ -1,34 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Select from "react-select";
-import { useFormik } from "formik";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { getStorage, getStream, ref, uploadBytes } from "firebase/storage";
-import { getFirestore, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-import {
-  getUsers,
-  editBio,
-  editUserImage,
-  editFavDining,
-} from "../components/firebaseConfig/utils.js";
-import { app, auth } from "../components/firebaseConfig/firebase";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
+import { useFormik } from "formik";
+
+import { auth } from "../components/firebaseConfig/firebase";
+import { getUsers, editBio, editUserImage, editFavDining } from "../components/firebaseConfig/utils.js";
+
 import Dropdown from "../components/Dropdown";
 
+/* options for the dropdown */
 const options = [
   { value: "deNeve", label: "De Neve" },
   { value: "epi", label: "Epicuria" },
   { value: "bplate", label: "Bruin Plate" },
   { value: "feast", label: "Feast at Rieber" },
-  { value: "rende", label: "Rendevous" },
+  { value: "rende", label: "Rendezvous" },
   { value: "study", label: "The Study at Hedrick" },
   { value: "bcafe", label: "Bruin Cafe" },
   { value: "drey", label: "The Drey" },
 ];
 
-export default function EditProfile() {
-  /* get the user */
+function EditProfile() {
+
+  const navigate = useNavigate();
+  
   const [userDetails, setUserDetails] = useState([]);
+  const [image, setImage] = useState();
+
+  /* get the user */
   useEffect(() => {
     if (!auth.currentUser) {
       return;
@@ -39,8 +41,7 @@ export default function EditProfile() {
     });
   }, []);
 
-  const [image, setImage] = useState();
-
+  /* allow the user to change their pfp */
   const editImage = async (image) => {
     if (!image) {
       return false;
@@ -48,21 +49,17 @@ export default function EditProfile() {
 
     const storage = getStorage();
     const imageRef = ref(storage, uid + "/" + image.name);
-    // uploadBytes(imageRef, image).then(() => {
-    //   editUserImage(uid, image.name)
-    // });
     await uploadBytes(imageRef, image);
     await editUserImage(uid, image.name);
     return true;
   };
 
+  /* default values in the form */
   const uid = userDetails.uid;
   const currBio = userDetails.bio ? userDetails.bio : "";
   const currImg = userDetails.img ? userDetails.img : "";
   const currFavDin1 = userDetails.favDining1 ? userDetails.favDining1 : "";
   const currFavDin2 = userDetails.favDining2 ? userDetails.favDining2 : "";
-
-  const navigate = useNavigate();
 
   /* setup the form handling */
   const formik = useFormik({
@@ -76,6 +73,7 @@ export default function EditProfile() {
       editBio(uid, values.bio);
       editFavDining(uid, values.dining1, 1);
       editFavDining(uid, values.dining2, 2);
+      /* ensure the image has gone through first */
       const done = await editImage(image);
       if (done) {
         navigate("/profile");
@@ -147,3 +145,5 @@ export default function EditProfile() {
     </Container>
   );
 }
+
+export default EditProfile;

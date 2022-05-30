@@ -1,10 +1,12 @@
-import React from "react";
 import "../css/App.css";
-import { Container, Row, Col } from "react-bootstrap";
-import VenueCard from "../components/VenueCard";
-import venues from "../components/VenueData";
 
-export default function Home({ user }) {
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+
+import VenueCard from "../components/VenueCard";
+import { venues } from "../components/VenueData";
+
+function Home({ user }) {
   return (
     <Container>
       <Row align="center">
@@ -28,3 +30,5 @@ export default function Home({ user }) {
     </Container>
   );
 }
+
+export default Home

@@ -31,19 +31,19 @@ function Splash(props)
 		document.documentElement.setAttribute("data-theme", "light");
 	};
 
-	function changeTheme() 
-{
-		if (props.theme === "light") 
-	{
+	function changeTheme() {
+		if (props.theme === "light") {
 			props.setTheme("dark");
 			setDark();
-		} else {
+		} 
+		else {
 			props.setTheme("light");
 			setLight();
 		}        
 	};
 
 	const icon = props.theme === "dark" ? <HiMoon size={40} /> : <CgSun size={40} />;
+	
 	return (
 		<Toggle onClick={changeTheme} className="themeButton">
 			{icon}

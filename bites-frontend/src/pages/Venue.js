@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
-import { Container } from 'react-bootstrap';
-import { Row, Col } from 'react-bootstrap';
-import { Card, Stack, Button, ListGroup } from 'react-bootstrap';
-import { getReviews, createReview } from "../components/firebaseConfig/utils";
+import { Container, Row, Col, Stack, Button, ListGroup } from 'react-bootstrap';
+
+import { getReviews } from "../components/firebaseConfig/utils";
 
 import ReviewCard from "../components/ReviewCard";
 
 
-export default function Review() {
+function Review() {
+
+	/* stateful variables */
 	const [reviews, setReviews] = React.useState([]);
+
+	/* on render, get the reviews */
 	useEffect(() => {
 		console.log("getting reviews");
 		getReviews().then((reviews) => {
@@ -62,7 +65,6 @@ export default function Review() {
 							review_sender={review.user}
 							review_dining={review.diningHall}
 							review_time={review.createdAt}
-							// <p>{review.user}</p>
 						/>
 						</Col>
 					);
@@ -71,3 +73,5 @@ export default function Review() {
 		</Container>
 	)
 }
+
+export default Review;

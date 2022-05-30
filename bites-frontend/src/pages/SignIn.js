@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-
-import { emailSignIn, googleSignIn } from "../components/firebaseConfig/utils";
-import { auth } from "../components/firebaseConfig/firebase";
 import "../css/App.css";
-// import "../css/SignIn.css";
+import React, { useState } from "react";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function SignIn() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+import { onAuthStateChanged } from "firebase/auth";
+
+import { auth } from "../components/firebaseConfig/firebase";
+import { emailSignIn, googleSignIn } from "../components/firebaseConfig/utils";
+
+function SignIn() {
+
+    /* navigation to profile page if user is signed in */
     let navigate = useNavigate();
 
     const user = auth.currentUser;
@@ -18,13 +18,11 @@ export default function SignIn() {
         navigate("/profile");
     }
 
-    // useEffect(() => {
-    //     auth.currentUser ? console.log(auth.currentUser.email) : console.log("no user");
-    //     if (auth.currentUser) {
-    //         navigate("/");
-    //     }
-    // }, [auth.currentUser])
+    /* stateful variables */
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
+    /* once someone signs in, redirect them */
     function emailRedir(email, password) {
         emailSignIn(email, password);
         navigate("/");
@@ -105,3 +103,5 @@ export default function SignIn() {
         </Container>
     );
 }
+
+export default SignIn;
