@@ -23,7 +23,7 @@ import {
 } from "firebase/auth";
 import Review, { auth } from "./firebase.js";
 
-const readableDate = (date) => {
+export const readableDate = (date) => {
   var dateString = date.toString();
   var dateArr = dateString.split(" ");
   var date = `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]}`;
@@ -36,6 +36,7 @@ const readableDate = (date) => {
 
 export async function createReview(review) {
   review.id = "id" + new Date().getTime();
+  const time = readableDate(Timestamp.now().toDate());
   const db = getFirestore();
   try {
     await setDoc(doc(db, "reviews", review.id), {
@@ -46,14 +47,14 @@ export async function createReview(review) {
       diningHall: review.diningHall,
       user: review.name,
       uid: review.uid,
-      createdAt: readableDate(Timestamp.now().toDate()),
+      createdAt: time
     });
     const docRef = doc(db, "users", review.uid);
     const docSnap = await getDoc(docRef);
     await updateDoc(doc(db, "users", review.uid), {
       reviews: [...docSnap.data().reviews, review.id],
     });
-    createDining(review.diningHall, review.uid);
+    addLastDining(review.uid, time);
     return true;
   } catch (error) {
     console.log(error);
@@ -73,7 +74,7 @@ export async function createDining(location, uid) {
     await updateDoc(doc(db, "users", uid), {
       dining: [...docSnap.data().dining, id],
     });
-    alert(`You ate at ${location}!`);
+    // alert(`You ate at ${location}!`);
     return true;
   } catch (error) {
     console.log(error);
@@ -197,6 +198,7 @@ export async function googleSignIn() {
         image: user.photoURL,
         favDining1: "",
         favDining2: "",
+        lastDining: "",
       });
     }
   } catch (err) {
@@ -230,6 +232,7 @@ export async function emailRegister(name, email, password) {
       image: "",
       favDining1: "",
       favDining2: "",
+      lastDining: "",
     });
   } catch (err) {
     console.error(err);
@@ -298,5 +301,37 @@ export async function addReviews(uid, reviewID) {
   reviewArr.push(reviewID);
   await updateDoc(userRef, {
     reviews: reviewArr,
+  });
+}
+
+export function diningPeriod(diningTime) {
+  const hour = diningTime.substring(0, 2);
+  const period = diningTime.substring(6, 8);
+  var mealPeriod;
+  /* covering even non-period times to account for late reviews */
+  if (hour >= 7 && hour < 11 && period === "AM") {
+    mealPeriod = "B";
+  }
+  else if ((hour >= 11 && period === "AM") || (hour < 5 && period === "PM")) {
+    mealPeriod = "L";
+  }
+  else if (hour >= 5 && hour < 9 && period === "PM") {
+    mealPeriod = "D";
+  }
+  else {
+    mealPeriod = "ED";
+  }
+  const date = diningTime.substring(12)
+  return mealPeriod + date;
+}
+
+export async function addLastDining(uid, diningTime) {
+  /* process the timestring */
+  /* time string in format HH:MM [AP]M -- Month Day, Year */
+  const fullDiningTime = diningPeriod(diningTime);
+  const db = getFirestore();
+  const userRef = doc(db, "users", uid);
+  await updateDoc(userRef, {
+    lastDining: fullDiningTime,
   });
 }
