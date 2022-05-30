@@ -1,6 +1,4 @@
-import { Card, Container } from 'react-bootstrap';
-import { Row, Col } from 'react-bootstrap';
-// add css later
+import { Card } from 'react-bootstrap';
 
 function ReviewCard(props) {
 	return (

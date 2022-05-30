@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { auth } from "../components/firebaseConfig/firebase";
-import {
-    logout,
-    getUsers,
-    getReviews,
-    createReview,
-    getUserReviews,
-    getUserMeals,
-} from "../components/firebaseConfig/utils.js";
-import { Row, Col } from "react-bootstrap";
-import { Container, Image, Stack, Button } from "react-bootstrap";
 
-export default function DiningHistory() {
+import { Row, Col } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
+
+import { auth } from "../components/firebaseConfig/firebase";
+import { getUsers,getUserMeals } from "../components/firebaseConfig/utils.js";
+
+function DiningHistory() {
+
     const navigate = useNavigate();
-    const [reviews, setReviews] = React.useState([]);
+
+    const goToProfile = () => {
+        navigate("/profile");
+    }
+
     const [meals, setMeals] = React.useState([]);
     const [userDetails, setUserDetails] = useState([]);
-    const [userImage, setUserImage] = useState();
+
     /* get user details */
     useEffect(() => {
         const user = auth.currentUser;
@@ -33,17 +33,13 @@ export default function DiningHistory() {
 
     /* get dining history */
     useEffect(() => {
-        if (userDetails.length == 0) {
+        if (userDetails.length === 0) {
           return;
         }
         getUserMeals(userDetails.uid).then((meals) => {
           setMeals(meals);
         });
     }, [userDetails]);
-
-    const goToProfile = () => {
-        navigate("/profile");
-    }
 
     return (
         <Container className="px-0 text-dark">
@@ -53,7 +49,6 @@ export default function DiningHistory() {
 
             <Row className="py-5 mx-0 bg-light">
                 <Col className="mt-3">
-                    {/*add formatting here plz*/}
                     {[...meals].reverse().map((meal, i) => 
                     {
                         return (
@@ -81,3 +76,5 @@ export default function DiningHistory() {
         </Container>
     )
 }
+
+export default DiningHistory;

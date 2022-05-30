@@ -1,40 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Container, Image, Stack, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
+import { auth } from "../components/firebaseConfig/firebase";
+import { logout, getUsers, getUserReviews } from "../components/firebaseConfig/utils.js";
+
+import ReviewCard from "../components/ReviewCard.js";
+import SignIn from "./SignIn";
 
 import ProfileImage from "../assets/placeholder.jpg";
-import {} from "../components/ProfileComponents.js";
-import ReviewCard from "../components/ReviewCard.js";
-import {
-  logout,
-  getUsers,
-  getReviews,
-  createReview,
-  getUserReviews,
-  getUserMeals,
-} from "../components/firebaseConfig/utils.js";
-import { auth } from "../components/firebaseConfig/firebase";
-import SignIn from "./SignIn";
-import { useNavigate } from "react-router-dom";
-import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
-import {
-  getStorage,
-  getStream,
-  listAll,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
-import { browserLocalPersistence, setPersistence } from "firebase/auth";
 
-// TODO: backend integration
-// TODO: Frontend -> Bootstrap
-// polish CSS if time
-// rework padding?
+function Profile() {
 
-export default function Profile() {
+  /* navigation functions */
   const navigate = useNavigate();
-
 
   function signout() {
     navigate("/");
@@ -49,22 +31,13 @@ export default function Profile() {
     navigate("/dining-history");
   }
 
-  const [reviews, setReviews] = React.useState([]);
-  const [meals, setMeals] = React.useState([]);
+  /* stateful variables */
+  const [reviews, setReviews] = React.useState([]); 
   const [userDetails, setUserDetails] = useState([]);
   const [userImage, setUserImage] = useState();
+
+  /* getting user details to display */
   useEffect(() => {
-    // auth.onAuthStateChanged((user) => {
-    //   if (!user) {
-    //     console.log("no user");
-    //     return;
-    //   }
-    //   console.log("getting userdata");
-    //   getUsers(user.uid).then((userDetails) => {
-    //     setUserDetails(userDetails);
-    //     console.log(userDetails.image);
-    //   });
-    // });
     const user = auth.currentUser;
     if (!user) {
       console.log("no user");
@@ -76,8 +49,9 @@ export default function Profile() {
     });
   }, []);
 
+  /* getting user image to display */
   useEffect(() => {
-    if (userDetails.length == 0) {
+    if (userDetails.length === 0) {
       return;
     }
     if (userDetails.image && userDetails.image.startsWith("https://")) {
@@ -93,9 +67,6 @@ export default function Profile() {
     }
     getUserReviews(userDetails.uid).then((reviews) => {
       setReviews(reviews);
-    });
-    getUserMeals(userDetails.uid).then((meals) => {
-      setMeals(meals);
     });
   }, [userDetails])
 
@@ -113,7 +84,8 @@ export default function Profile() {
       : "None Yet...";
     const numReviews = userDetails?.reviews?.length;
     const numDining = userDetails?.dining?.length;
-
+    
+    /* wtf conditional jsx return lmao */
     return (
       <Container className="px-0 text-dark">
         <Row className="mb-3">
@@ -162,7 +134,6 @@ export default function Profile() {
                       review_sender={review.user}
                       review_dining={review.diningHall}
                       review_time={review.createdAt}
-                      // <p>{review.user}</p>
                     />
                   </Col>
                 );
@@ -200,7 +171,10 @@ export default function Profile() {
         </Row>
       </Container>
     );
-  } else {
+  } 
+  else {
     return <SignIn />;
   }
 }
+
+export default Profile

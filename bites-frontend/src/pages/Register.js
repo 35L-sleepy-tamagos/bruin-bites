@@ -1,38 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { emailRegister, googleSignIn } from "../components/firebaseConfig/utils";
-import { auth } from "../components/firebaseConfig/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, Card, Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Register() {
+import { emailRegister, googleSignIn } from "../components/firebaseConfig/utils";
+
+function Register() {
+
+	let navigate = useNavigate();
+
+	/* stateful variables */
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
 
-	let navigate = useNavigate();
-
-	// onAuthStateChanged(auth, (user) => {
-	//     if (user) {
-	//         console.log(user.email);
-	//         navigate("/");
-	//     }
-	//     else {
-	//         return;
-	//     }
-	// })
-	useEffect(() => {
-		auth.currentUser ? console.log(auth.currentUser.email) : console.log("no user");
-		if (auth.currentUser) {
-			navigate("/");
-		}
-	}, [auth.currentUser])
-
+	/* readibility/utility function */
 	const register = (name, email, password) => {
-		console.log("calling function");
-		console.log(name);
-		console.log(email);
-		console.log(password);
 		emailRegister(name, email, password);
 		navigate("/");
 	};
@@ -94,3 +76,5 @@ export default function Register() {
 		</Container>
 	)
 }
+
+export default Register;

@@ -1,38 +1,38 @@
+import "../css/Review.css";
 import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Select from "react-select"
+import { useFormik } from "formik";
+
+import { Timestamp } from "firebase/firestore";
+
+import { auth } from "../components/firebaseConfig/firebase";
 import {
   getReviews,
   createReview,
   getUsers,
-} from "../components/firebaseConfig/utils";
-import { useFormik } from "formik";
-import "../css/Review.css";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import ReviewCard from "../components/ReviewCard";
-import Dropdown from "../components/Dropdown";
-import { app, auth } from "../components/firebaseConfig/firebase";
-import { useNavigate } from "react-router-dom";
-import { diningOptions } from "../components/VenueData";
-import {
   getHallReviews, 
   getRatingReviews,
   createDining,
   diningPeriod,
   readableDate,
-} from "../components/firebaseConfig/utils.js";
-import { Timestamp } from "firebase/firestore";
-// import "./Review.css"
+} from "../components/firebaseConfig/utils";
 
-// FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
-// The above docs apply to css not react bootstrap but everything works if you
-// put the format string into the className attribute within JSX
-//
-// Also note Review.css is commented out at the moment to not interfere with
-// default bootstrap styling
-//
-// TODO: get colors to play nice with dark mode (try overriding bootstrap
-// defaults in a base css file instead of going file by file?)
+import Dropdown from "../components/Dropdown";
+import ReviewCard from "../components/ReviewCard";
+import { diningOptions } from "../components/VenueData";
 
+/*
+FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
+The above docs apply to css not react bootstrap but everything works if you
+put the format string into the className attribute within JSX
+
+
+TODO: get colors to play nice with dark mode (try overriding bootstrap
+defaults in a base css file instead of going file by file?)
+*/
+
+/* dropdown options */
 const ratingOptions = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
@@ -47,25 +47,66 @@ const filterOptions = [
   { value: "rating", label: "Rating" },
 ];
 
-export default function Review({ user }) {
+function Review({ user }) {
 
-  const navigate = useNavigate();
+  /* stateful variables */  
+  /* dropdown options */
+  const [diningOption, setDiningOption] = useState("");
+  const [ratingOption, setRatingOption] = useState("");
 
+  /* filters */
   const [filter, setFilter] = useState("");
   const [diningFilter, setDiningFilter] = useState("");
   const [ratingFilter, setRatingFilter] = useState("");
 
-  const [diningOption, setDiningOption] = useState("");
-  const [ratingOption, setRatingOption] = useState("");
+  /* confirmation messages */
+  const [showDiningError, setShowDiningError] = useState(false);
+  const [showDiningNotif, setShowDiningNotif] = useState(false);
 
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
+  /* user related statefuls */
+  const [userDetails, setUserDetails] = useState([]);
+  const [refetchUser, setRefetchUser] = useState(true);
 
+  /* reviews */
   const [reviews, setReviews] = React.useState([]);
-  const [showDiningError, setShowDiningError] = React.useState(false);
-  const [showDiningNotif, setShowDiningNotif] = React.useState(false);
 
+  /* initial getting of reviews */
+  useEffect(() => {
+	  getReviews().then((reviews) => {
+		  setReviews(reviews)
+	  })
+  }, []);
+
+  /* refetching after filters are applied */
+  useEffect(() => {
+    if (filter === "dining") {
+      setRatingFilter("");
+      if (!diningFilter) {
+        return;
+      }
+      getHallReviews(diningFilter.label).then((reviews) => {
+        setReviews(reviews);
+      });
+    }
+    else if (filter === "rating") {
+      setDiningFilter("");
+      if (!ratingFilter) {
+        return;
+      }
+      getRatingReviews(ratingFilter.label).then((reviews) => {
+        setReviews(reviews);
+      });
+    }
+	  else {
+      setRatingFilter("");
+      setDiningFilter("");
+      getReviews().then((reviews) => {
+        setReviews(reviews)
+      })
+	  }
+  }, [filter, diningFilter, ratingFilter]);
+
+  /* show the confirmation/error messages */
   useEffect(() => {
     if (!showDiningError) {
       return;
@@ -84,64 +125,37 @@ export default function Review({ user }) {
     }, 5000)
   }, [showDiningNotif]);
 
-  /* initial getting of reviews */
-  useEffect(() => {
-	  getReviews().then((reviews) => {
-		  setReviews(reviews)
-	  })
-  }, []);
-
-  useEffect(() => {
-    console.log("getting reviews");
-    if (filter === "dining") {
-		setRatingFilter("");
-		if (!diningFilter) {
-			return;
-		}
-		getHallReviews(diningFilter.label).then((reviews) => {
-			setReviews(reviews);
-		});
-    }
-    else if (filter === "rating") {
-		setDiningFilter("");
-		if (!ratingFilter) {
-			return;
-		}
-      getRatingReviews(ratingFilter.label).then((reviews) => {
-        setReviews(reviews);
-      });
-    }
-	else {
-		setRatingFilter("");
-		setDiningFilter("");
-		getReviews().then((reviews) => {
-			setReviews(reviews)
-		})
-	}
-  }, [filter, diningFilter, ratingFilter]);
-
   // get user details bc that's useful lol
-  const [userDetails, setUserDetails] = useState([]);
   useEffect(() => {
+    const getUser = async () => {
+      getUsers(auth.currentUser.uid).then((userDetails) => {
+        setUserDetails(userDetails);
+      });
+      await setRefetchUser(false);
+    }
+    if (!refetchUser) {
+      return;
+    }
     if (!auth.currentUser) {
       return;
     }
-    console.log("getting userdata");
-    getUsers(auth.currentUser.uid).then((userDetails) => {
-      setUserDetails(userDetails);
-    });
-  }, []);
+    getUser();
+  }, [refetchUser]);
 
   // Note that we have to initialize ALL of fields with values. These
   // could come from props, but since we don’t want to prefill this form,
   // we just use an empty string. If we don’t do this, React will yell
   // at us.
 
+  /* for whatever reason, resetform() doesn't refresh the dropdowns
+    So here's a function that *sorta* does
+  */
   const resetDropdown = () => {
     setDiningOption("");
 	  setRatingOption("");
   };
 
+  /* initialize the form */
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -158,10 +172,15 @@ export default function Review({ user }) {
       }
       values.diningHall = diningOption.label;
       values.rating = ratingOption.label;
-      // values.user = userName;
       if (!values.name) {
-        values.name = user.displayName;
+        if (!userDetails.name) {
+          values.name = "Anonymous";
+        }
+        else {
+          values.name = userDetails.name;
+        }
       }
+
       if (!values.title) {
         alert("Must enter a title!");
         return;
@@ -178,31 +197,33 @@ export default function Review({ user }) {
         alert("Must enter a Dining Hall!");
         return;
       }
+
       values.uid = user.uid;
-      createReview(values);
+      const prevLastDining = userDetails.lastDining
+      createReview(values).then(() => {
+        setRefetchUser(true);
+      });
+
       const timeString = readableDate(Timestamp.now().toDate());
-      console.log("timestring: " + timeString);
       const diningTime = diningPeriod(timeString);
-      console.log("dining time: " + diningTime);
-      if (diningTime === userDetails.lastDining) {
+      if (diningTime === prevLastDining) {
         setShowDiningError(true);
-        // alert("You've already posted a review this period. This will not count towards your total.");
       }
       else {
-        console.log("recording dining");
         setShowDiningNotif(true);
         createDining(values.diningHall, values.uid);
       }
-      // setReviews([...reviews, values]);
-      //   alert(JSON.stringify(values, null, 2));
+
       getReviews().then((reviews) => {
         setReviews(reviews);
       });
+
       actions.resetForm();
       resetDropdown();
     },
   });
 
+  /* conditional dropdown */
   const showAdditionalOptions = (filtertype) => {
     if (!filtertype || filtertype === "recency") {
       return;
@@ -241,7 +262,7 @@ export default function Review({ user }) {
               <Form.Group>
                 <Form.Label htmlFor="name">Name</Form.Label>
                 <Form.Control
-                  placeholder={user.displayName}
+                  placeholder={userDetails.name ? userDetails.name : "Anonymous"}
                   name="name"
                   id="name"
                   type="text"
@@ -343,7 +364,6 @@ export default function Review({ user }) {
                   review_sender={review.user}
                   review_dining={review.diningHall}
                   review_time={review.createdAt}
-                  // <p>{review.user}</p>
                 />
               </Col>
             );
@@ -353,3 +373,5 @@ export default function Review({ user }) {
     )
   );
 }
+
+export default Review;

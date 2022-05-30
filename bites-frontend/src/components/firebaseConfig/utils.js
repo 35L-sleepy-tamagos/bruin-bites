@@ -1,4 +1,12 @@
 import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+
+import {
   getDocs,
   query,
   doc,
@@ -11,15 +19,21 @@ import {
   where,
 } from "firebase/firestore";
 
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { auth } from "./firebase.js";
 
-import Review, { auth } from "./firebase.js";
+/* ========== REVIEW CLASS DECLARATION =========== */
+
+export default class Review {
+  constructor(title, body, rating, user, createdAt, diningHall, uid) {
+    this.title = title;
+    this.body = body;
+    this.rating = rating;
+    this.user = user;
+    this.createdAt = createdAt;
+    this.diningHall = diningHall;
+    this.uid = uid;
+  }
+}
 
 /* ========== HELPER FUNCTIONS =========== */
 
@@ -83,7 +97,6 @@ export async function createReview(review) {
     console.log(error);
   }
 }
-
 
 export async function getReviews() {
   const db = getFirestore();

@@ -1,22 +1,19 @@
-import { Modal, Card, Container } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 import { createDining } from "./firebaseConfig/utils.js";
 
-// TODO: add review form pop-up?
-// import { useState } from 'react';
+function VenueCard(props) {
 
-// import { Row, Col } from 'react-bootstrap';
-// add css later
-// TODO: make favorite places list components?
+  /* functions to navigate the difference pages */
+  /* used as onClick events */
+  const navigate = useNavigate();
 
-export default function VenueCard(props) {
+  function handleClick(path) {
+    navigate(path);
+  }
 
-  // toast.configure();
-
-  // const [show, setShow] = useState(false);
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
+  /* similar to handleClick, but for URLs */
   const openUrl = (url) => {
     const win = window.open(url, "_blank");
     if (win != null) {
@@ -24,12 +21,7 @@ export default function VenueCard(props) {
     }
   };
 
-  const navigate = useNavigate();
-
-  function handleClick(path) {
-    navigate(path);
-  }
-
+  /* utility */
   const recordDining = () => {
     createDining(props.name, props.user)
     alert(`${props.name} added to your Dining History!`)
@@ -69,3 +61,5 @@ export default function VenueCard(props) {
     </Card>
   );
 }
+
+export default VenueCard;

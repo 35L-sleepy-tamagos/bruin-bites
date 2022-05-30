@@ -1,23 +1,38 @@
+import "../css/Navbar.css";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../css/Navbar.css";
-import { getUsers } from "../components/firebaseConfig/utils.js";
-import Mascot from "../assets/mascot.png";
-import {
-  getStorage,
-  ref,
-  getDownloadURL,
-} from "firebase/storage";
-import ProfileImage from "../assets/placeholder.jpg";
+
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
 import { auth } from "../components/firebaseConfig/firebase";
+import { getUsers } from "../components/firebaseConfig/utils.js";
+
+import Mascot from "../assets/mascot.png";
+import ProfileImage from "../assets/placeholder.jpg";
 
 const Navbar = ({userDetails}) => {
 
+  /* functions to navigate the difference pages */
+  /* used as onClick events */
+  const navigate = useNavigate();
+
+  async function returnHome() {
+    setRefresh(true);
+    navigate("/");
+  }
+
+  async function seeProfile() {
+    setRefresh(true);
+    navigate("/profile");
+  }
+
+  /* stateful variables */
   const [userImage, setUserImage] = useState();
   const [locUserDetails, setLocUserDetails] = useState(userDetails);
+  let [mealPeriod, setPeriod] = useState("None Currently");
+  let [refresh, setRefresh] = useState(true);
 
-  var [refresh, setRefresh] = useState(false);
-
+  /* Refresh the local user details (to show profile picture) */
   useEffect(() => {
     if (!refresh) {
       return;
@@ -25,36 +40,36 @@ const Navbar = ({userDetails}) => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
         setLocUserDetails([]);
+        setUserImage(ProfileImage);
       }
       getUsers(userDetails.uid).then((userDetails) => {
         setLocUserDetails(userDetails);
+        console.log("getting image");
+        if (locUserDetails.length === 0) {
+          console.log("setting to defailt");
+          setUserImage(ProfileImage);
+          return;
+        }
+        if (locUserDetails.image && locUserDetails.image.startsWith("https://")) {
+              setUserImage(locUserDetails.image);
+        } 
+        else {
+          const storage = getStorage();
+          getDownloadURL(
+            ref(storage, locUserDetails.uid + "/" + locUserDetails.image)
+          ).then((url) => {
+            setUserImage(url);
+          });
+        }
       });
       setRefresh(false);
       console.log("refreshing");
     })
   }, [refresh, userDetails.uid, locUserDetails])
 
-  useEffect(() => {
-    console.log("getting image");
-    if (locUserDetails.length === 0) {
-      console.log("setting to defailt");
-      setUserImage(ProfileImage);
-      return;
-    }
-    if (locUserDetails.image && locUserDetails.image.startsWith("https://")) {
-          setUserImage(locUserDetails.image);
-      } 
-    else {
-      const storage = getStorage();
-      getDownloadURL(
-        ref(storage, locUserDetails.uid + "/" + locUserDetails.image)
-      ).then((url) => {
-        setUserImage(url);
-      });
-    }
-  }, [refresh]);
+  /* a really long and prob overcomplicated way to get the time until
+    next meal */
 
-  let [mealPeriod, setPeriod] = useState("None Currently");
   let d;
   let hours;
   let mins;
@@ -156,6 +171,7 @@ const Navbar = ({userDetails}) => {
     setPeriod(mealPeriod);
   }
 
+  /* refetch the date every 500ms to account for some time offset */
   useEffect(() => {
     const interval = setInterval(() => {
       showDate();
@@ -163,18 +179,6 @@ const Navbar = ({userDetails}) => {
 
     return () => clearInterval(interval);
   });
-
-  const navigate = useNavigate();
-
-  async function returnHome() {
-    setRefresh(true);
-    navigate("/");
-  }
-
-  async function seeProfile() {
-    setRefresh(true);
-    navigate("/profile");
-  }
 
   return (
     <div className="nav-bg">
@@ -218,4 +222,5 @@ const Navbar = ({userDetails}) => {
     </div>
   );
 };
+
 export default Navbar;
