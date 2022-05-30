@@ -16,7 +16,7 @@ Another important thing about the website: it has night mode!
 
 
 **Recap of Features:**
-Menu Viewing | User Heat Map | Viewing/Posting Reviews with Optional Filters | Creating User Profile | Viewing Other User Profiles 
+Menu Viewing | User Heat Map | Viewing/Posting Reviews with Filters | Creating User Profile | Viewing Other User Profiles 
 ![Screenshot (202)](https://user-images.githubusercontent.com/68207907/170816359-5729207c-d30c-4fb8-a799-bb7febf198f5.png)
 
 ![Screenshot (201)](https://user-images.githubusercontent.com/68207907/170816420-45ef6d72-cc1a-49ae-8298-462cb42b4233.png)
