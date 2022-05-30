@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAlert } from "react-alert"
 import Select from "react-select"
 import {
   getReviews,
@@ -17,7 +16,11 @@ import { diningOptions } from "../components/VenueData";
 import {
   getHallReviews, 
   getRatingReviews,
+  createDining,
+  diningPeriod,
+  readableDate,
 } from "../components/firebaseConfig/utils.js";
+import { Timestamp } from "firebase/firestore";
 // import "./Review.css"
 
 // FOR CSS spacing: https://getbootstrap.com/docs/4.0/utilities/spacing/
@@ -45,6 +48,7 @@ const filterOptions = [
 ];
 
 export default function Review({ user }) {
+
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState("");
@@ -59,6 +63,26 @@ export default function Review({ user }) {
   }, [filter]);
 
   const [reviews, setReviews] = React.useState([]);
+  const [showDiningError, setShowDiningError] = React.useState(false);
+  const [showDiningNotif, setShowDiningNotif] = React.useState(false);
+
+  useEffect(() => {
+    if (!showDiningError) {
+      return;
+    }
+    setTimeout(function () {
+      setShowDiningError(false)
+    }, 5000)
+  }, [showDiningError]);
+
+  useEffect(() => {
+    if (!showDiningNotif) {
+      return;
+    }
+    setTimeout(function () {
+      setShowDiningNotif(false)
+    }, 5000)
+  }, [showDiningNotif]);
 
   /* initial getting of reviews */
   useEffect(() => {
@@ -96,6 +120,18 @@ export default function Review({ user }) {
 	}
   }, [filter, diningFilter, ratingFilter]);
 
+  // get user details bc that's useful lol
+  const [userDetails, setUserDetails] = useState([]);
+  useEffect(() => {
+    if (!auth.currentUser) {
+      return;
+    }
+    console.log("getting userdata");
+    getUsers(auth.currentUser.uid).then((userDetails) => {
+      setUserDetails(userDetails);
+    });
+  }, []);
+
   // Note that we have to initialize ALL of fields with values. These
   // could come from props, but since we don’t want to prefill this form,
   // we just use an empty string. If we don’t do this, React will yell
@@ -116,12 +152,12 @@ export default function Review({ user }) {
       time: "",
     },
     onSubmit: (values, actions) => {
-		if (!diningOption || !ratingOption) {
-			alert("Must enter a Dining Hall and Review!")
-			return;
-		}
-		values.diningHall = diningOption.label;
-		values.rating = ratingOption.label;
+      if (!diningOption || !ratingOption) {
+        alert("Must enter a Dining Hall and Review!")
+        return;
+      }
+      values.diningHall = diningOption.label;
+      values.rating = ratingOption.label;
       // values.user = userName;
       if (!values.name) {
         values.name = user.displayName;
@@ -144,6 +180,19 @@ export default function Review({ user }) {
       }
       values.uid = user.uid;
       createReview(values);
+      const timeString = readableDate(Timestamp.now().toDate());
+      console.log("timestring: " + timeString);
+      const diningTime = diningPeriod(timeString);
+      console.log("dining time: " + diningTime);
+      if (diningTime === userDetails.lastDining) {
+        setShowDiningError(true);
+        // alert("You've already posted a review this period. This will not count towards your total.");
+      }
+      else {
+        console.log("recording dining");
+        setShowDiningNotif(true);
+        createDining(values.diningHall, values.uid);
+      }
       // setReviews([...reviews, values]);
       //   alert(JSON.stringify(values, null, 2));
       getReviews().then((reviews) => {
@@ -253,6 +302,13 @@ export default function Review({ user }) {
               <Button variant="primary" type="submit">
                 Submit
               </Button>
+
+              <div className="mt-3 mb-3" style={{color: "#B52121"}}>
+                {showDiningError ? <div>You've already posted a review this period. This will not count towards your total.</div> : <></>}
+              </div>
+              <div className="mt-3 mb-3" style={{color: "#B52121"}}>
+                {showDiningNotif ? <div>Your Review has been Recorded!</div> : <></>}
+              </div>
             </Form>
           </Col>
         </Row>

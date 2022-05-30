@@ -54,7 +54,7 @@ export default function DiningHistory() {
             <Row className="py-5 mx-0 bg-light">
                 <Col className="mt-3">
                     {/*add formatting here plz*/}
-                    {meals.map((meal, i) => 
+                    {[...meals].reverse().map((meal, i) => 
                     {
                         return (
                             <Col key={i} className="px-0 col-12 gy-3">

@@ -11,6 +11,9 @@ import { createDining } from "./firebaseConfig/utils.js";
 // TODO: make favorite places list components?
 
 export default function VenueCard(props) {
+
+  // toast.configure();
+
   // const [show, setShow] = useState(false);
   // const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
@@ -25,6 +28,11 @@ export default function VenueCard(props) {
 
   function handleClick(path) {
     navigate(path);
+  }
+
+  const recordDining = () => {
+    createDining(props.name, props.user)
+    alert(`${props.name} added to your Dining History!`)
   }
 
   return (
@@ -50,7 +58,7 @@ export default function VenueCard(props) {
             Menu
           </Button>
           <Button
-            onClick={() => createDining(props.name, props.user)}
+            onClick={() => recordDining()}
             variant="secondary"
             size="lg"
           >
