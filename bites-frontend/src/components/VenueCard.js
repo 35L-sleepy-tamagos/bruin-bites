@@ -27,6 +27,11 @@ function VenueCard(props) {
     alert(`${props.name} added to your Dining History!`)
   }
 
+  const path = (hall) => {
+    let noSpaces = hall.split(" ").join("").toLowerCase();
+    return "/" + noSpaces;
+  }
+
   return (
     <Card style={{ height: "30rem" }}>
       <Card.Img
@@ -38,8 +43,8 @@ function VenueCard(props) {
         {props.name}
       </Card.Header>
       <Card.Body>
-        <div className="d-grid gap-2 ">
-          <Button size="lg" onClick={() => handleClick("/reviews")}>
+        <div className="d-grid gap-2">
+          <Button size="lg" onClick={() => handleClick(path(props.name))}>
             Details
           </Button>
           <Button

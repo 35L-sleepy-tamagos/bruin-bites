@@ -9,6 +9,8 @@ import { ThemeProvider } from "styled-components";
 import { auth } from "./components/firebaseConfig/firebase.js";
 import { getUsers, } from "./components/firebaseConfig/utils.js";
 
+import { venues } from "./components/VenueData.js";
+
 /* yo that's a lotta pages */
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -20,6 +22,9 @@ import Register from "./pages/Register";
 import Venue from "./pages/Venue";
 import EditProfile from "./pages/EditProfile";
 import DiningHistory from "./pages/DiningHistory";
+
+/* venue pages */
+import VenuePage from "./pages/VenuePage";
 
 const LightTheme = {
   padding: "0.25em 1em",
@@ -81,6 +86,14 @@ function App() {
         <Route path="/venue" element={<Venue />}></Route>
         <Route path="/edit-profile" element={<EditProfile />}></Route>
         <Route path="/dining-history" element={<DiningHistory />}></Route>
+        <Route path="/deneve" element={<VenuePage diningData={venues[0]} user={user}/>}></Route>
+        <Route path="/epicuria" element={<VenuePage diningData={venues[1]} user={user}/>}></Route>
+        <Route path="/bruinplate" element={<VenuePage diningData={venues[2]} user={user}/>}></Route>
+        <Route path="/thefeast" element={<VenuePage diningData={venues[3]} user={user}/>}></Route>
+        <Route path="/rendezvous" element={<VenuePage diningData={venues[4]} user={user}/>}></Route>
+        <Route path="/thestudy" element={<VenuePage diningData={venues[5]} user={user}/>}></Route>
+        <Route path="/bruincafe" element={<VenuePage diningData={venues[6]} user={user}/>}></Route>
+        <Route path="/thedrey" element={<VenuePage diningData={venues[7]} user={user}/>}></Route>
       </Routes>
     </Router>
   );

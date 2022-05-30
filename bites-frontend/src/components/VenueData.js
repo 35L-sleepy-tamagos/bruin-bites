@@ -22,7 +22,7 @@ export const venues = [
 			link: "http://menu.dining.ucla.edu/Menus/FeastAtRieber/",
 		},
 		{
-			name: "Rendevous",
+			name: "Rendezvous",
 			image: "https://menu.dining.ucla.edu/Content/Images/Menus/Rendezvous/rendezvous-logo.png",
 			link: "http://menu.dining.ucla.edu/Menus/Rendezvous/",
 		},
@@ -48,7 +48,7 @@ export const diningOptions = [
     {value:"epi", label:"Epicuria"},
     {value:"bplate", label:"Bruin Plate"},
     {value:"feast", label:"Feast at Rieber"},
-    {value:"rende", label:"Rendevous"},
+    {value:"rende", label:"Rendezvous"},
     {value:"study", label:"The Study at Hedrick"},
     {value:"bcafe", label:"Bruin Cafe"},
     {value:"drey", label:"The Drey"},

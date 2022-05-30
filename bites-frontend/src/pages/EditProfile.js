@@ -17,7 +17,7 @@ const options = [
   { value: "epi", label: "Epicuria" },
   { value: "bplate", label: "Bruin Plate" },
   { value: "feast", label: "Feast at Rieber" },
-  { value: "rende", label: "Rendevous" },
+  { value: "rende", label: "Rendezvous" },
   { value: "study", label: "The Study at Hedrick" },
   { value: "bcafe", label: "Bruin Cafe" },
   { value: "drey", label: "The Drey" },
