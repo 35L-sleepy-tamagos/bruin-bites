@@ -7,7 +7,6 @@ import { Container, Button } from "react-bootstrap";
 import { auth } from "../components/firebaseConfig/firebase";
 import { getUsers,getUserMeals } from "../components/firebaseConfig/utils.js";
 
-import "../css/DiningHistory.css";
 
 function DiningHistory() {
 
