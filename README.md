@@ -10,9 +10,8 @@ $ cd bites-frontend
 $ npm install
 $ npm start
 ```
-Bruin Bites is a website that allows UCLA students to more easily connect with their friends through food! Right off the bat, a new user can use the website to view what each restaurant/take-out option is serving, view their respective ratings, and even make them themselves. However, if a user wants to become more involved, they can make their own user profile that will give the user their own distinct flair and track their activity/contributions to the website. This includes displaying a quick description of themselves, their favorite places to eat, and the ratings they have written.
-
-Another important thing about the website: it has night mode!
+**Description**
+Bruin Bites is a website that allows UCLA students to more easily connect with their friends through food! Right off the bat, a new user can use the website to view what each restaurant/take-out option is serving, view their respective ratings, and even make them themselves. However, if a user wants to become more involved, they can make their own user profile that will give the user their own distinct flair and track their activity/contributions to the website. This includes displaying a quick description of themselves, their favorite places to eat, and the ratings they have written. To add onto the user experience, the website also has night mode!
 
 
 **Recap of Features:**
