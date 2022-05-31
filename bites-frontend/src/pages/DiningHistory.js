@@ -7,6 +7,8 @@ import { Container, Button } from "react-bootstrap";
 import { auth } from "../components/firebaseConfig/firebase";
 import { getUsers,getUserMeals } from "../components/firebaseConfig/utils.js";
 
+import "../css/DiningHistory.css";
+
 function DiningHistory() {
 
     const navigate = useNavigate();
@@ -46,7 +48,7 @@ function DiningHistory() {
             <Col>
                 <h1 className="fs-1">Dining History</h1>
             </Col>
-
+            <div className = "dining_menu">
             <Row className="py-5 mx-0 bg-light">
                 <Col className="mt-3">
                     {[...meals].reverse().map((meal, i) => 
@@ -60,6 +62,7 @@ function DiningHistory() {
                     })}
                 </Col>
             </Row>
+            </div>
             <Row>
                 <Col className="mx-0 my-5 d-grid gap-2">
                     <Button

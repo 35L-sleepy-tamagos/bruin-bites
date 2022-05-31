@@ -5,7 +5,6 @@ import { getHallReviews, createDining } from "../components/firebaseConfig/utils
 
 import ReviewCard from "../components/ReviewCard";
 
-import "../css/VenuePage.css";
 
 function VenuePage({ diningData, user }) {
 
