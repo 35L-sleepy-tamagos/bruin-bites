@@ -55,11 +55,12 @@ function App() {
     auth.onAuthStateChanged((user) => {
       if (!user) {
         console.log("no user");
+        setUser(null);
         return;
       }
       setUser(user);
     });
-  }, []);
+  });
 
   return (
     <Router>

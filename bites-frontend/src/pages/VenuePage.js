@@ -13,7 +13,7 @@ function VenuePage({ diningData, user }) {
 
     const name = diningData.name;
     const menuLink = diningData.link;
-    const img = diningData.image;
+    // const img = diningData.image;
 
     /* initial getting of reviews */
     useEffect(() => {
@@ -24,6 +24,10 @@ function VenuePage({ diningData, user }) {
 
     /* utility */
     const recordDining = () => {
+        if (!user) {
+            alert("You must be logged in to use this feature!")
+            return;
+          }
         createDining(name, user.uid);
         alert(`${name} added to your Dining History!`)
     }

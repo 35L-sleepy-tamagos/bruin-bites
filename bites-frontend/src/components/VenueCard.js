@@ -23,6 +23,11 @@ function VenueCard(props) {
 
   /* utility */
   const recordDining = () => {
+    console.log(props.user);
+    if (!props.user) {
+      alert("You must be logged in to use this feature!")
+      return;
+    }
     createDining(props.name, props.user)
     alert(`${props.name} added to your Dining History!`)
   }
