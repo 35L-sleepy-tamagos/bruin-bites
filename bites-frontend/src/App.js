@@ -74,7 +74,7 @@ function App() {
           element={user ? <Review user={user} /> : <SignIn />}
         ></Route>
         <Route path="/profile" element={<Profile />}></Route>
-        <Route path="/map" element={<Map />}></Route>
+        <Route path="/map" element={<Map user={user} />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/venue" element={<Venue />}></Route>
