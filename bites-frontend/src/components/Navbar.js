@@ -41,7 +41,7 @@ const Navbar = ({ user }) => {
         setProfileImage(user.photoURL);
       }
       else {
-        setProfileImage(localProfile);
+        setProfileImage(ProfileImage);
       }
     })
   }, [])
