@@ -44,7 +44,7 @@ function EditProfile() {
   /* allow the user to change their pfp */
   const editImage = async (image) => {
     if (!image) {
-      return false;
+      return true;
     }
 
     const storage = getStorage();
