@@ -5,10 +5,10 @@ Edward Hwang | Henry Wang | Derek Jiang | Jordan Lin | Jonah Kim
 
 **Usage**
 ```
-$ git clone SSH
-$ cd bites-frontend
-$ npm install
-$ npm start
+git clone https://github.com/35L-sleepy-tamagos/bruin-bites.git
+cd bites-frontend
+npm install
+npm start
 ```
 **Description**
 
