@@ -38,7 +38,7 @@ function VenuePage({ diningData, user }) {
                 <iframe 
                     title="menu" 
                     src={menuLink}
-                    width="960"
+                    width="100%"
                     /*changed height of embedded menu*/
                     height="500"
                     /*changed class names for margin spacing*/
