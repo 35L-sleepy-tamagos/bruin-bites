@@ -9,6 +9,7 @@ import { getUsers } from "../components/firebaseConfig/utils.js";
 
 import Mascot from "../assets/mascot.png";
 import ProfileImage from "../assets/profileImage.png";
+import localProfile from "../assets/placeholder.jpg"
 
 const Navbar = ({ user }) => {
   /* functions to navigate the difference pages */
@@ -36,7 +37,12 @@ const Navbar = ({ user }) => {
         setProfileImage(ProfileImage)
         return;
       }
-      setProfileImage(user.photoURL);
+      if (user.photoURL) {
+        setProfileImage(user.photoURL);
+      }
+      else {
+        setProfileImage(localProfile);
+      }
     })
   }, [])
 
