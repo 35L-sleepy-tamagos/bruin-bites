@@ -10,8 +10,7 @@ import { getUsers } from "../components/firebaseConfig/utils.js";
 import Mascot from "../assets/mascot.png";
 import ProfileImage from "../assets/placeholder.jpg";
 
-const Navbar = ({userDetails}) => {
-
+const Navbar = ({ user }) => {
   /* functions to navigate the difference pages */
   /* used as onClick events */
   const navigate = useNavigate();
@@ -27,45 +26,8 @@ const Navbar = ({userDetails}) => {
   }
 
   /* stateful variables */
-  const [userImage, setUserImage] = useState();
-  const [locUserDetails, setLocUserDetails] = useState(userDetails);
   let [mealPeriod, setPeriod] = useState("None Currently");
   let [refresh, setRefresh] = useState(true);
-
-  /* Refresh the local user details (to show profile picture) */
-  useEffect(() => {
-    if (!refresh) {
-      return;
-    }
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        setLocUserDetails([]);
-        setUserImage(ProfileImage);
-      }
-      getUsers(userDetails.uid).then((userDetails) => {
-        setLocUserDetails(userDetails);
-        console.log("getting image");
-        if (locUserDetails.length === 0) {
-          console.log("setting to defailt");
-          setUserImage(ProfileImage);
-          return;
-        }
-        if (locUserDetails.image && locUserDetails.image.startsWith("https://")) {
-              setUserImage(locUserDetails.image);
-        } 
-        else {
-          const storage = getStorage();
-          getDownloadURL(
-            ref(storage, locUserDetails.uid + "/" + locUserDetails.image)
-          ).then((url) => {
-            setUserImage(url);
-          });
-        }
-      });
-      setRefresh(false);
-      console.log("refreshing");
-    })
-  }, [refresh, userDetails.uid, locUserDetails])
 
   /* a really long and prob overcomplicated way to get the time until
     next meal */
@@ -181,45 +143,63 @@ const Navbar = ({userDetails}) => {
   });
 
   return (
-    <div className="nav-bg">
-      <li className="expand">
-        <img src={Mascot} className="logo" alt="Logo" onClick={returnHome}></img>
-      </li>
-      <li className="expand">
-        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-          Home
-        </Link>
-      </li>
-      <li className="expand">
-        <Link to="/reviews" style={{ textDecoration: "none", color: "white" }}>
-          Reviews
-        </Link>
-      </li>
-      <li className="expand">
-        <Link to="/map" style={{ textDecoration: "none", color: "white" }}>
-          Map
-        </Link>
-      </li>
-      <li className="expand">
-        <Link to="/profile" style={{ textDecoration: "none", color: "white" }}>
-          Profile
-        </Link>
-      </li>
-      <li className="expand">
-        <Link to="/venue" style={{ textDecoration: "none", color: "white" }}>
-          TODO
-        </Link>
-      </li>
-      <div
-        className="Meal-Period"
-        style={{ textDecoration: "none", color: "white" }}
-      >
-        {mealPeriod}
+    user && (
+      <div className="nav-bg">
+        <li className="expand">
+          <img
+            src={Mascot}
+            className="logo"
+            alt="Logo"
+            onClick={returnHome}
+          ></img>
+        </li>
+        <li className="expand">
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            Home
+          </Link>
+        </li>
+        <li className="expand">
+          <Link
+            to="/reviews"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            Reviews
+          </Link>
+        </li>
+        <li className="expand">
+          <Link to="/map" style={{ textDecoration: "none", color: "white" }}>
+            Map
+          </Link>
+        </li>
+        <li className="expand">
+          <Link
+            to="/profile"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            Profile
+          </Link>
+        </li>
+        <li className="expand">
+          <Link to="/venue" style={{ textDecoration: "none", color: "white" }}>
+            TODO
+          </Link>
+        </li>
+        <div
+          className="Meal-Period"
+          style={{ textDecoration: "none", color: "white" }}
+        >
+          {mealPeriod}
+        </div>
+        <div>
+          <img
+            src={user.photoURL}
+            className="profile-image expand"
+            alt="Profile"
+            onClick={seeProfile}
+          ></img>
+        </div>
       </div>
-      <div>
-        <img src={userImage} className="profile-image expand" alt="Profile" onClick={ seeProfile }></img>
-      </div>
-    </div>
+    )
   );
 };
 

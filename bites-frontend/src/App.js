@@ -7,7 +7,7 @@ import Splash from "./components/SplashScreen";
 import { ThemeProvider } from "styled-components";
 
 import { auth } from "./components/firebaseConfig/firebase.js";
-import { getUsers, } from "./components/firebaseConfig/utils.js";
+import { getUsers } from "./components/firebaseConfig/utils.js";
 
 import { venues } from "./components/VenueData.js";
 
@@ -46,30 +46,24 @@ const themes = {
 };
 
 function App() {
-
   /* stateful variables */
   const [theme, setTheme] = useState("light");
   const [user, setUser] = useState(null);
-  const [userDetails, setUserDetails] = useState([]);
 
   /* on render, get the user details */
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
-        setUserDetails([]);
         console.log("no user");
         return;
       }
       setUser(user);
-      getUsers(user.uid).then((userDetails) => {
-        setUserDetails(userDetails);
-      });
     });
-  }, []); 
+  }, []);
 
   return (
     <Router>
-      <Navbar userDetails={ userDetails }/>
+      <Navbar user={user} />
       <ThemeProvider theme={themes[theme]}>
         <Splash theme={theme} setTheme={setTheme} />
       </ThemeProvider>
@@ -86,14 +80,38 @@ function App() {
         <Route path="/venue" element={<Venue />}></Route>
         <Route path="/edit-profile" element={<EditProfile />}></Route>
         <Route path="/dining-history" element={<DiningHistory />}></Route>
-        <Route path="/deneve" element={<VenuePage diningData={venues[0]} user={user}/>}></Route>
-        <Route path="/epicuria" element={<VenuePage diningData={venues[1]} user={user}/>}></Route>
-        <Route path="/bruinplate" element={<VenuePage diningData={venues[2]} user={user}/>}></Route>
-        <Route path="/thefeast" element={<VenuePage diningData={venues[3]} user={user}/>}></Route>
-        <Route path="/rendezvous" element={<VenuePage diningData={venues[4]} user={user}/>}></Route>
-        <Route path="/thestudy" element={<VenuePage diningData={venues[5]} user={user}/>}></Route>
-        <Route path="/bruincafe" element={<VenuePage diningData={venues[6]} user={user}/>}></Route>
-        <Route path="/thedrey" element={<VenuePage diningData={venues[7]} user={user}/>}></Route>
+        <Route
+          path="/deneve"
+          element={<VenuePage diningData={venues[0]} user={user} />}
+        ></Route>
+        <Route
+          path="/epicuria"
+          element={<VenuePage diningData={venues[1]} user={user} />}
+        ></Route>
+        <Route
+          path="/bruinplate"
+          element={<VenuePage diningData={venues[2]} user={user} />}
+        ></Route>
+        <Route
+          path="/thefeast"
+          element={<VenuePage diningData={venues[3]} user={user} />}
+        ></Route>
+        <Route
+          path="/rendezvous"
+          element={<VenuePage diningData={venues[4]} user={user} />}
+        ></Route>
+        <Route
+          path="/thestudy"
+          element={<VenuePage diningData={venues[5]} user={user} />}
+        ></Route>
+        <Route
+          path="/bruincafe"
+          element={<VenuePage diningData={venues[6]} user={user} />}
+        ></Route>
+        <Route
+          path="/thedrey"
+          element={<VenuePage diningData={venues[7]} user={user} />}
+        ></Route>
       </Routes>
     </Router>
   );
