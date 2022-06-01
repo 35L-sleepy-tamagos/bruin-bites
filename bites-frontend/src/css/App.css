@@ -8,7 +8,7 @@
 /* :root, dark, and body styling inspired from https://codesandbox.io/s/dry-meadow-64786?from-embed=&file=/src/DarkMode.tsx */
 /*decides background color of light. UCLA BLUE: #2774AE*/
 :root {
-  --font-color: #333;
+  --font-color: rgb(0, 0, 0);
   --background-color: #ded9fa;
   --link-color: cornflowerblue;
 }
@@ -29,6 +29,9 @@ h1 {
   font-weight: bold !important;
   font-size: 40px !important;
   color: var(--font-color) !important;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgb(255, 255, 255);
 }
 
 #imageContainer {
