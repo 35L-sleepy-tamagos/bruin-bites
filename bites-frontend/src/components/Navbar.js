@@ -8,7 +8,7 @@ import { auth } from "../components/firebaseConfig/firebase";
 import { getUsers } from "../components/firebaseConfig/utils.js";
 
 import Mascot from "../assets/mascot.png";
-import ProfileImage from "../assets/placeholder.jpg";
+import ProfileImage from "../assets/profileImage.png";
 
 const Navbar = ({ user }) => {
   /* functions to navigate the difference pages */
@@ -16,21 +16,30 @@ const Navbar = ({ user }) => {
   const navigate = useNavigate();
 
   async function returnHome() {
-    setRefresh(true);
     navigate("/");
   }
 
   async function seeProfile() {
-    setRefresh(true);
     navigate("/profile");
   }
 
   /* stateful variables */
   let [mealPeriod, setPeriod] = useState("None Currently");
-  let [refresh, setRefresh] = useState(true);
+  let [profileImage, setProfileImage] = useState(ProfileImage)
 
   /* a really long and prob overcomplicated way to get the time until
     next meal */
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        setProfileImage(ProfileImage)
+        return;
+      }
+      setProfileImage(user.photoURL);
+    })
+  }, [])
+
 
   let d;
   let hours;
@@ -143,7 +152,6 @@ const Navbar = ({ user }) => {
   });
 
   return (
-    user && (
       <div className="nav-bg">
         <li className="expand">
           <img
@@ -192,7 +200,7 @@ const Navbar = ({ user }) => {
         </div>
         <div>
           <img
-            src={user.photoURL}
+            src={profileImage}
             className="profile-image expand"
             alt="Profile"
             onClick={seeProfile}
@@ -200,7 +208,6 @@ const Navbar = ({ user }) => {
         </div>
       </div>
     )
-  );
 };
 
 export default Navbar;
