@@ -45,7 +45,7 @@ export const readableDate = (dateParam) => {
   var subscript = timeArr[0] < 12 ? "AM" : "PM";
   var hourNum = (timeArr[0] % 12 < 10 ? "0" : "") + (timeArr[0] % 12);
   var time = `${hourNum}:${timeArr[1]}`;
-  return `${time} ${subscript} -- ${date}`;
+  return `${time} ${subscript} - ${date}`;
 };
 
 export function diningPeriod(diningTime) {
@@ -55,17 +55,14 @@ export function diningPeriod(diningTime) {
   /* covering even non-period times to account for late reviews */
   if (hour >= 7 && hour < 11 && period === "AM") {
     mealPeriod = "B";
-  }
-  else if ((hour >= 11 && period === "AM") || (hour < 5 && period === "PM")) {
+  } else if ((hour >= 11 && period === "AM") || (hour < 5 && period === "PM")) {
     mealPeriod = "L";
-  }
-  else if (hour >= 5 && hour < 9 && period === "PM") {
+  } else if (hour >= 5 && hour < 9 && period === "PM") {
     mealPeriod = "D";
-  }
-  else {
+  } else {
     mealPeriod = "ED";
   }
-  const date = diningTime.substring(12)
+  const date = diningTime.substring(12);
   return mealPeriod + date;
 }
 
@@ -84,7 +81,7 @@ export async function createReview(review) {
       diningHall: review.diningHall,
       user: review.name,
       uid: review.uid,
-      createdAt: time
+      createdAt: time,
     });
     const docRef = doc(db, "users", review.uid);
     const docSnap = await getDoc(docRef);
