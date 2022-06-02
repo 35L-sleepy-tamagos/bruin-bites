@@ -89,7 +89,6 @@ function Map({ user }) {
           .reverse();
         return location;
       });
-      /*console.log(locationsWithSize);*/
       setLocations(locationsWithSize);
     });
   }, [user]);

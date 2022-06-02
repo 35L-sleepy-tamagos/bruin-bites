@@ -23,10 +23,8 @@ function DiningHistory() {
     useEffect(() => {
         const user = auth.currentUser;
         if (!user) {
-            console.log("no user");
             return;
         }
-        console.log("getting userdata!");
         getUsers(user.uid).then((userDetails) => {
             setUserDetails(userDetails);
         });
