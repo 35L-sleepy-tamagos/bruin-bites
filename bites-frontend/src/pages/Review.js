@@ -198,7 +198,7 @@ function Review({ user }) {
         return;
       }
 
-      values.uid = user.uid;
+      values.uid = user ? user.uid : 0;
       const prevLastDining = userDetails.lastDining
       createReview(values).then(() => {
         setRefetchUser(true);
@@ -211,7 +211,9 @@ function Review({ user }) {
       }
       else {
         setShowDiningNotif(true);
-        createDining(values.diningHall, values.uid);
+        if (user) {
+          createDining(values.diningHall, values.uid);
+        }
       }
 
       getReviews().then((reviews) => {
@@ -249,7 +251,6 @@ function Review({ user }) {
   };
 
   return (
-    user && (
       <Container>
         <Row>
           <Col className="mb-3">
@@ -371,7 +372,6 @@ function Review({ user }) {
         </Row>
       </Container>
     )
-  );
 }
 
 export default Review;

@@ -58,7 +58,6 @@ function App() {
         return;
       }
       setUser(user);
-      console.log(user);
     });
   });
 
@@ -72,7 +71,7 @@ function App() {
         <Route path="/" element={<Home user={user} />}></Route>
         <Route
           path="/reviews"
-          element={user ? <Review user={user} /> : <SignIn />}
+          element={<Review user={user} />}
         ></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/map" element={<Map user={user} />}></Route>
