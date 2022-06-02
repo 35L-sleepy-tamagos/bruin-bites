@@ -195,4 +195,4 @@ function Map({ user }) {
   );
 }
 
-export default React.memo(Map);
+export default Map;
