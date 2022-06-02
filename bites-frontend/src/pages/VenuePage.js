@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Container, Row, Col, Button, Image } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 import { getHallReviews, createDining } from "../components/firebaseConfig/utils";
 
@@ -61,7 +61,7 @@ function VenuePage({ diningData, user }) {
                 <h2 className="d-flex justify-content-center">
                     Average Rating {avgRating} / 5
                 </h2>
-                <div class="embedded_menu">
+                <div className="embedded_menu">
                 <iframe 
                     title="menu" 
                     src={menuLink}

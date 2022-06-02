@@ -7,7 +7,6 @@ import Splash from "./components/SplashScreen";
 import { ThemeProvider } from "styled-components";
 
 import { auth } from "./components/firebaseConfig/firebase.js";
-import { getUsers } from "./components/firebaseConfig/utils.js";
 
 import { venues } from "./components/VenueData.js";
 
