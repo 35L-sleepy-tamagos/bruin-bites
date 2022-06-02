@@ -44,7 +44,7 @@ const initialLocations = [
     url: "/bruinplate",
   },
   {
-    name: "Feast",
+    name: "Feast at Rieber",
     lat: 34.0716303,
     lng: -118.4513632,
     visible: false,
@@ -82,16 +82,17 @@ const initialLocations = [
 function Map({ user }) {
   const [locations, setLocations] = useState([]);
   useEffect(() => {
-    getUserMeals(user?.uid).then((reviews) => {
-      const locationsWithSize = initialLocations.map((location) => {
-        location.size = reviews
-          .filter((review) => review.location === location.name)
-          .reverse();
-        return location;
+    if (user) {
+      getUserMeals(user?.uid).then((reviews) => {
+        const locationsWithSize = initialLocations.map((location) => {
+          location.size = reviews
+            .filter((review) => review.location === location.name)
+            .reverse();
+          return location;
+        });
+        setLocations(locationsWithSize);
       });
-      /*console.log(locationsWithSize);*/
-      setLocations(locationsWithSize);
-    });
+    }
   }, [user]);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
