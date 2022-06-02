@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import { auth } from "../components/firebaseConfig/firebase";
-import { logout, getUsers, getUserReviews } from "../components/firebaseConfig/utils.js";
+import {
+  logout,
+  getUsers,
+  getUserReviews,
+} from "../components/firebaseConfig/utils.js";
 
 import ReviewCard from "../components/ReviewCard.js";
 import SignIn from "./SignIn";
@@ -14,7 +18,6 @@ import SignIn from "./SignIn";
 import ProfileImage from "../assets/placeholder.jpg";
 
 function Profile() {
-
   /* navigation functions */
   const navigate = useNavigate();
 
@@ -32,7 +35,7 @@ function Profile() {
   }
 
   /* stateful variables */
-  const [reviews, setReviews] = React.useState([]); 
+  const [reviews, setReviews] = React.useState([]);
   const [userDetails, setUserDetails] = useState([]);
   const [userImage, setUserImage] = useState();
 
@@ -53,9 +56,8 @@ function Profile() {
       return;
     }
     if (userDetails.image && userDetails.image.startsWith("https://")) {
-          setUserImage(userDetails.image);
-    } 
-    else {
+      setUserImage(userDetails.image);
+    } else {
       const storage = getStorage();
       getDownloadURL(
         ref(storage, userDetails.uid + "/" + userDetails.image)
@@ -66,7 +68,7 @@ function Profile() {
     getUserReviews(userDetails.uid).then((reviews) => {
       setReviews(reviews);
     });
-  }, [userDetails])
+  }, [userDetails]);
 
   if (auth.currentUser) {
     const image = userImage ? userImage : ProfileImage;
@@ -82,7 +84,7 @@ function Profile() {
       : "None Yet...";
     const numReviews = userDetails?.reviews?.length;
     const numDining = userDetails?.dining?.length;
-    
+
     /* wtf conditional jsx return lmao */
     /*edit w-75 part of <p> div to change character limit*/
     return (
@@ -101,9 +103,8 @@ function Profile() {
           <Col className="mt-3">
             <h3>Favorite Places</h3>
 
-                <p> &nbsp;&nbsp;{place1} </p>
-                <p> &nbsp;&nbsp;{place2} </p>
-
+            <p> &nbsp;&nbsp;{place1} </p>
+            <p> &nbsp;&nbsp;{place2} </p>
           </Col>
           <Col className="mt-3">
             <h3>Profile Activity</h3>
@@ -112,8 +113,8 @@ function Profile() {
           </Col>
         </Row>
         <Col>
-            <h1 className="mt-5 fs-1">Posted Reviews</h1>
-          </Col>
+          <h1 className="mt-5 fs-1">Posted Reviews</h1>
+        </Col>
 
         <Row className="mt-5">
           <Col className="">
@@ -152,7 +153,7 @@ function Profile() {
               onClick={() => seeHistory()}
             >
               See your Dining History!
-          </Button>
+            </Button>
             <Button
               variant="danger"
               className="btn"
@@ -165,10 +166,9 @@ function Profile() {
         </Row>
       </Container>
     );
-  } 
-  else {
+  } else {
     return <SignIn />;
   }
 }
 
-export default Profile
+export default Profile;
