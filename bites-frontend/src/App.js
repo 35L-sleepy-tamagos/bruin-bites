@@ -59,7 +59,7 @@ function App() {
       }
       setUser(user);
     });
-  });
+  }, []);
 
   return (
     <Router>
