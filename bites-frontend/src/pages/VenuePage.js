@@ -63,9 +63,9 @@ function VenuePage({ diningData, user }) {
 			<Row className="bg-light rounded">
 				<Col className="col-12 p-5 pt-2 fs-4">
 					<h2 className="d-flex justify-content-center mt-3">
-						Average Rating {avgRating} / 5
+					Average Rating: {avgRating} / 5
 					</h2>
-					<div className="d-grid gap-2">
+					{/* <div className="d-grid gap-2">
 						<Button 
 							variant="secondary" 
 							size="lg" 
@@ -74,7 +74,7 @@ function VenuePage({ diningData, user }) {
 							>
 							I ate here!
 						</Button>
-					</div>
+					</div> */}
 					<div className="embedded_menu">
 						<iframe 
 							title="menu" 
