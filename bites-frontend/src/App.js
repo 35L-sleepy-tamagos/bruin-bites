@@ -58,6 +58,7 @@ function App() {
         return;
       }
       setUser(user);
+      console.log(user);
     });
   });
 
@@ -78,7 +79,7 @@ function App() {
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/venue" element={<Venue />}></Route>
-        <Route path="/edit-profile" element={<EditProfile />}></Route>
+        <Route path="/edit-profile" element={<EditProfile googleAcc={user ? user.emailVerified : false}/>}></Route>
         <Route path="/dining-history" element={<DiningHistory />}></Route>
         <Route
           path="/deneve"

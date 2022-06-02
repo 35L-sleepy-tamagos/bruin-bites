@@ -23,7 +23,7 @@ const options = [
   { value: "drey", label: "The Drey" },
 ];
 
-function EditProfile() {
+function EditProfile( {googleAcc} ) {
 
   const navigate = useNavigate();
   
@@ -102,16 +102,20 @@ function EditProfile() {
                 value={formik.values.bio}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label htmlFor="img">Upload </Form.Label>
-              <Form.Control
-                name="img"
-                id="img"
-                type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-                className="input"
-              />
-            </Form.Group>
+            <div>
+              {!googleAcc && 
+                <Form.Group className="mb-3">
+                  <Form.Label htmlFor="img">Upload </Form.Label>
+                  <Form.Control
+                    name="img"
+                    id="img"
+                    type="file"
+                    onChange={(e) => setImage(e.target.files[0])}
+                    className="input"
+                  />
+                </Form.Group>
+              }
+            </div>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="favDining1">
                 Favorite Dining Hall 
