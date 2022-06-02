@@ -257,18 +257,18 @@ function Review({ user }) {
             <h1 className="fs-1">Review Page for Bruin Bites!</h1>
           </Col>
         </Row>
-        <Row className="bg-light">
+        <Row className="bg-light rounded">
           <Col className="col-12 p-5 fs-4">
             <Form onSubmit={formik.handleSubmit} className="px-3">
-              <Form.Group>
+              <Form.Group className="mb-3">
                 <Form.Label htmlFor="name">Name</Form.Label>
                 <Form.Control
+                  className="input review-field"
                   placeholder={userDetails.name ? userDetails.name : "Anonymous"}
                   name="name"
                   id="name"
                   type="text"
                   onChange={formik.handleChange}
-                  className="input"
                   value={formik.values.name}
                 />
               </Form.Group>
@@ -276,6 +276,7 @@ function Review({ user }) {
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="diningHall">Dining Hall</Form.Label>
                 <Select
+									className="review-field"
                   options={diningOptions}
                   value={diningOption}
                   onChange={(value) =>
@@ -313,6 +314,7 @@ function Review({ user }) {
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="rating">Rating</Form.Label>
                 <Select
+									className="review-field"
                   options={ratingOptions}
                   value={ratingOption}
                   onChange={(value) =>

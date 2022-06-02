@@ -93,7 +93,7 @@ function Profile() {
             <h1 className="fs-1">Welcome, {name}!</h1>
           </Col>
         </Row>
-        <Row className="py-5 mx-0 bg-light">
+        <Row className="py-5 mx-0 bg-light rounded">
           <Col className="px-3" align="center">
             <Image className="w-75" src={image} />
             <h3> {name} </h3>

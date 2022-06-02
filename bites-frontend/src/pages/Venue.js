@@ -26,7 +26,7 @@ function Review() {
 					<h1 className="fs-1">TODO: get name</h1>
 				</Col>
 			</Row>
-			<Row className="bg-light py-3">
+			<Row className="bg-light py-3 rounded">
 				<Col className="col-12 p-5">
 					<Container>
 						<Row>

@@ -48,7 +48,7 @@ function DiningHistory() {
                 <h1 className="fs-1">Dining History</h1>
             </Col>
             <div className = "dining_menu">
-            <Row className="py-5 mx-0 bg-light">
+            <Row className="py-5 mx-0 bg-light rounded">
                 <Col className="mt-3">
                     {[...meals].reverse().map((meal, i) => 
                     {

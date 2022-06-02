@@ -88,7 +88,7 @@ function EditProfile( {googleAcc} ) {
           <h1 className="fs-1">Edit your Bio!</h1>
         </Col>
       </Row>
-      <Row className="bg-light">
+      <Row className="bg-light rounded">
         <Col className="col-12 p-5 fs-4">
           <Form onSubmit={formik.handleSubmit} className="">
             <Form.Group className="mb-3">
