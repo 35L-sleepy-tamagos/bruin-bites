@@ -11,6 +11,8 @@ function VenuePage({ diningData, user }) {
     /* reviews */
     const [reviews, setReviews] = useState([]);
 
+    const [avgRating, setAvgRating] = useState("0");
+
     const name = diningData.name;
     const menuLink = diningData.link;
     // const img = diningData.image;
@@ -32,12 +34,33 @@ function VenuePage({ diningData, user }) {
         alert(`${name} added to your Dining History!`)
     }
 
+    useEffect(() => {
+        if (reviews.length === 0) {
+            return;
+        }
+        let ratings = [];
+        for (let i = 0; i < reviews.length; i++) {
+            let rating = parseInt(reviews[i].rating);
+            ratings.push(rating);
+        }
+        let sum = 0;
+        for (let i = 0; i < ratings.length; i++) {
+            sum += ratings[i];
+        }
+        sum /= ratings.length;
+        sum = sum.toString().substring(0,4);
+        setAvgRating(sum);
+    }, [reviews])
+
     return (
-        <Container className="col-md-8 offset-md-2 mt-3">
+        <Container className="d-flex col-md-8 offset-md-2 mt-3">
             <Col>
                 <h1>
                     { name } Menu
                 </h1>
+                <h2 className="d-flex justify-content-center">
+                    Average Rating {avgRating} / 5
+                </h2>
                 <div class="embedded_menu">
                 <iframe 
                     title="menu" 

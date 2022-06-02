@@ -94,7 +94,7 @@ function App() {
           element={<VenuePage diningData={venues[2]} user={user} />}
         ></Route>
         <Route
-          path="/thefeast"
+          path="/feast"
           element={<VenuePage diningData={venues[3]} user={user} />}
         ></Route>
         <Route
