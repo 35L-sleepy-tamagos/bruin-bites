@@ -53,7 +53,7 @@ function App() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
-        console.log("no user");
+        // console.log("no user");
         setUser(null);
         return;
       }
