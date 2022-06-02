@@ -352,7 +352,6 @@ function Review({ user }) {
         </Form.Group>
         <Form.Group
           className="mb-3"
-          warn={filter === "dining" || filter === "rating"}
         >
           <div>{showAdditionalOptions(filter)}</div>
         </Form.Group>

@@ -51,14 +51,17 @@ function App() {
 
   /* on render, get the user details */
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        console.log("no user");
-        setUser(null);
-        return;
+    const unlisten = auth.onAuthStateChanged(
+      user => {
+        console.log("setting a user");
+        user
+          ? setUser(user)
+          : setUser(null)
       }
-      setUser(user);
-    });
+    );
+    return () => {
+      unlisten();
+    }
   }, []);
 
   return (
