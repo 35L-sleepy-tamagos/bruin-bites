@@ -7,7 +7,6 @@ import Splash from "./components/SplashScreen";
 import { ThemeProvider } from "styled-components";
 
 import { auth } from "./components/firebaseConfig/firebase.js";
-import { getUsers } from "./components/firebaseConfig/utils.js";
 
 import { venues } from "./components/VenueData.js";
 
@@ -72,14 +71,14 @@ function App() {
         <Route path="/" element={<Home user={user} />}></Route>
         <Route
           path="/reviews"
-          element={user ? <Review user={user} /> : <SignIn />}
+          element={<Review user={user} />}
         ></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/map" element={<Map user={user} />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/venue" element={<Venue />}></Route>
-        <Route path="/edit-profile" element={<EditProfile />}></Route>
+        <Route path="/edit-profile" element={<EditProfile googleAcc={user ? user.emailVerified : false}/>}></Route>
         <Route path="/dining-history" element={<DiningHistory />}></Route>
         <Route
           path="/deneve"

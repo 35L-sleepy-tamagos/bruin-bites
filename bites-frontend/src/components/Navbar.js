@@ -9,7 +9,6 @@ import { getUsers } from "../components/firebaseConfig/utils.js";
 
 import Mascot from "../assets/mascot.png";
 import ProfileImage from "../assets/profileImage.png";
-import localProfile from "../assets/placeholder.jpg"
 
 const Navbar = ({ user }) => {
   /* functions to navigate the difference pages */
@@ -28,9 +27,6 @@ const Navbar = ({ user }) => {
   let [mealPeriod, setPeriod] = useState("None Currently");
   let [profileImage, setProfileImage] = useState(ProfileImage)
 
-  /* a really long and prob overcomplicated way to get the time until
-    next meal */
-
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
@@ -44,8 +40,10 @@ const Navbar = ({ user }) => {
         setProfileImage(ProfileImage);
       }
     })
-  }, [])
+  })
 
+  /* a really long and prob overcomplicated way to get the time until
+    next meal */
 
   let d;
   let hours;
@@ -191,11 +189,6 @@ const Navbar = ({ user }) => {
             style={{ textDecoration: "none", color: "white" }}
           >
             Profile
-          </Link>
-        </li>
-        <li className="expand">
-          <Link to="/venue" style={{ textDecoration: "none", color: "white" }}>
-            TODO
           </Link>
         </li>
         <div

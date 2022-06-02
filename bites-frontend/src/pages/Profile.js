@@ -56,7 +56,7 @@ function Profile() {
     }
     if (userDetails.image && userDetails.image.startsWith("https://")) {
           setUserImage(userDetails.image);
-      } 
+    } 
     else {
       const storage = getStorage();
       getDownloadURL(
