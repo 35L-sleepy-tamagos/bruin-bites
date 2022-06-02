@@ -191,11 +191,6 @@ const Navbar = ({ user }) => {
             Profile
           </Link>
         </li>
-        <li className="expand">
-          <Link to="/venue" style={{ textDecoration: "none", color: "white" }}>
-            TODO
-          </Link>
-        </li>
         <div
           className="Meal-Period"
           style={{ textDecoration: "none", color: "white" }}
