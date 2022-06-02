@@ -116,7 +116,6 @@ function Profile() {
             <p> {numDining} Meals recorded</p>
           </Col>
         </Row>
-
         <Col>
             <h1 className="mt-5 fs-1">Posted Reviews</h1>
           </Col>
