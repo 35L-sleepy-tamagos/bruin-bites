@@ -9,8 +9,8 @@
 /*decides background color of light. UCLA BLUE: #2774AE*/
 :root {
   --font-color: rgb(0, 0, 0);
-  --background-color: #ded9fa;
-  --link-color: cornflowerblue;
+  --background-color: #cff4fa;
+  --link-color: rgb(182, 236, 250);
 }
 
 [data-theme="dark"] {
