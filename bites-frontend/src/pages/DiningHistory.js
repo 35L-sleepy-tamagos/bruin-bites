@@ -26,7 +26,7 @@ function DiningHistory() {
             console.log("no user");
             return;
         }
-        console.log("getting userdata");
+        console.log("getting userdata!");
         getUsers(user.uid).then((userDetails) => {
             setUserDetails(userDetails);
         });
@@ -70,7 +70,7 @@ function DiningHistory() {
                         size="lg"
                         onClick={() => goToProfile()}
                     >
-                        Return to your Profile!
+                        Return to your Profile
                     </Button>
 
                 </Col>
