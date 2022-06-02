@@ -86,6 +86,7 @@ function Profile() {
     const numDining = userDetails?.dining?.length;
     
     /* wtf conditional jsx return lmao */
+    /*edit w-75 part of <p> div to change character limit*/
     return (
       <Container className="px-0 text-dark">
         <Row className="mb-3">
@@ -97,23 +98,19 @@ function Profile() {
           <Col className="px-3" align="center">
             <Image className="w-75" src={image} />
             <h3> {name} </h3>
-            <p> {bio} </p>
+            <p className="w-75"> {bio} </p>
           </Col>
           <Col className="mt-3">
             <h3>Favorite Places</h3>
-            <Stack gap={1} className="m-3">
-              <div>
-                <h4> {place1} </h4>
-              </div>
-              <div>
-                <h4> {place2} </h4>
-              </div>
-            </Stack>
+
+                <p> &nbsp;&nbsp;{place1} </p>
+                <p> &nbsp;&nbsp;{place2} </p>
+
           </Col>
           <Col className="mt-3">
             <h3>Profile Activity</h3>
-            <p> {numReviews} Reviews posted</p>
-            <p> {numDining} Meals recorded</p>
+            <p> &nbsp;&nbsp;{numReviews} Reviews posted</p>
+            <p> &nbsp;&nbsp;{numDining} Meals recorded</p>
           </Col>
         </Row>
         <Col>
