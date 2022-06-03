@@ -55,7 +55,7 @@ export const diningOptions = [
   { value: "bplate", label: "Bruin Plate" },
   { value: "feast", label: "Feast at Rieber" },
   { value: "rende", label: "Rendezvous" },
-  { value: "study", label: "The Study at Hedrick" },
+  { value: "study", label: "The Study" },
   { value: "bcafe", label: "Bruin Cafe" },
   { value: "drey", label: "The Drey" },
 ];
