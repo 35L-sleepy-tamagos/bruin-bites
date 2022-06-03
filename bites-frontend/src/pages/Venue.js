@@ -13,7 +13,6 @@ function Review() {
 
 	/* on render, get the reviews */
 	useEffect(() => {
-		console.log("getting reviews");
 		getReviews().then((reviews) => {
 			setReviews(reviews);
 		});

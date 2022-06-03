@@ -53,7 +53,6 @@ function App() {
   useEffect(() => {
     const unlisten = auth.onAuthStateChanged(
       user => {
-        console.log("setting a user");
         user
           ? setUser(user)
           : setUser(null)

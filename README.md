@@ -28,6 +28,28 @@ These commands are expected to be run in a Linux/Unix shell.
 
 **Further Note**: `npm install` only needs to be run once after cloning the repository. 
 
+Our program uses the following packages. The program may behave unexpectedly with different versions of the packages. 
+
+```
+├── @react-google-maps/api@2.11.9
+├── @testing-library/jest-dom@5.16.4
+├── @testing-library/react@13.1.1
+├── @testing-library/user-event@13.5.0
+├── bootstrap@5.1.3
+├── firebase@9.8.1
+├── formik@2.2.9
+├── normalize.css@8.0.1
+├── react-bootstrap@2.3.1
+├── react-dom@18.1.0
+├── react-icons@4.3.1
+├── react-router-dom@6.3.0
+├── react-scripts@5.0.1
+├── react-select@5.3.2
+├── react@18.1.0
+├── styled-components@5.3.5
+└── web-vitals@2.1.4
+```
+
 ## Display Dynamic Data
 
 As a user sends in a review, changes their profile picture, modifies a filter, and many more options, the front end will update to reflect their changes. Almost every page on our website has some amount of dynamic data: 

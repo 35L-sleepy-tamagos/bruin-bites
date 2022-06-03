@@ -35,7 +35,6 @@ function EditProfile( {googleAcc} ) {
     if (!auth.currentUser) {
       return;
     }
-    console.log("getting userdata");
     getUsers(auth.currentUser.uid).then((userDetails) => {
       setUserDetails(userDetails);
     });

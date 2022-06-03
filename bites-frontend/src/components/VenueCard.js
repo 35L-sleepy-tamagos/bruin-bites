@@ -23,7 +23,6 @@ function VenueCard(props) {
 
   /* utility */
   const recordDining = () => {
-    console.log(props.user);
     if (!props.user) {
       alert("You must be logged in to use this feature!")
       return;
@@ -57,7 +56,7 @@ function VenueCard(props) {
             size="lg"
             onClick={() => openUrl(props.link)}
           >
-            Menu
+            External Menu
           </Button>
           <Button
             onClick={() => recordDining()}

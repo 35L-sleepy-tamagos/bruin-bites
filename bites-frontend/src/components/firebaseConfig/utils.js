@@ -91,7 +91,7 @@ export async function createReview(review) {
     addLastDining(review.uid, time);
     return true;
   } catch (error) {
-    console.log(error);
+
   }
 }
 
@@ -210,7 +210,6 @@ export async function createDining(location, uid) {
     }
     return true;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -307,7 +306,6 @@ export async function emailRegister(name, email, password) {
 }
 
 export function logout() {
-  console.log("signing out");
   signOut(auth);
 }
 
