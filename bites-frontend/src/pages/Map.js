@@ -106,7 +106,7 @@ function Map({ user }) {
         });
       });
     }
-    setDisplayMessage("Display Totals");
+    setDisplayMessage("Display Users");
   }, [user]);
 
   useEffect(() => {
@@ -174,83 +174,81 @@ function Map({ user }) {
           {/* Child components, such as markers, info windows, etc. */}
           <>
             {locations.map((location, i) => {
-              if (location.size.length !== 0) {
-                return (
-                  <Marker
-                    key={i}
-                    animation={window.google.maps.Animation.DROP}
-                    position={{
+              return (
+                <Marker
+                  key={i}
+                  animation={window.google.maps.Animation.DROP}
+                  position={{
+                    lat: location.lat,
+                    lng: location.lng,
+                  }}
+                >
+                  {location.visible && (
+                    <InfoWindow
+                      position={{ lat: location.lat, lng: location.lng }}
+                    >
+                      <div>
+                        <h3>{location.name}</h3>
+                        {location.size.slice(0, 5).map((review) => {
+                          return (
+                            <div>
+                              <p>{review.createdAt}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </InfoWindow>
+                  )}
+                  <Circle
+                    center={{
                       lat: location.lat,
                       lng: location.lng,
                     }}
-                  >
-                    {location.visible && (
-                      <InfoWindow
-                        position={{ lat: location.lat, lng: location.lng }}
-                      >
-                        <div>
-                          <h3>{location.name}</h3>
-                          {location.size.slice(0, 5).map((review) => {
-                            return (
-                              <div>
-                                <p>{review.createdAt}</p>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </InfoWindow>
-                    )}
-                    <Circle
-                      center={{
-                        lat: location.lat,
-                        lng: location.lng,
-                      }}
-                      radius={Math.sqrt((location.size.length * 80) / 3.1415)}
-                      onMouseOver={() => {
-                        handleMouseOver(i);
-                      }}
-                      onMouseOut={() => {
-                        handleMouseOut(i);
-                      }}
-                      onDblClick={() => {
-                        window.location.href = location.url;
-                      }}
-                      visible={displayUsers}
-                      options={{
-                        fillColor: "#ff0000",
-                        fillOpacity: 0.2,
-                        strokeColor: "#ff0000",
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                      }}
-                    />
-                    <Circle
-                      center={{
-                        lat: location.lat,
-                        lng: location.lng,
-                      }}
-                      radius={Math.sqrt((location.totalSize * 80) / 3.1415)}
-                      onMouseOver={() => {
-                        handleMouseOver(i);
-                      }}
-                      onMouseOut={() => {
-                        handleMouseOut(i);
-                      }}
-                      onDblClick={() => {
-                        window.location.href = location.url;
-                      }}
-                      visible={displayTotals}
-                      options={{
-                        fillColor: "#0000ff",
-                        fillOpacity: 0.2,
-                        strokeColor: "#0000ff",
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                      }}
-                    />
-                  </Marker>
-                );
-              }
+                    radius={Math.sqrt((location.size.length * 80) / 3.1415)}
+                    onMouseOver={() => {
+                      handleMouseOver(i);
+                    }}
+                    onMouseOut={() => {
+                      handleMouseOut(i);
+                    }}
+                    onDblClick={() => {
+                      window.location.href = location.url;
+                    }}
+                    visible={displayUsers}
+                    options={{
+                      fillColor: "#ff0000",
+                      fillOpacity: 0.2,
+                      strokeColor: "#ff0000",
+                      strokeOpacity: 1,
+                      strokeWeight: 1,
+                    }}
+                  />
+                  <Circle
+                    center={{
+                      lat: location.lat,
+                      lng: location.lng,
+                    }}
+                    radius={Math.sqrt((location.totalSize * 80) / 3.1415)}
+                    onMouseOver={() => {
+                      handleMouseOver(i);
+                    }}
+                    onMouseOut={() => {
+                      handleMouseOut(i);
+                    }}
+                    onDblClick={() => {
+                      window.location.href = location.url;
+                    }}
+                    visible={displayTotals}
+                    options={{
+                      fillColor: "#0000ff",
+                      fillOpacity: 0.2,
+                      strokeColor: "#0000ff",
+                      strokeOpacity: 1,
+                      strokeWeight: 1,
+                    }}
+                  />
+                </Marker>
+              );
             })}
             ;
           </>
