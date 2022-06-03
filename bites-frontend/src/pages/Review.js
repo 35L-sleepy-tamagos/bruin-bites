@@ -211,9 +211,7 @@ function Review({ user }) {
       }
       else {
         setShowDiningNotif(true);
-        if (user) {
-          createDining(values.diningHall, values.uid);
-        }
+        createDining(values.diningHall, values.uid);
       }
 
       getReviews().then((reviews) => {
