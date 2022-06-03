@@ -105,6 +105,19 @@ function Map({ user }) {
           setLocations(locationsWithTotalSize);
         });
       });
+    } else {
+      getDiningTotals().then((totals) => {
+        const locationsWithTotalSize = initialLocations.map((location) => {
+          location.totalSize = totals.filter(
+            (t) => t.location === location.name
+          )[0];
+          location.size = [];
+          location.totalSize = location.totalSize.total;
+          return location;
+        });
+        setLocations(locationsWithTotalSize);
+        console.log(locationsWithTotalSize);
+      });
     }
     setDisplayMessage("Display Users");
   }, [user]);
