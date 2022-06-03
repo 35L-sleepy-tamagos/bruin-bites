@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB0RVYajis4riUkkHIQGKpZKIQD-TE9EBA",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "bruin-bites.firebaseapp.com",
   databaseURL: "https://bruin-bites-default-rtdb.firebaseio.com",
   projectId: "bruin-bites",
