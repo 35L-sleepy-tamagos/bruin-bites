@@ -18,7 +18,7 @@ export const venues = [
     link: "http://menu.dining.ucla.edu/Menus/BruinPlate/",
   },
   {
-    name: "Feast",
+    name: "Feast at Rieber",
     image:
       "https://menu.dining.ucla.edu/Content/Images/Menus/FeastSpiceKitchen/feastspicekitchen-logo.png?rev=2021-10-26b",
     link: "http://menu.dining.ucla.edu/Menus/FeastAtRieber/",

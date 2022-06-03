@@ -193,6 +193,21 @@ export async function createDining(location, uid) {
     await updateDoc(doc(db, "users", uid), {
       dining: [...docSnap.data().dining, id],
     });
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    const docRef = doc(db, "diningTotals", location);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      await setDoc(doc(db, "diningTotals", location), {
+        total: 1,
+      });
+    } else {
+      await updateDoc(doc(db, "diningTotals", location), {
+        total: docSnap.data().total + 1,
+      });
+    }
     return true;
   } catch (error) {
     console.log(error);
@@ -214,6 +229,18 @@ export async function getUserMeals(uid) {
   return meals;
 }
 
+export async function getDiningTotals() {
+  const db = getFirestore();
+  const meals = [];
+  const querySnapshot = await getDocs(collection(db, "diningTotals"));
+  querySnapshot.forEach((doc) => {
+    meals.push({
+      location: doc.id,
+      total: doc.data().total,
+    });
+  });
+  return meals;
+}
 /* ========== USER SIGN-IN FUNCTIONS =========== */
 /* inspired by https://blog.logrocket.com/user-authentication-firebase-react-apps/ */
 

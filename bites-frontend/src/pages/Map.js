@@ -1,7 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-
-import { getUserMeals } from "../components/firebaseConfig/utils";
+import "../css/Map.css";
+import {
+  getUserMeals,
+  getDiningTotals,
+} from "../components/firebaseConfig/utils";
 import {
   Circle,
   Marker,
@@ -15,6 +18,7 @@ const containerStyle = {
   height: "90vh",
   position: "absolute",
   top: "10vh",
+  zIndex: 0,
 };
 
 const center = {
@@ -90,16 +94,36 @@ function Map({ user }) {
             .reverse();
           return location;
         });
-        setLocations(locationsWithSize);
+        getDiningTotals().then((totals) => {
+          const locationsWithTotalSize = locationsWithSize.map((location) => {
+            location.totalSize = totals.filter(
+              (t) => t.location === location.name
+            )[0];
+            location.totalSize = location.totalSize.total;
+            return location;
+          });
+          setLocations(locationsWithTotalSize);
+        });
       });
     }
+    setDisplayMessage("Display Totals");
   }, [user]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDisplayTotals(true);
+    }, 500);
+  }, []);
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyA-_Ydwt65E_qhTCt7Ma2wx2yvC-q1uTrY",
   });
 
   const [map, setMap] = React.useState(null);
+  const [displayTotals, setDisplayTotals] = React.useState(false);
+  const [displayUsers, setDisplayUsers] = React.useState(false);
+  const [displayMessage, setDisplayMessage] = React.useState("");
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
@@ -123,76 +147,118 @@ function Map({ user }) {
     });
     setLocations(newLocations);
   };
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={18}
-      onUnmount={onUnmount}
-      style={{ margin: "auto" }}
-    >
-      {/* Child components, such as markers, info windows, etc. */}
-      <>
-        {locations.map((location, i) => {
-          if (location.size.length !== 0) {
-            return (
-              <Marker
-                key={i}
-                animation={window.google.maps.Animation.DROP}
-                position={{
-                  lat: location.lat,
-                  lng: location.lng,
-                }}
-              >
-                {location.visible && (
-                  <InfoWindow
-                    position={{ lat: location.lat, lng: location.lng }}
-                  >
-                    <div>
-                      <h3>{location.name}</h3>
-                      {location.size.slice(0, 5).map((review) => {
-                        return (
-                          <div>
-                            <p>{review.createdAt}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </InfoWindow>
-                )}
+  const handleClick = () => {
+    setDisplayTotals(!displayTotals);
+    setDisplayUsers(!displayUsers);
 
-                <Circle
-                  center={{
-                    lat: location.lat,
-                    lng: location.lng,
-                  }}
-                  radius={location.size.length * 5}
-                  onMouseOver={() => {
-                    handleMouseOver(i);
-                  }}
-                  onMouseOut={() => {
-                    handleMouseOut(i);
-                  }}
-                  onDblClick={() => {
-                    window.location.href = location.url;
-                  }}
-                  options={{
-                    fillColor: "#ff0000",
-                    fillOpacity: 0.2,
-                    strokeColor: "#ff0000",
-                    strokeOpacity: 1,
-                    strokeWeight: 1,
-                  }}
-                />
-              </Marker>
-            );
-          }
-        })}
-        ;
-      </>
-    </GoogleMap>
-  ) : (
-    <></>
+    setDisplayMessage(!displayTotals ? "Display Users" : "Display Totals");
+  };
+  return (
+    locations &&
+    (isLoaded ? (
+      <div>
+        <button
+          id="displayButton"
+          className="btn btn-primary btn-lg"
+          onClick={handleClick}
+        >
+          {displayMessage}
+        </button>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={18}
+          onUnmount={onUnmount}
+          style={{ margin: "auto" }}
+        >
+          {/* Child components, such as markers, info windows, etc. */}
+          <>
+            {locations.map((location, i) => {
+              if (location.size.length !== 0) {
+                return (
+                  <Marker
+                    key={i}
+                    animation={window.google.maps.Animation.DROP}
+                    position={{
+                      lat: location.lat,
+                      lng: location.lng,
+                    }}
+                  >
+                    {location.visible && (
+                      <InfoWindow
+                        position={{ lat: location.lat, lng: location.lng }}
+                      >
+                        <div>
+                          <h3>{location.name}</h3>
+                          {location.size.slice(0, 5).map((review) => {
+                            return (
+                              <div>
+                                <p>{review.createdAt}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </InfoWindow>
+                    )}
+                    <Circle
+                      center={{
+                        lat: location.lat,
+                        lng: location.lng,
+                      }}
+                      radius={Math.sqrt((location.size.length * 80) / 3.1415)}
+                      onMouseOver={() => {
+                        handleMouseOver(i);
+                      }}
+                      onMouseOut={() => {
+                        handleMouseOut(i);
+                      }}
+                      onDblClick={() => {
+                        window.location.href = location.url;
+                      }}
+                      visible={displayUsers}
+                      options={{
+                        fillColor: "#ff0000",
+                        fillOpacity: 0.2,
+                        strokeColor: "#ff0000",
+                        strokeOpacity: 1,
+                        strokeWeight: 1,
+                      }}
+                    />
+                    <Circle
+                      center={{
+                        lat: location.lat,
+                        lng: location.lng,
+                      }}
+                      radius={Math.sqrt((location.totalSize * 80) / 3.1415)}
+                      onMouseOver={() => {
+                        handleMouseOver(i);
+                      }}
+                      onMouseOut={() => {
+                        handleMouseOut(i);
+                      }}
+                      onDblClick={() => {
+                        window.location.href = location.url;
+                      }}
+                      visible={displayTotals}
+                      options={{
+                        fillColor: "#0000ff",
+                        fillOpacity: 0.2,
+                        strokeColor: "#0000ff",
+                        strokeOpacity: 1,
+                        strokeWeight: 1,
+                      }}
+                    />
+                  </Marker>
+                );
+              }
+            })}
+            ;
+          </>
+        </GoogleMap>
+      </div>
+    ) : (
+      <></>
+    ))
   );
 }
 
